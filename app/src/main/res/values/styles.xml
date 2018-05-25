@@ -1,0 +1,101 @@
+<resources>
+
+    <style name="Theme.Expenses" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <!-- Toolbars - Theme Overlay -->
+
+    <style name="ThemeOverlay.Expenses.Toolbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="colorPrimary">@color/primary</item>
+    </style>
+
+    <!-- Buttons - Theme Overlay -->
+
+    <style name="ThemeOverlay.Expenses.Button.Accent" parent="ThemeOverlay.MaterialComponents.Dark">
+    </style>
+
+    <style name="ThemeOverlay.Expenses.Button.Light" parent="ThemeOverlay.MaterialComponents.Light">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <!-- Edit texts - Theme Overlay -->
+
+    <style name="ThemeOverlay.Expenses.EditText.Dark" parent="ThemeOverlay.MaterialComponents.Dark">
+        <item name="colorControlNormal">@color/text_secondary_light</item>
+        <item name="colorControlActivated">@color/text_primary_light</item>
+        <item name="colorControlHighlight">@color/text_primary_light</item>
+    </style>
+
+    <!-- Buttons - Style -->
+
+    <style name="Widget.Expenses.Button.Accent.Normal" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_height">48dp</item>
+        <item name="cornerRadius">18dp</item>
+    </style>
+
+    <style name="Widget.Expenses.Button.Accent.Large" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_height">56dp</item>
+        <item name="cornerRadius">28dp</item>
+    </style>
+
+    <style name="Widget.Expenses.Button.Light.Large" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_height">56dp</item>
+    </style>
+
+    <!-- Buttons - Style -->
+
+    <style name="TextAppearance.Expenses.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Expenses.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Expenses.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Expenses.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Expenses.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Expenses.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Expenses.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextAppearance.Expenses.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Expenses.Body1" parent="TextAppearance.MaterialComponents.Body1">
+    </style>
+
+    <style name="TextAppearance.Expenses.Body2" parent="TextAppearance.MaterialComponents.Body2">
+    </style>
+
+    <style name="TextAppearance.Expenses.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

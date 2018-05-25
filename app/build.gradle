@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+
+    compileSdkVersion 'android-P'
+
+    defaultConfig {
+        applicationId "com.nominalista.expenses"
+        versionCode 1
+        versionName "0.1"
+        minSdkVersion 21
+        targetSdkVersion 28
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+}
+
+dependencies {
+
+    def appCompatVersion        = '1.0.0-alpha1'
+    def cardViewVersion         = '1.0.0-alpha1'
+    def constraintLayoutVersion = '1.1.0'
+    def jUnitVersion            = '4.12'
+    def lifecycleVersion        = '2.0.0-alpha1'
+    def materialVersion         = '1.0.0-alpha1'
+    def navigationVersion       = '1.0.0-alpha01'
+    def recyclerViewVersion     = '1.0.0-alpha1'
+    def roomVersion             = '2.0.0-alpha1'
+    def rxAndroidVersion        = '2.0.2'
+    def rxRelayVersion          = '2.0.0'
+
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // Kotlin
+    implementation     "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
+    // AndroidX
+    implementation     "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation     "androidx.cardview:cardview:$cardViewVersion"
+    implementation     "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    implementation     "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    implementation     "androidx.lifecycle:lifecycle-reactivestreams:$lifecycleVersion"
+    implementation     "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    implementation     "androidx.room:room-runtime:$roomVersion"
+    implementation     "androidx.room:room-rxjava2:$roomVersion"
+
+    kapt               "androidx.room:room-compiler:$roomVersion"
+
+    // Navigation
+    // TODO: Change into AndroidX when available.
+    implementation     "android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation     "android.arch.navigation:navigation-ui-ktx:$navigationVersion"
+
+    // Material
+    implementation     "com.google.android.material:material:$materialVersion"
+
+    // Rx
+    implementation     "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation     "com.jakewharton.rxrelay2:rxrelay:$rxRelayVersion"
+
+    // Tests
+    testImplementation "junit:junit:$jUnitVersion"
+}

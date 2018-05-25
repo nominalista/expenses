@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1777C1</color>
+    <color name="primary_dark">#14579F</color>
+    <color name="accent">#EB3A4B</color>
+    <color name="background">#FFFFFF</color>
+    <color name="background_dark">#F5F5F5</color>
+
+    <color name="divider">#14000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Text -->
+    <color name="text_primary_dark">#DE000000</color>    <!-- 87% - Primary text dark on light background -->
+    <color name="text_secondary_dark">#8A000000</color>  <!-- 54% - Secondary text -->
+    <color name="text_disabled_dark">#61000000</color>   <!-- 38% - Disabled text, hint text, and icons -->
+    <color name="divider_dark">#1F000000</color>         <!-- 12% - Dividers dark on light background -->
+
+    <color name="text_primary_light">#FFF</color>        <!-- 100% - Primary text light on dark background -->
+    <color name="text_secondary_light">#B3FFFFFF</color> <!-- 70% - Secondary text -->
+    <color name="text_disabled_light">#B3FFFFFF</color>  <!-- 50% - Disabled text, hint text, and icons -->
+    <color name="divider_light">#1FFFFFFF</color>        <!-- 12% - Dividers light on dark background -->
+
+    <!-- Icons -->
+    <color name="icon_active_dark">#8A000000</color>     <!-- 54% - Dark icon in active state -->
+    <color name="icon_active_light">#FFFFFF</color>      <!-- 100% - Light icon in active state -->
+    <color name="icon_inactive_dark">#61000000</color>   <!-- 38% - Dark icon in inactive state -->
+    <color name="icon_inactive_light">#80FFFFFF</color>  <!-- 38% - Light icon in inactive state -->
+
+</resources>
