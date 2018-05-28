@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/today"
-        android:title="@string/ui.home.today" />
+        android:title="@string/today" />
     <item
         android:id="@+id/this_week"
-        android:title="@string/ui.home.this_week" />
+        android:title="@string/this_week" />
     <item
         android:id="@+id/this_month"
-        android:title="@string/ui.home.this_month" />
+        android:title="@string/this_month" />
     <item
         android:id="@+id/all_time"
-        android:title="@string/ui.home.all_time" />
+        android:title="@string/all_time" />
 </menu>

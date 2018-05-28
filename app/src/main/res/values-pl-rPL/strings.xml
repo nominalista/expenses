@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wydatki</string>
+
+    <string name="add">Dodaj</string>
+    <string name="add_tag">Dodaj tag</string>
+    <string name="add_expense_button">Dodaj wydatek</string>
+    <string name="amount">Kwota</string>
+    <string name="all_time">Cały czas</string>
+    <string name="cancel">Anuluj</string>
+    <string name="confirm">Potwierdź</string>
+    <string name="delete">Usuń</string>
+    <string name="default_currency">Domyślna waluta</string>
+    <string name="expense_detail_title">Detale</string>
+    <string name="filter">Filtruj</string>
+    <string name="filter_tags">Filtruj tagi</string>
+    <string name="general">Ogólne</string>
+    <string name="name">Nazwa</string>
+    <string name="no_notes">Brak notatek</string>
+    <string name="no_tags">Brak tagów</string>
+    <string name="notes_title">Notatki</string>
+    <string name="notes_hint">Notatki (opcjonalnie)</string>
+    <string name="remove">Usuń</string>
+    <string name="save">Zapisz</string>
+    <string name="select_currency">Wybierz walutę</string>
+    <string name="select_tags">Wybierz tagi</string>
+    <string name="settings">Ustawienia</string>
+    <string name="summary_title">Wydałaś/eś</string>
+    <string name="ok">OK</string>
+    <string name="this_month">Ten miesiąc</string>
+    <string name="this_week">Ten tydzień</string>
+    <string name="title_hint">Tytuł</string>
+    <string name="today">Dzisiaj</string>
+</resources>

@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:elevation="@dimen/spacing_normal"
-        android:theme="@style/ThemeOverlay.Expenses.Toolbar" />
+        android:theme="@style/ThemeOverlay.Expenses.Toolbar"
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
 
     <FrameLayout
         android:id="@+id/layout_container"
@@ -21,9 +22,9 @@
         android:layout_height="match_parent" />
 
     <!--<fragment-->
-        <!--android:id="@+id/fragment_navigation_host"-->
-        <!--android:name="androidx.navigation.fragment.NavHostFragment"-->
-        <!--app:defaultNavHost="true"-->
-        <!--app:navGraph="@navigation/navigation_home" />-->
+    <!--android:id="@+id/fragment_navigation_host"-->
+    <!--android:name="androidx.navigation.fragment.NavHostFragment"-->
+    <!--app:defaultNavHost="true"-->
+    <!--app:navGraph="@navigation/navigation_home" />-->
 
 </LinearLayout>

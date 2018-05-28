@@ -6,11 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.nominalista.expenses.R
 
-private const val ADD_USER_ITEM_TYPE = R.layout.item_add_user
 private const val DEFAULT_CURRENCY_ITEM_TYPE = R.layout.item_default_currency
-private const val OTHER_HEADER_TYPE = R.layout.header_other
-private const val USER_HEADER_TYPE = R.layout.header_user
-private const val USER_ITEM_TYPE = R.layout.item_user
+private const val GENERAL_HEADER_TYPE = R.layout.header_general
 
 class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCallback()) {
 
@@ -18,11 +15,8 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
         val inflater = LayoutInflater.from(parent.context)
         val itemView = inflater.inflate(viewType, parent, false)
         return when (viewType) {
-            ADD_USER_ITEM_TYPE -> AddUserItemHolder(itemView)
             DEFAULT_CURRENCY_ITEM_TYPE -> DefaultCurrencyItemHolder(itemView)
-            OTHER_HEADER_TYPE -> OtherHeaderHolder(itemView)
-            USER_HEADER_TYPE -> UserHeaderHolder(itemView)
-            USER_ITEM_TYPE -> UserItemHolder(itemView)
+            GENERAL_HEADER_TYPE -> GeneralHeaderHolder(itemView)
             else -> throw IllegalArgumentException()
         }
     }
@@ -30,29 +24,22 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
     override fun onBindViewHolder(holder: SettingItemHolder, position: Int) {
         val itemModel = getItem(position)
         when {
-            holder is AddUserItemHolder && itemModel is AddUserItemModel -> holder.bind(itemModel)
             holder is DefaultCurrencyItemHolder && itemModel is DefaultCurrencyItemModel ->
                 holder.bind(itemModel)
-            holder is UserItemHolder && itemModel is UserItemModel -> holder.bind(itemModel)
         }
     }
 
     override fun onViewRecycled(holder: SettingItemHolder) {
         super.onViewRecycled(holder)
         when (holder) {
-            is AddUserItemHolder -> holder.recycle()
             is DefaultCurrencyItemHolder -> holder.recycle()
-            is UserItemHolder -> holder.recycle()
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is AddUserItemModel -> ADD_USER_ITEM_TYPE
             is DefaultCurrencyItemModel -> DEFAULT_CURRENCY_ITEM_TYPE
-            is OtherHeaderModel -> OTHER_HEADER_TYPE
-            is UserItemModel -> USER_ITEM_TYPE
-            is UserHeaderModel -> USER_HEADER_TYPE
+            is GeneralHeaderModel -> GENERAL_HEADER_TYPE
             else -> super.getItemViewType(position)
         }
     }
@@ -64,13 +51,9 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
                 newItem: SettingItemModel
         ): Boolean {
             return when {
-                oldItem is AddUserItemModel && newItem is AddUserItemModel -> true
                 oldItem is DefaultCurrencyItemModel && newItem is DefaultCurrencyItemModel ->
                     oldItem.currency.code == newItem.currency.code
-                oldItem is OtherHeaderModel && newItem is OtherHeaderModel -> true
-                oldItem is UserHeaderModel && newItem is UserHeaderModel -> true
-                oldItem is UserItemModel && newItem is UserItemModel ->
-                    oldItem.user.name == newItem.user.name
+                oldItem is GeneralHeaderModel && newItem is GeneralHeaderModel -> true
                 else -> false
             }
         }
@@ -80,12 +63,9 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
                 newItem: SettingItemModel
         ): Boolean {
             return when {
-                oldItem is AddUserItemModel && newItem is AddUserItemModel -> true
                 oldItem is DefaultCurrencyItemModel && newItem is DefaultCurrencyItemModel ->
                     oldItem.currency == newItem.currency
-                oldItem is OtherHeaderModel && newItem is OtherHeaderModel -> true
-                oldItem is UserHeaderModel && newItem is UserHeaderModel -> true
-                oldItem is UserItemModel && newItem is UserItemModel -> oldItem.user == newItem.user
+                oldItem is GeneralHeaderModel && newItem is GeneralHeaderModel -> true
                 else -> false
             }
         }

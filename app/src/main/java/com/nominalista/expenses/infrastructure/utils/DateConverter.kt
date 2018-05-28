@@ -1,11 +1,7 @@
 package com.nominalista.expenses.infrastructure.utils
 
-import android.annotation.SuppressLint
 import androidx.room.TypeConverter
-import java.text.SimpleDateFormat
 import java.util.*
-
-val pattern = "dd-MM-yyyy"
 
 class DateConverter {
 
@@ -13,18 +9,10 @@ class DateConverter {
 
         @JvmStatic
         @TypeConverter
-        fun toDate(string: String): Date? {
-            @SuppressLint("SimpleDateFormat")
-            val format = SimpleDateFormat(pattern)
-            return format.parse(string)
-        }
+        fun toDate(long: Long): Date? = Date(long)
 
         @JvmStatic
         @TypeConverter
-        fun toString(date: Date): String? {
-            @SuppressLint("SimpleDateFormat")
-            val format = SimpleDateFormat(pattern)
-            return format.format(date)
-        }
+        fun toString(date: Date): Long? = date.time
     }
 }

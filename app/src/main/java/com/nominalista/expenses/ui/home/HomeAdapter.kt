@@ -1,7 +1,6 @@
 package com.nominalista.expenses.ui.home
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,6 +8,7 @@ import com.nominalista.expenses.R
 
 private const val EXPENSE_ITEM_TYPE = R.layout.item_expense
 private const val SUMMARY_ITEM_TYPE = R.layout.item_summary
+private const val TAG_FILTER_ITEM_TYPE = R.layout.item_tag_filter
 
 class HomeAdapter : ListAdapter<HomeItemModel, HomeItemHolder>(DiffCallback()) {
 
@@ -18,6 +18,7 @@ class HomeAdapter : ListAdapter<HomeItemModel, HomeItemHolder>(DiffCallback()) {
         return when (viewType) {
             EXPENSE_ITEM_TYPE -> ExpenseItemHolder(itemView)
             SUMMARY_ITEM_TYPE -> SummaryItemHolder(itemView)
+            TAG_FILTER_ITEM_TYPE -> TagFilterItemHolder(itemView)
             else -> throw IllegalArgumentException()
         }
     }
@@ -27,6 +28,8 @@ class HomeAdapter : ListAdapter<HomeItemModel, HomeItemHolder>(DiffCallback()) {
         when {
             (holder is ExpenseItemHolder && itemModel is ExpenseItemModel) -> holder.bind(itemModel)
             (holder is SummaryItemHolder && itemModel is SummaryItemModel) -> holder.bind(itemModel)
+            (holder is TagFilterItemHolder && itemModel is TagFilterItemModel) ->
+                holder.bind(itemModel)
         }
     }
 
@@ -35,6 +38,7 @@ class HomeAdapter : ListAdapter<HomeItemModel, HomeItemHolder>(DiffCallback()) {
         when (holder) {
             is ExpenseItemHolder -> holder.recycle()
             is SummaryItemHolder -> holder.recycle()
+            is TagFilterItemHolder -> holder.recycle()
         }
     }
 
@@ -42,6 +46,7 @@ class HomeAdapter : ListAdapter<HomeItemModel, HomeItemHolder>(DiffCallback()) {
         return when (getItem(position)) {
             is ExpenseItemModel -> EXPENSE_ITEM_TYPE
             is SummaryItemModel -> SUMMARY_ITEM_TYPE
+            is TagFilterItemModel -> TAG_FILTER_ITEM_TYPE
             else -> super.getItemViewType(position)
         }
     }
@@ -56,6 +61,7 @@ class HomeAdapter : ListAdapter<HomeItemModel, HomeItemHolder>(DiffCallback()) {
                 (oldItem is ExpenseItemModel && newItem is ExpenseItemModel) ->
                     oldItem.expense.id == newItem.expense.id
                 (oldItem is SummaryItemModel && newItem is SummaryItemModel) -> true
+                (oldItem is TagFilterItemModel && newItem is TagFilterItemModel) -> true
                 else -> false
             }
         }
@@ -68,6 +74,8 @@ class HomeAdapter : ListAdapter<HomeItemModel, HomeItemHolder>(DiffCallback()) {
                 (oldItem is ExpenseItemModel && newItem is ExpenseItemModel) ->
                     oldItem.expense == newItem.expense
                 (oldItem is SummaryItemModel && newItem is SummaryItemModel) -> false
+                (oldItem is TagFilterItemModel && newItem is TagFilterItemModel) ->
+                    oldItem.tagFilter == newItem.tagFilter
                 else -> false
             }
         }

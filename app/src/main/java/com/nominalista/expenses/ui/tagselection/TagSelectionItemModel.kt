@@ -1,0 +1,3 @@
+package com.nominalista.expenses.ui.tagselection
+
+interface TagSelectionItemModel

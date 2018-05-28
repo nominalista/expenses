@@ -3,12 +3,15 @@ package com.nominalista.expenses.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import com.nominalista.expenses.R
-import com.nominalista.expenses.model.Expense
+import com.nominalista.expenses.data.Expense
+import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.ui.expensedetail.ExpenseDetailFragment
 import com.nominalista.expenses.ui.home.HomeFragment
 import com.nominalista.expenses.ui.newexpense.NewExpenseFragment
 import com.nominalista.expenses.ui.settings.SettingsFragment
+import com.nominalista.expenses.ui.tagselection.TagSelectionFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,32 +33,32 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
     }
 
-    fun navigateToHome() {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.layout_container,
-                        HomeFragment.newInstance())
-                .addToBackStack("HomeFragment")
-                .commit()
+    fun navigateToExpenseDetail(expense: Expense) {
+        replace(ExpenseDetailFragment.newInstance(expense), "ExpenseDetailFragment")
     }
 
-    fun navigateToSettings() {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.layout_container, SettingsFragment.newInstance())
-                .addToBackStack("SettingsFragment")
-                .commit()
+    fun navigateToHome() {
+        replace(HomeFragment.newInstance(), "HomeFragment")
     }
 
     fun navigateToNewExpense() {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.layout_container, NewExpenseFragment.newInstance())
-                .addToBackStack("NewExpenseFragment")
-                .commit()
+        replace(NewExpenseFragment.newInstance(), "NewExpenseFragment")
     }
 
-    fun navigateToExpenseDetail(expense: Expense) {
+    fun navigateToSettings() {
+        replace(SettingsFragment.newInstance(), "SettingsFragment")
+    }
+
+    fun navigateToTagSelection(tagsSelected: ((List<Tag>) -> Unit)? = null) {
+        val fragment = TagSelectionFragment.newInstance()
+        fragment.tagsSelected = tagsSelected
+        replace(fragment, "TagSelectionFragment")
+    }
+
+    private fun replace(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction()
-                .replace(R.id.layout_container, ExpenseDetailFragment.newInstance(expense))
-                .addToBackStack("ExpenseDetailFragment")
+                .replace(R.id.layout_container, fragment)
+                .addToBackStack(tag)
                 .commit()
     }
 

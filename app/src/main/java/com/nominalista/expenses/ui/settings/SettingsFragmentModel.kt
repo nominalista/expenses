@@ -4,25 +4,19 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
+import com.nominalista.expenses.data.Currency
 import com.nominalista.expenses.infrastructure.utils.Event
 import com.nominalista.expenses.infrastructure.utils.Variable
-import com.nominalista.expenses.infrastructure.utils.runOnBackground
-import com.nominalista.expenses.model.ApplicationDatabase
-import com.nominalista.expenses.model.Currency
-import com.nominalista.expenses.model.User
 import com.nominalista.expenses.source.PreferenceDataSource
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.BiFunction
 
 class SettingsFragmentModel(
         application: Application,
-        private val database: ApplicationDatabase,
         private val preferenceDataSource: PreferenceDataSource)
     : AndroidViewModel(application) {
 
     val itemModels = Variable(emptyList<SettingItemModel>())
-    val showAddUserDialog = Event()
     val showCurrencySelectionDialog = Event()
 
     private var itemModelsDisposable: Disposable? = null
@@ -32,65 +26,23 @@ class SettingsFragmentModel(
     }
 
     private fun loadItemModels() {
-        itemModelsDisposable = getItemModels()
-                .subscribe { itemModels -> this.itemModels.value = itemModels }
+        itemModelsDisposable = getItemModels().subscribe { itemModels.value = it }
     }
 
     private fun getItemModels(): Observable<List<SettingItemModel>> {
-        return Observable.combineLatest(getUserSection(),
-                getOtherSection(),
-                BiFunction { userSection, otherSection -> userSection + otherSection })
+        return createGeneralSection()
     }
 
-    // User section
+    // General section
 
-    private fun getUserSection(): Observable<List<SettingItemModel>> {
-        return getUserItemModels()
-                .map { userItemModels ->
-                    var itemModels = listOf<SettingItemModel>(createUserHeaderModel())
-                    itemModels += userItemModels
-                    itemModels += createAddUserViewModel()
-                    itemModels
-                }
-    }
-
-    private fun getUserItemModels(): Observable<List<SettingItemModel>> {
-        return database.userDao()
-                .getAll()
-                .toObservable()
-                .map { users -> users.map { user -> createUserItemModel(user) } }
-    }
-
-    private fun createUserItemModel(user: User): UserItemModel {
-        val viewModel = UserItemModel(user)
-        viewModel.deleteButtonClick = { deleteUser(user) }
-        return viewModel
-    }
-
-    private fun deleteUser(user: User) {
-        runOnBackground { database.userDao().delete(user) }
-    }
-
-    private fun createUserHeaderModel(): UserHeaderModel {
-        return UserHeaderModel()
-    }
-
-    private fun createAddUserViewModel(): AddUserItemModel {
-        val viewModel = AddUserItemModel()
-        viewModel.click = { showAddUserDialog.next() }
-        return viewModel
-    }
-
-    // Other section
-
-    private fun getOtherSection(): Observable<List<SettingItemModel>> {
-        var itemModels = listOf<SettingItemModel>(createOtherHeaderModel())
+    private fun createGeneralSection(): Observable<List<SettingItemModel>> {
+        var itemModels = listOf<SettingItemModel>(createGeneralHeaderModel())
         itemModels += createDefaultCurrencyItemModel()
         return Observable.just(itemModels)
     }
 
-    private fun createOtherHeaderModel(): OtherHeaderModel {
-        return OtherHeaderModel()
+    private fun createGeneralHeaderModel(): GeneralHeaderModel {
+        return GeneralHeaderModel()
     }
 
     private fun createDefaultCurrencyItemModel(): DefaultCurrencyItemModel {
@@ -121,7 +73,7 @@ class SettingsFragmentModel(
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return SettingsFragmentModel(application, application.database, PreferenceDataSource()) as T
+            return SettingsFragmentModel(application, PreferenceDataSource()) as T
         }
     }
 }

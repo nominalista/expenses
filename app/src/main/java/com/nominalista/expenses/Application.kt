@@ -1,7 +1,7 @@
 package com.nominalista.expenses
 
 import androidx.room.Room
-import com.nominalista.expenses.model.ApplicationDatabase
+import com.nominalista.expenses.data.database.ApplicationDatabase
 
 class Application : android.app.Application() {
 

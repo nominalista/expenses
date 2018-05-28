@@ -9,7 +9,7 @@ import java.util.*
 
 class DateSelectionDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    var onDateSelected: ((Date) -> Unit)? = null
+    var dateSelected: ((Int, Int, Int) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val calendar = Calendar.getInstance()
@@ -20,8 +20,6 @@ class DateSelectionDialogFragment : DialogFragment(), DatePickerDialog.OnDateSet
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, dayOfMonth, 0, 0, 0)
-        onDateSelected?.invoke(calendar.time)
+        dateSelected?.invoke(year, month, dayOfMonth)
     }
 }

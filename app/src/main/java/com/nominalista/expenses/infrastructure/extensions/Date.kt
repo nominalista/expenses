@@ -2,6 +2,7 @@ package com.nominalista.expenses.infrastructure.extensions
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.format.DateFormat
 import androidx.core.os.ConfigurationCompat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -15,6 +16,12 @@ fun Date.get(field: Int): Int {
 }
 
 // Printing
+
+fun Date.toReadableString(context: Context): String {
+    val is24HourFormat = DateFormat.is24HourFormat(context)
+    val pattern = if (is24HourFormat) "EEEE, d MMM H:mm" else "EEEE, d MMM h:mm aaa"
+    return toString(pattern)
+}
 
 fun Date.toString(pattern: String): String {
     @SuppressLint("SimpleDateFormat")

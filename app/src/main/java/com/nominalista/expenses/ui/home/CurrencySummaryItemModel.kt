@@ -1,6 +1,6 @@
 package com.nominalista.expenses.ui.home
 
-import com.nominalista.expenses.model.Currency
+import com.nominalista.expenses.data.Currency
 
 class CurrencySummaryItemModel(currency: Currency, amount: Float) {
 

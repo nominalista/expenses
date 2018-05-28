@@ -23,7 +23,7 @@
         style="@style/Widget.Expenses.Button.Accent.Large"
         android:layout_width="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="@string/ui.home.add_expense"
+        android:text="@string/add_expense_button"
         android:theme="@style/ThemeOverlay.Expenses.Button.Accent"
         app:icon="@drawable/ic_add_active_light_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/recycler_view"

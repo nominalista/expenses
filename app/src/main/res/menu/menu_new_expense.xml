@@ -3,6 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/save"
-        android:title="@string/ui.new_expense.save"
+        android:title="@string/save"
         app:showAsAction="always" />
 </menu>

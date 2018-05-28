@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="72dp"
+    android:background="?selectableItemBackground"
     android:orientation="vertical">
 
     <TextView
@@ -13,8 +14,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/ui.settings.default_currency"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:text="@string/default_currency"
+        android:textAppearance="@style/TextAppearance.Expenses.Body1"
+        android:textColor="@color/text_primary_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

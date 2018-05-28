@@ -1,6 +1,6 @@
 package com.nominalista.expenses.ui.settings
 
-import com.nominalista.expenses.model.Currency
+import com.nominalista.expenses.data.Currency
 
 class DefaultCurrencyItemModel(val currency: Currency) : SettingItemModel {
 

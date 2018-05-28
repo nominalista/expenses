@@ -53,9 +53,9 @@ class SettingsFragment : Fragment() {
 
     private fun setupActionBar() {
         val actionBar = (requireActivity() as AppCompatActivity).supportActionBar ?: return
-        actionBar.setTitle(R.string.ui_settings_title)
+        actionBar.setTitle(R.string.settings)
         actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_back_white_active_24dp)
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_back_active_light_24dp)
         setHasOptionsMenu(true)
     }
 
@@ -75,16 +75,9 @@ class SettingsFragment : Fragment() {
         compositeDisposable += viewModel.itemModels
                 .toObservable()
                 .subscribe(adapter::submitList)
-        compositeDisposable += viewModel.showAddUserDialog
-                .toObservable()
-                .subscribe { showNewUserDialog() }
         compositeDisposable += viewModel.showCurrencySelectionDialog
                 .toObservable()
                 .subscribe { showCurrencySelectionDialog() }
-    }
-
-    private fun showNewUserDialog() {
-        NewUserDialogFragment.newInstance().show(requireFragmentManager(), "NewUserDialogFragment")
     }
 
     private fun showCurrencySelectionDialog() {

@@ -3,7 +3,7 @@ package com.nominalista.expenses.ui.home
 import android.content.Context
 import com.nominalista.expenses.infrastructure.extensions.get
 import com.nominalista.expenses.infrastructure.extensions.monthShortName
-import com.nominalista.expenses.model.Expense
+import com.nominalista.expenses.data.Expense
 import java.util.*
 
 class ExpenseItemModel(context: Context, val expense: Expense) : HomeItemModel {

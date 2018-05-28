@@ -4,42 +4,37 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
-import com.nominalista.expenses.infrastructure.extensions.plusAssign
+import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.data.Expense
+import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.infrastructure.extensions.truncatedTime
 import com.nominalista.expenses.infrastructure.utils.Event
 import com.nominalista.expenses.infrastructure.utils.Variable
-import com.nominalista.expenses.infrastructure.utils.runOnBackground
-import com.nominalista.expenses.model.Currency
-import com.nominalista.expenses.model.Expense
-import com.nominalista.expenses.model.User
 import com.nominalista.expenses.source.PreferenceDataSource
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 
-class NewExpenseFragmentModel(application: Application) : AndroidViewModel(application) {
+class NewExpenseFragmentModel(
+        application: Application,
+        private val databaseDataSource: DatabaseDataSource,
+        private val preferenceDataSource: PreferenceDataSource
+) : AndroidViewModel(application) {
 
     val selectedCurrency: Variable<Currency>
-    val selectedUser: Variable<User>
     val selectedDate: Variable<Date>
-
-    var users = emptyList<User>()
-    val isUserSelectionEnabled get() = users.isNotEmpty()
-
+    val selectedTags: Variable<List<Tag>>
     val finish = Event()
 
     private var amount = 0f
     private var title = ""
     private var notes = ""
-
-    private val database = application.database
-    private val preferenceDataSource = PreferenceDataSource()
     private val compositeDisposable = CompositeDisposable()
 
     init {
         selectedCurrency = Variable(getDefaultCurrency())
-        selectedUser = Variable(getDefaultUser())
         selectedDate = Variable(getDefaultDate())
-        loadUsers()
+        selectedTags = Variable(getDefaultTags())
     }
 
     private fun getDefaultCurrency(): Currency {
@@ -47,19 +42,9 @@ class NewExpenseFragmentModel(application: Application) : AndroidViewModel(appli
         return preferenceDataSource.getDefaultCurrency(context)
     }
 
-    private fun getDefaultUser(): User {
-        return User("No user")
-    }
+    private fun getDefaultDate() = Calendar.getInstance().truncatedTime
 
-    private fun getDefaultDate(): Date {
-        return Calendar.getInstance().truncatedTime
-    }
-
-    private fun loadUsers() {
-        compositeDisposable += database.userDao()
-                .getAll()
-                .subscribe { users = it }
-    }
+    private fun getDefaultTags() = emptyList<Tag>()
 
     override fun onCleared() {
         super.onCleared()
@@ -76,12 +61,18 @@ class NewExpenseFragmentModel(application: Application) : AndroidViewModel(appli
         selectedCurrency.value = currency
     }
 
-    fun selectUser(user: User) {
-        selectedUser.value = user
+    fun selectDate(year: Int, month: Int, dayOfMonth: Int, hourOfDay: Int, minute: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        calendar.set(Calendar.MINUTE, minute)
+        selectedDate.value = calendar.time
     }
 
-    fun selectDate(date: Date) {
-        selectedDate.value = date
+    fun selectTags(tags: List<Tag>) {
+        selectedTags.value = tags
     }
 
     // Updating
@@ -102,10 +93,10 @@ class NewExpenseFragmentModel(application: Application) : AndroidViewModel(appli
 
     fun createExpense() {
         val currency = selectedCurrency.value
-        val userName = selectedUser.value.name
         val date = selectedDate.value
-        val expense = Expense(null, amount, currency, title, userName, date, notes)
-        runOnBackground { database.expenseDao().insert(expense) }
+        val tags = selectedTags.value
+        val expense = Expense(0, amount, currency, title, date, notes, tags)
+        databaseDataSource.insertExpense(expense)
         finish.next()
     }
 
@@ -113,7 +104,11 @@ class NewExpenseFragmentModel(application: Application) : AndroidViewModel(appli
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return NewExpenseFragmentModel(application) as T
+            val databaseDataSource = DatabaseDataSource(application.database)
+            val preferenceDataSource = PreferenceDataSource()
+            return NewExpenseFragmentModel(application,
+                    databaseDataSource,
+                    preferenceDataSource) as T
         }
     }
 }

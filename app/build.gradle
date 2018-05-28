@@ -36,6 +36,7 @@ dependencies {
     def lifecycleVersion        = '2.0.0-alpha1'
     def materialVersion         = '1.0.0-alpha1'
     def navigationVersion       = '1.0.0-alpha01'
+    def preferenceVersion       = '1.0.0-alpha1'
     def recyclerViewVersion     = '1.0.0-alpha1'
     def roomVersion             = '2.0.0-alpha1'
     def rxAndroidVersion        = '2.0.2'
@@ -52,6 +53,7 @@ dependencies {
     implementation     "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation     "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     implementation     "androidx.lifecycle:lifecycle-reactivestreams:$lifecycleVersion"
+    implementation     "androidx.preference:preference:$preferenceVersion"
     implementation     "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation     "androidx.room:room-runtime:$roomVersion"
     implementation     "androidx.room:room-rxjava2:$roomVersion"

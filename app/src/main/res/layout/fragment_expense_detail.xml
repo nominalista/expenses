@@ -46,9 +46,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginEnd="16dp"
-        android:textAppearance="@style/TextAppearance.Expenses.Subtitle2"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_large"
+        android:paddingEnd="@dimen/spacing_normal"
+        android:paddingBottom="@dimen/spacing_large"
+        android:textAppearance="@style/TextAppearance.Expenses.Subtitle1"
         android:textColor="@color/text_secondary_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -64,22 +68,70 @@
         app:layout_constraintBottom_toBottomOf="@+id/text_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_title"
-        app:srcCompat="@drawable/ic_title_black_inactive_24dp" />
+        app:srcCompat="@drawable/ic_title_inactive_dark_24dp" />
+
+    <FrameLayout
+        android:id="@+id/layout_tag"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image_tags"
+        app:layout_constraintTop_toBottomOf="@+id/text_title">
+
+        <TextView
+            android:id="@+id/text_no_tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_large"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_large"
+            android:text="@string/no_tags"
+            android:textAppearance="@style/TextAppearance.Expenses.Subtitle1"
+            android:textColor="@color/text_secondary_dark" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            app:chipSpacingHorizontal="@dimen/spacing_normal"
+            app:chipSpacingVertical="@dimen/spacing_normal" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/image_tags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_tag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/layout_tag"
+        app:srcCompat="@drawable/ic_label_inactive_dark_24dp" />
 
     <TextView
         android:id="@+id/text_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginEnd="16dp"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_large"
+        android:paddingEnd="@dimen/spacing_normal"
+        android:paddingBottom="@dimen/spacing_large"
         android:textAppearance="@style/TextAppearance.Expenses.Subtitle1"
         android:textColor="@color/text_secondary_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/image_date"
-        app:layout_constraintTop_toBottomOf="@+id/text_user"
-        tools:text="20-05-2018" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_tag"
+        tools:text="Sunday, 27 May 12:01 AM" />
 
     <ImageView
         android:id="@+id/image_date"
@@ -89,32 +141,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/text_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_date"
-        app:srcCompat="@drawable/ic_date_range_black_inactive_24dp" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/text_user"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_user"
-        app:srcCompat="@drawable/ic_person_black_inactive_24dp" />
-
-    <TextView
-        android:id="@+id/text_user"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:textAppearance="@style/TextAppearance.Expenses.Subtitle1"
-        android:textColor="@color/text_secondary_dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/text_title"
-        tools:text="User" />
+        app:srcCompat="@drawable/ic_date_range_inactive_dark_24dp" />
 
     <TextView
         android:id="@+id/text_notes_title"
@@ -122,7 +149,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="@string/ui.expense_detail.notes"
+        android:text="@string/notes_title"
         android:textAppearance="@style/TextAppearance.Expenses.Subtitle2"
         android:textColor="@color/text_secondary_dark"
         app:layout_constraintStart_toStartOf="parent"

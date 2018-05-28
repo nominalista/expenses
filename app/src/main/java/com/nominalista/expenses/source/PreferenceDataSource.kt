@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.nominalista.expenses.R
 import com.nominalista.expenses.infrastructure.utils.CurrencyConverter
-import com.nominalista.expenses.model.Currency
+import com.nominalista.expenses.data.Currency
 
 class PreferenceDataSource {
 

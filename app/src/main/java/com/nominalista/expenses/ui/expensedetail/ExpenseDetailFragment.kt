@@ -6,10 +6,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.nominalista.expenses.R
 import com.nominalista.expenses.infrastructure.extensions.application
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
-import com.nominalista.expenses.model.Expense
+import com.nominalista.expenses.data.Expense
 import io.reactivex.disposables.CompositeDisposable
 
 private const val ARGUMENT_EXPENSE = "com.nominalista.expense.ARGUMENT_EXPENSE"
@@ -30,12 +32,12 @@ class ExpenseDetailFragment : Fragment() {
     private lateinit var amountText: TextView
     private lateinit var currencyText: TextView
     private lateinit var titleText: TextView
-    private lateinit var userText: TextView
+    private lateinit var noTagsText: TextView
+    private lateinit var chipGroup: ChipGroup
     private lateinit var dateText: TextView
     private lateinit var notesText: TextView
 
     private lateinit var model: ExpenseDetailFragmentModel
-
     private val compositeDisposable = CompositeDisposable()
 
     // Lifecycle start
@@ -57,16 +59,17 @@ class ExpenseDetailFragment : Fragment() {
         amountText = view.findViewById(R.id.text_amount)
         currencyText = view.findViewById(R.id.text_currency)
         titleText = view.findViewById(R.id.text_title)
-        userText = view.findViewById(R.id.text_user)
+        noTagsText = view.findViewById(R.id.text_no_tags)
+        chipGroup = view.findViewById(R.id.chip_group)
         dateText = view.findViewById(R.id.text_date)
         notesText = view.findViewById(R.id.text_notes)
     }
 
     private fun setupActionBar() {
         val actionBar = (requireActivity() as AppCompatActivity).supportActionBar ?: return
-        actionBar.setTitle(R.string.ui_expense_detail_details)
+        actionBar.setTitle(R.string.expense_detail_title)
         actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_back_white_active_24dp)
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_back_active_light_24dp)
         setHasOptionsMenu(true)
     }
 
@@ -81,13 +84,31 @@ class ExpenseDetailFragment : Fragment() {
         currencyText.text = model.currency
         amountText.text = model.amount
         titleText.text = model.title
-        userText.text = model.user
         dateText.text = model.date
         notesText.text = model.notes
+
+        setupChipGroup()
+        setupNoTagsText()
 
         compositeDisposable += model.finish
                 .toObservable()
                 .subscribe { requireActivity().onBackPressed() }
+    }
+
+    private fun setupChipGroup() {
+        model.tags.forEach { chipGroup.addView(createChip(it.name)) }
+    }
+
+    private fun createChip(text: String): Chip {
+        val chip = Chip(context)
+        chip.chipText = text
+        chip.isClickable = false
+        return chip
+    }
+
+    private fun setupNoTagsText() {
+        val isVisible = model.tags.isEmpty()
+        noTagsText.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
     override fun onDestroyView() {
@@ -99,9 +120,11 @@ class ExpenseDetailFragment : Fragment() {
         currencyText.text = ""
         amountText.text = ""
         titleText.text = ""
-        userText.text = ""
         dateText.text = ""
         notesText.text = ""
+
+        chipGroup.removeAllViews()
+        noTagsText.visibility = View.VISIBLE
 
         compositeDisposable.clear()
     }

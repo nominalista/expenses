@@ -2,9 +2,8 @@ package com.nominalista.expenses.ui.home
 
 import android.content.Context
 import com.nominalista.expenses.R
-import com.nominalista.expenses.model.Currency
-import com.nominalista.expenses.model.DateRange
-import com.nominalista.expenses.model.DateRange.*
+import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.ui.home.DateRange.*
 
 class SummaryItemModel(
         context: Context,
@@ -36,10 +35,10 @@ class SummaryItemModel(
 
     private fun createDateRangeText(context: Context, dateRange: DateRange): String {
         return when (dateRange) {
-            Today -> context.getString(R.string.ui_home_today)
-            ThisWeek -> context.getString(R.string.ui_home_this_week)
-            ThisMonth -> context.getString(R.string.ui_home_this_month)
-            AllTime -> context.getString(R.string.ui_home_all_time)
+            Today -> context.getString(R.string.today)
+            ThisWeek -> context.getString(R.string.this_week)
+            ThisMonth -> context.getString(R.string.this_month)
+            AllTime -> context.getString(R.string.all_time)
         }
     }
 
