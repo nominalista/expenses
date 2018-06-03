@@ -16,10 +16,12 @@ class DateSelectionDialogFragment : DialogFragment(), DatePickerDialog.OnDateSet
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-        return DatePickerDialog(requireContext(), this, year, month, dayOfMonth)
+        return DatePickerDialog(requireActivity(), this, year, month, dayOfMonth)
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        dateSelected?.invoke(year, month, dayOfMonth)
+        // Selected month is from 0 to 11.
+        // https://developer.android.com/reference/android/app/DatePickerDialog.OnDateSetListener
+        dateSelected?.invoke(year, month + 1, dayOfMonth)
     }
 }

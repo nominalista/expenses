@@ -1,6 +1,7 @@
 <resources>
 
-    <style name="Theme.Expenses" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- TODO: Change parent to "Theme.MaterialComponents.Light.NoActionBar" when the DatePicker buttons are fixed -->
+    <style name="Theme.Expenses" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>

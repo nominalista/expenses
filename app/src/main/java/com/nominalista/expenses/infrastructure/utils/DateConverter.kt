@@ -1,7 +1,7 @@
 package com.nominalista.expenses.infrastructure.utils
 
 import androidx.room.TypeConverter
-import java.util.*
+import com.nominalista.expenses.data.Date
 
 class DateConverter {
 
@@ -9,10 +9,10 @@ class DateConverter {
 
         @JvmStatic
         @TypeConverter
-        fun toDate(long: Long): Date? = Date(long)
+        fun toDate(long: Long) = Date(long)
 
         @JvmStatic
         @TypeConverter
-        fun toString(date: Date): Long? = date.time
+        fun toLong(date: Date) = date.utcTimestamp
     }
 }

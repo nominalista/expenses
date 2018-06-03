@@ -9,10 +9,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nominalista.expenses.R
+import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.infrastructure.extensions.application
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
-import com.nominalista.expenses.data.Expense
-import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.ui.MainActivity
 import io.reactivex.disposables.CompositeDisposable
 

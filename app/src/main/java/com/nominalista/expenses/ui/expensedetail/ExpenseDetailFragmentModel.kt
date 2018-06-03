@@ -8,7 +8,6 @@ import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.database.DatabaseDataSource
-import com.nominalista.expenses.infrastructure.extensions.toReadableString
 import com.nominalista.expenses.infrastructure.utils.Event
 
 class ExpenseDetailFragmentModel(
@@ -31,10 +30,7 @@ class ExpenseDetailFragmentModel(
         notes = createNotes(application, expense)
     }
 
-    private fun createDate(expense: Expense): String {
-        val context = getApplication<Application>()
-        return expense.date.toReadableString(context)
-    }
+    private fun createDate(expense: Expense) = expense.date.toReadableString()
 
     private fun createNotes(context: Context, expense: Expense): String {
         val notes = expense.notes

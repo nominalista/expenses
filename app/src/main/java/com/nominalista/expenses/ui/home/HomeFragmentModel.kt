@@ -51,7 +51,9 @@ class HomeFragmentModel(
             .filter { dateRange.contains(it.date) }
             .filter { tagFilter?.containsAnyOf(it.tags) ?: true }
 
-    private fun sortExpenses(expenses: List<Expense>) = expenses.sortedByDescending { it.date.time }
+    private fun sortExpenses(expenses: List<Expense>): List<Expense> {
+        return expenses.sortedByDescending { it.date.utcTimestamp }
+    }
 
     private fun createSummarySection(expenses: List<Expense>): List<HomeItemModel> {
         val summarySection = ArrayList<HomeItemModel>()
@@ -91,8 +93,7 @@ class HomeFragmentModel(
     }
 
     private fun createExpenseItemModel(expense: Expense): ExpenseItemModel {
-        val context = getApplication<Application>()
-        val itemModel = ExpenseItemModel(context, expense)
+        val itemModel = ExpenseItemModel(expense)
         itemModel.click = { showExpenseDetail.next(expense) }
         return itemModel
     }

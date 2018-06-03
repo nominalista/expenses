@@ -9,14 +9,10 @@ class CurrencyConverter {
 
         @JvmStatic
         @TypeConverter
-        fun toCurrency(string: String): Currency? {
-            return Currency.fromCode(string)
-        }
+        fun toCurrency(string: String) = Currency.fromCode(string)
 
         @JvmStatic
         @TypeConverter
-        fun toString(currency: Currency): String? {
-            return currency.toString()
-        }
+        fun toString(currency: Currency) = currency.toString()
     }
 }

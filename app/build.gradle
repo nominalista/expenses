@@ -41,6 +41,7 @@ dependencies {
     def roomVersion             = '2.0.0-alpha1'
     def rxAndroidVersion        = '2.0.2'
     def rxRelayVersion          = '2.0.0'
+    def threeTeenVersion        = '1.1.0'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
@@ -71,6 +72,9 @@ dependencies {
     // Rx
     implementation     "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation     "com.jakewharton.rxrelay2:rxrelay:$rxRelayVersion"
+
+    // Three Teen
+    implementation     "com.jakewharton.threetenabp:threetenabp:$threeTeenVersion"
 
     // Tests
     testImplementation "junit:junit:$jUnitVersion"
