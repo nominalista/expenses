@@ -5,12 +5,15 @@
     <string name="add_tag">Add tag</string>
     <string name="add_expense_button">Add expense</string>
     <string name="amount">Amount</string>
+    <string name="all_expenses_deleted_message">All expenses deleted.</string>
     <string name="all_time">All time</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="currency_abbreviation" translatable="false">%1$s\u0020\u0020%2$s</string>
     <string name="delete">Delete</string>
     <string name="default_currency">Default currency</string>
+    <string name="delete_all_expenses">Delete all expenses</string>
+    <string name="delete_all_expenses_message">Are you sure you want to delete all expenses?</string>
     <string name="expense_detail_title">Details</string>
     <string name="filter">Filter</string>
     <string name="filter_tags">Filter tags</string>

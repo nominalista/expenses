@@ -5,19 +5,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.data.database.ApplicationDatabase
+import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.infrastructure.utils.Event
 import com.nominalista.expenses.infrastructure.utils.Variable
+import com.nominalista.expenses.infrastructure.utils.runOnBackground
 import com.nominalista.expenses.source.PreferenceDataSource
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 
 class SettingsFragmentModel(
         application: Application,
+        private val databaseDataSource: DatabaseDataSource,
         private val preferenceDataSource: PreferenceDataSource)
     : AndroidViewModel(application) {
 
     val itemModels = Variable(emptyList<SettingItemModel>())
     val showCurrencySelectionDialog = Event()
+    val showDeleteAllExpensesDialog = Event()
+    val showAllExpensesDeletedMessage = Event()
 
     private var itemModelsDisposable: Disposable? = null
 
@@ -30,15 +36,16 @@ class SettingsFragmentModel(
     }
 
     private fun getItemModels(): Observable<List<SettingItemModel>> {
-        return createGeneralSection()
+        return Observable.just(createGeneralSection())
     }
 
     // General section
 
-    private fun createGeneralSection(): Observable<List<SettingItemModel>> {
+    private fun createGeneralSection(): List<SettingItemModel> {
         var itemModels = listOf<SettingItemModel>(createGeneralHeaderModel())
         itemModels += createDefaultCurrencyItemModel()
-        return Observable.just(itemModels)
+        itemModels += createDeleteAllExpensesItemModel()
+        return itemModels
     }
 
     private fun createGeneralHeaderModel(): GeneralHeaderModel {
@@ -53,10 +60,21 @@ class SettingsFragmentModel(
         return itemModel
     }
 
+    private fun createDeleteAllExpensesItemModel(): DeleteAllExpensesItemModel {
+        val itemModel = DeleteAllExpensesItemModel()
+        itemModel.click = { showDeleteAllExpensesDialog.next() }
+        return itemModel
+    }
+
     fun updateDefaultCurrency(currency: Currency) {
         val context = getApplication<Application>()
         preferenceDataSource.setDefaultCurrency(context, currency)
         reloadItemModels()
+    }
+
+    fun deleteAllExpenses() {
+        databaseDataSource.deleteAllExpenses()
+        showAllExpensesDeletedMessage.next()
     }
 
     private fun reloadItemModels() {
@@ -73,7 +91,9 @@ class SettingsFragmentModel(
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return SettingsFragmentModel(application, PreferenceDataSource()) as T
+            val databaseDataSource = DatabaseDataSource(application.database)
+            val preferenceDataSource = PreferenceDataSource()
+            return SettingsFragmentModel(application, databaseDataSource, preferenceDataSource) as T
         }
     }
 }

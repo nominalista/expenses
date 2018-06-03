@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.nominalista.expenses.R
 
 private const val DEFAULT_CURRENCY_ITEM_TYPE = R.layout.item_default_currency
+private const val DELETE_ALL_EXPENSES_ITEM_TYPE = R.layout.item_delete_all_expenses
 private const val GENERAL_HEADER_TYPE = R.layout.header_general
 
 class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCallback()) {
@@ -16,6 +17,7 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
         val itemView = inflater.inflate(viewType, parent, false)
         return when (viewType) {
             DEFAULT_CURRENCY_ITEM_TYPE -> DefaultCurrencyItemHolder(itemView)
+            DELETE_ALL_EXPENSES_ITEM_TYPE -> DeleteAllExpensesItemHolder(itemView)
             GENERAL_HEADER_TYPE -> GeneralHeaderHolder(itemView)
             else -> throw IllegalArgumentException()
         }
@@ -26,6 +28,8 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
         when {
             holder is DefaultCurrencyItemHolder && itemModel is DefaultCurrencyItemModel ->
                 holder.bind(itemModel)
+            holder is DeleteAllExpensesItemHolder && itemModel is DeleteAllExpensesItemModel ->
+                holder.bind(itemModel)
         }
     }
 
@@ -33,12 +37,14 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
         super.onViewRecycled(holder)
         when (holder) {
             is DefaultCurrencyItemHolder -> holder.recycle()
+            is DeleteAllExpensesItemHolder -> holder.recycle()
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is DefaultCurrencyItemModel -> DEFAULT_CURRENCY_ITEM_TYPE
+            is DeleteAllExpensesItemModel -> DELETE_ALL_EXPENSES_ITEM_TYPE
             is GeneralHeaderModel -> GENERAL_HEADER_TYPE
             else -> super.getItemViewType(position)
         }
@@ -53,6 +59,8 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
             return when {
                 oldItem is DefaultCurrencyItemModel && newItem is DefaultCurrencyItemModel ->
                     oldItem.currency.code == newItem.currency.code
+                oldItem is DeleteAllExpensesItemModel && newItem is DeleteAllExpensesItemModel ->
+                    true
                 oldItem is GeneralHeaderModel && newItem is GeneralHeaderModel -> true
                 else -> false
             }
@@ -65,6 +73,8 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
             return when {
                 oldItem is DefaultCurrencyItemModel && newItem is DefaultCurrencyItemModel ->
                     oldItem.currency == newItem.currency
+                oldItem is DeleteAllExpensesItemModel && newItem is DeleteAllExpensesItemModel ->
+                    true
                 oldItem is GeneralHeaderModel && newItem is GeneralHeaderModel -> true
                 else -> false
             }

@@ -6,11 +6,14 @@
     <string name="add_tag">Dodaj tag</string>
     <string name="add_expense_button">Dodaj wydatek</string>
     <string name="amount">Kwota</string>
+    <string name="all_expenses_deleted_message">Wszystkie wydatki usunięte.</string>
     <string name="all_time">Cały czas</string>
     <string name="cancel">Anuluj</string>
     <string name="confirm">Potwierdź</string>
     <string name="delete">Usuń</string>
     <string name="default_currency">Domyślna waluta</string>
+    <string name="delete_all_expenses">Usuń wszystkie wydatki</string>
+    <string name="delete_all_expenses_message">Czy na pewno chcesz usunąć wszystkie wydatki?</string>
     <string name="expense_detail_title">Detale</string>
     <string name="filter">Filtruj</string>
     <string name="filter_tags">Filtruj tagi</string>

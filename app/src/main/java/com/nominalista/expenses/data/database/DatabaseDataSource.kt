@@ -44,6 +44,10 @@ class DatabaseDataSource(private val database: ApplicationDatabase) {
         }
     }
 
+    fun deleteAllExpenses() {
+        runOnBackground { database.expenseDao().deleteAll() }
+    }
+
     // Tags
 
     fun getTags(): Flowable<List<Tag>> {

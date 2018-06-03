@@ -15,6 +15,9 @@ import com.nominalista.expenses.infrastructure.extensions.application
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
 import com.nominalista.expenses.ui.common.currencyselection.CurrencySelectionDialogFragment
 import io.reactivex.disposables.CompositeDisposable
+import androidx.appcompat.app.AlertDialog
+import com.google.android.material.snackbar.Snackbar
+
 
 class SettingsFragment : Fragment() {
 
@@ -23,11 +26,12 @@ class SettingsFragment : Fragment() {
         fun newInstance() = SettingsFragment()
     }
 
+    private lateinit var containerLayout: ViewGroup
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var adapter: SettingsAdapter
     private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var viewModel: SettingsFragmentModel
+    private lateinit var model: SettingsFragmentModel
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -48,6 +52,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun bindWidgets(view: View) {
+        containerLayout = view.findViewById(R.id.layout_container)
         recyclerView = view.findViewById(R.id.recycler_view)
     }
 
@@ -68,22 +73,44 @@ class SettingsFragment : Fragment() {
 
     private fun setupViewModel() {
         val factory = SettingsFragmentModel.Factory(requireContext().application)
-        viewModel = ViewModelProviders.of(this, factory).get(SettingsFragmentModel::class.java)
+        model = ViewModelProviders.of(this, factory).get(SettingsFragmentModel::class.java)
     }
 
     private fun subscribeViewModel() {
-        compositeDisposable += viewModel.itemModels
+        compositeDisposable += model.itemModels
                 .toObservable()
                 .subscribe(adapter::submitList)
-        compositeDisposable += viewModel.showCurrencySelectionDialog
+        compositeDisposable += model.showCurrencySelectionDialog
                 .toObservable()
                 .subscribe { showCurrencySelectionDialog() }
+        compositeDisposable += model.showDeleteAllExpensesDialog
+                .toObservable()
+                .subscribe { showDeleteAllExpensesDialog() }
+        compositeDisposable += model.showAllExpensesDeletedMessage
+                .toObservable()
+                .subscribe { showAllExpensesDeletedMessage() }
     }
 
     private fun showCurrencySelectionDialog() {
         val dialogFragment = CurrencySelectionDialogFragment.newInstance()
-        dialogFragment.onCurrencySelected = { currency -> viewModel.updateDefaultCurrency(currency) }
+        dialogFragment.onCurrencySelected = { currency -> model.updateDefaultCurrency(currency) }
         dialogFragment.show(requireFragmentManager(), "CurrencySelectionDialogFragment")
+    }
+
+    private fun showDeleteAllExpensesDialog() {
+        AlertDialog.Builder(requireActivity())
+                .setMessage(R.string.delete_all_expenses_message)
+                .setPositiveButton(R.string.ok, { _, _ -> model.deleteAllExpenses() })
+                .setNegativeButton(R.string.cancel, { _, _ -> })
+                .create()
+                .show()
+    }
+
+    private fun showAllExpensesDeletedMessage() {
+        val snackbar = Snackbar.make(containerLayout,
+                R.string.all_expenses_deleted_message,
+                Snackbar.LENGTH_SHORT)
+        snackbar.show()
     }
 
     // Lifecycle end
