@@ -1,18 +1,20 @@
 package com.nominalista.expenses.ui.settings
 
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.Currency
-import com.nominalista.expenses.data.database.ApplicationDatabase
 import com.nominalista.expenses.data.database.DatabaseDataSource
+import com.nominalista.expenses.infrastructure.utils.DataEvent
 import com.nominalista.expenses.infrastructure.utils.Event
 import com.nominalista.expenses.infrastructure.utils.Variable
-import com.nominalista.expenses.infrastructure.utils.runOnBackground
 import com.nominalista.expenses.source.PreferenceDataSource
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+
+private val GITHUB_URI = Uri.parse("https://github.com/Nominalista/Expenses")
 
 class SettingsFragmentModel(
         application: Application,
@@ -24,6 +26,7 @@ class SettingsFragmentModel(
     val showCurrencySelectionDialog = Event()
     val showDeleteAllExpensesDialog = Event()
     val showAllExpensesDeletedMessage = Event()
+    val showWebsite = DataEvent<Uri>()
 
     private var itemModelsDisposable: Disposable? = null
 
@@ -36,21 +39,20 @@ class SettingsFragmentModel(
     }
 
     private fun getItemModels(): Observable<List<SettingItemModel>> {
-        return Observable.just(createGeneralSection())
+        return Observable.just(createExpenseSection() + createGeneralSection())
     }
 
-    // General section
+    // Expense section
 
-    private fun createGeneralSection(): List<SettingItemModel> {
-        var itemModels = listOf<SettingItemModel>(createGeneralHeaderModel())
+    private fun createExpenseSection(): List<SettingItemModel> {
+        var itemModels = listOf<SettingItemModel>()
+        itemModels += createExpenseHeaderModel()
         itemModels += createDefaultCurrencyItemModel()
         itemModels += createDeleteAllExpensesItemModel()
         return itemModels
     }
 
-    private fun createGeneralHeaderModel(): GeneralHeaderModel {
-        return GeneralHeaderModel()
-    }
+    private fun createExpenseHeaderModel() = ExpenseHeaderModel()
 
     private fun createDefaultCurrencyItemModel(): DefaultCurrencyItemModel {
         val context = getApplication<Application>()
@@ -63,6 +65,23 @@ class SettingsFragmentModel(
     private fun createDeleteAllExpensesItemModel(): DeleteAllExpensesItemModel {
         val itemModel = DeleteAllExpensesItemModel()
         itemModel.click = { showDeleteAllExpensesDialog.next() }
+        return itemModel
+    }
+
+    // General section
+
+    private fun createGeneralSection(): List<SettingItemModel> {
+        var itemModels = listOf<SettingItemModel>()
+        itemModels += createGeneralHeaderModel()
+        itemModels += createGithubItemModel()
+        return itemModels
+    }
+
+    private fun createGeneralHeaderModel() = GeneralHeaderModel()
+
+    private fun createGithubItemModel(): GithubItemModel {
+        val itemModel = GithubItemModel()
+        itemModel.click = { showWebsite.next(GITHUB_URI) }
         return itemModel
     }
 

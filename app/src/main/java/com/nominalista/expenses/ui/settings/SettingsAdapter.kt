@@ -8,7 +8,9 @@ import com.nominalista.expenses.R
 
 private const val DEFAULT_CURRENCY_ITEM_TYPE = R.layout.item_default_currency
 private const val DELETE_ALL_EXPENSES_ITEM_TYPE = R.layout.item_delete_all_expenses
+private const val EXPENSE_HEADER_TYPE = R.layout.header_expense
 private const val GENERAL_HEADER_TYPE = R.layout.header_general
+private const val GITHUB_ITEM_TYPE = R.layout.item_github
 
 class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCallback()) {
 
@@ -18,7 +20,9 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
         return when (viewType) {
             DEFAULT_CURRENCY_ITEM_TYPE -> DefaultCurrencyItemHolder(itemView)
             DELETE_ALL_EXPENSES_ITEM_TYPE -> DeleteAllExpensesItemHolder(itemView)
-            GENERAL_HEADER_TYPE -> GeneralHeaderHolder(itemView)
+            EXPENSE_HEADER_TYPE -> ExpenseHeaderHolder(itemView)
+            GENERAL_HEADER_TYPE -> ExpenseHeaderHolder(itemView)
+            GITHUB_ITEM_TYPE -> GithubItemHolder(itemView)
             else -> throw IllegalArgumentException()
         }
     }
@@ -30,6 +34,7 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
                 holder.bind(itemModel)
             holder is DeleteAllExpensesItemHolder && itemModel is DeleteAllExpensesItemModel ->
                 holder.bind(itemModel)
+            holder is GithubItemHolder && itemModel is GithubItemModel -> holder.bind(itemModel)
         }
     }
 
@@ -38,6 +43,7 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
         when (holder) {
             is DefaultCurrencyItemHolder -> holder.recycle()
             is DeleteAllExpensesItemHolder -> holder.recycle()
+            is GithubItemHolder -> holder.recycle()
         }
     }
 
@@ -45,7 +51,9 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
         return when (getItem(position)) {
             is DefaultCurrencyItemModel -> DEFAULT_CURRENCY_ITEM_TYPE
             is DeleteAllExpensesItemModel -> DELETE_ALL_EXPENSES_ITEM_TYPE
+            is ExpenseHeaderModel -> EXPENSE_HEADER_TYPE
             is GeneralHeaderModel -> GENERAL_HEADER_TYPE
+            is GithubItemModel -> GITHUB_ITEM_TYPE
             else -> super.getItemViewType(position)
         }
     }
@@ -61,7 +69,9 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
                     oldItem.currency.code == newItem.currency.code
                 oldItem is DeleteAllExpensesItemModel && newItem is DeleteAllExpensesItemModel ->
                     true
+                oldItem is ExpenseHeaderModel && newItem is ExpenseHeaderModel -> true
                 oldItem is GeneralHeaderModel && newItem is GeneralHeaderModel -> true
+                oldItem is GithubItemModel && newItem is GithubItemModel -> true
                 else -> false
             }
         }
@@ -75,7 +85,9 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
                     oldItem.currency == newItem.currency
                 oldItem is DeleteAllExpensesItemModel && newItem is DeleteAllExpensesItemModel ->
                     true
+                oldItem is ExpenseHeaderModel && newItem is ExpenseHeaderModel -> true
                 oldItem is GeneralHeaderModel && newItem is GeneralHeaderModel -> true
+                oldItem is GithubItemModel && newItem is GithubItemModel -> true
                 else -> false
             }
         }

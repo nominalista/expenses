@@ -5,7 +5,7 @@
     <string name="add_tag">Add tag</string>
     <string name="add_expense_button">Add expense</string>
     <string name="amount">Amount</string>
-    <string name="all_expenses_deleted_message">All expenses deleted.</string>
+    <string name="all_expenses_deleted">All expenses deleted.</string>
     <string name="all_time">All time</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
@@ -15,10 +15,12 @@
     <string name="delete_all_expenses">Delete all expenses</string>
     <string name="delete_all_expenses_message">Are you sure you want to delete all expenses?</string>
     <string name="expense_detail_title">Details</string>
+    <string name="expenses">Expenses</string>
     <string name="filter">Filter</string>
     <string name="filter_tags">Filter tags</string>
     <string name="general">General</string>
     <string name="name">Name</string>
+    <string name="no">No</string>
     <string name="no_notes">No notes</string>
     <string name="no_tags">No tags</string>
     <string name="notes_title">Notes</string>
@@ -34,6 +36,8 @@
     <string name="this_week">This week</string>
     <string name="title_hint">Title</string>
     <string name="today">Today</string>
+    <string name="view_source_code">View source code</string>
+    <string name="yes">Yes</string>
 
     <!-- Shared Preferences -->
     <string name="key_preferences" translatable="false">preferences</string>

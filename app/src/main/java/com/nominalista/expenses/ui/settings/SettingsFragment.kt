@@ -1,5 +1,6 @@
 package com.nominalista.expenses.ui.settings
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -17,6 +18,9 @@ import com.nominalista.expenses.ui.common.currencyselection.CurrencySelectionDia
 import io.reactivex.disposables.CompositeDisposable
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
+import android.content.Intent
+
+
 
 
 class SettingsFragment : Fragment() {
@@ -89,6 +93,9 @@ class SettingsFragment : Fragment() {
         compositeDisposable += model.showAllExpensesDeletedMessage
                 .toObservable()
                 .subscribe { showAllExpensesDeletedMessage() }
+        compositeDisposable += model.showWebsite
+                .toObservable()
+                .subscribe { showWebsite(it) }
     }
 
     private fun showCurrencySelectionDialog() {
@@ -100,17 +107,22 @@ class SettingsFragment : Fragment() {
     private fun showDeleteAllExpensesDialog() {
         AlertDialog.Builder(requireActivity())
                 .setMessage(R.string.delete_all_expenses_message)
-                .setPositiveButton(R.string.ok, { _, _ -> model.deleteAllExpenses() })
-                .setNegativeButton(R.string.cancel, { _, _ -> })
+                .setPositiveButton(R.string.yes, { _, _ -> model.deleteAllExpenses() })
+                .setNegativeButton(R.string.no, { _, _ -> })
                 .create()
                 .show()
     }
 
     private fun showAllExpensesDeletedMessage() {
         val snackbar = Snackbar.make(containerLayout,
-                R.string.all_expenses_deleted_message,
+                R.string.all_expenses_deleted,
                 Snackbar.LENGTH_SHORT)
         snackbar.show()
+    }
+
+    private fun showWebsite(uri: Uri) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(browserIntent)
     }
 
     // Lifecycle end

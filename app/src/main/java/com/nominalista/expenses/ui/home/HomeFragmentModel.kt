@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.data.Date
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.data.database.DatabaseDataSource
@@ -48,8 +49,12 @@ class HomeFragmentModel(
     private fun getExpenses() = databaseDataSource.getExpenses()
 
     private fun filterExpenses(expenses: List<Expense>) = expenses
-            .filter { dateRange.contains(it.date) }
-            .filter { tagFilter?.containsAnyOf(it.tags) ?: true }
+            .filter { filterByDate(it.date) }
+            .filter { filterByTags(it.tags) }
+
+    private fun filterByDate(date: Date) = dateRange.contains(date)
+
+    private fun filterByTags(tags: List<Tag>) = tags.containsAll(tagFilter?.tags ?: emptyList())
 
     private fun sortExpenses(expenses: List<Expense>): List<Expense> {
         return expenses.sortedByDescending { it.date.utcTimestamp }
