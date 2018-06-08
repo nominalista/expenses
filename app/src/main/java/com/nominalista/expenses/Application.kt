@@ -4,6 +4,8 @@ import androidx.room.Room
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.nominalista.expenses.data.database.ApplicationDatabase
 
+private const val DATABASE_NAME = "database"
+
 class Application : android.app.Application() {
 
     lateinit var database: ApplicationDatabase
@@ -19,6 +21,6 @@ class Application : android.app.Application() {
     }
 
     private fun initializeDatabase() {
-        database = Room.databaseBuilder(this, ApplicationDatabase::class.java, "database").build()
+        database = Room.databaseBuilder(this, ApplicationDatabase::class.java, DATABASE_NAME).build()
     }
 }

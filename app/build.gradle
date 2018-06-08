@@ -33,6 +33,7 @@ dependencies {
     def cardViewVersion         = '1.0.0-alpha1'
     def constraintLayoutVersion = '1.1.0'
     def jUnitVersion            = '4.12'
+    def jxlVersion              = '2.6'
     def lifecycleVersion        = '2.0.0-alpha1'
     def materialVersion         = '1.0.0-alpha1'
     def navigationVersion       = '1.0.0-alpha01'
@@ -65,6 +66,9 @@ dependencies {
     // TODO: Change into AndroidX when available.
     implementation     "android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation     "android.arch.navigation:navigation-ui-ktx:$navigationVersion"
+
+    // Jxl
+    implementation     "net.sourceforge.jexcelapi:jxl:$jxlVersion"
 
     // Material
     implementation     "com.google.android.material:material:$materialVersion"

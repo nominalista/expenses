@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/fragment_home"
-        android:name="com.nominalista.expenses.ui.home.HomeFragment"
+        android:name="com.nominalista.expenses.interface.home.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_fragment_home_to_newExpenseFragment"
@@ -13,7 +13,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_new_expense"
-        android:name="com.nominalista.expenses.ui.newexpense.NewExpenseFragment"
+        android:name="com.nominalista.expenses.interface.newexpense.NewExpenseFragment"
         android:label="NewExpenseFragment" />
 
 </navigation>

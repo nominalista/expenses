@@ -8,14 +8,23 @@
     <string name="all_expenses_deleted">All expenses deleted.</string>
     <string name="all_time">All time</string>
     <string name="cancel">Cancel</string>
+    <string name="column_amount">Amount</string>
+    <string name="column_date">Date</string>
+    <string name="column_notes">Notes</string>
+    <string name="column_tags">Tags</string>
+    <string name="column_title">Title</string>
     <string name="confirm">Confirm</string>
     <string name="currency_abbreviation" translatable="false">%1$s\u0020\u0020%2$s</string>
     <string name="delete">Delete</string>
     <string name="default_currency">Default currency</string>
-    <string name="delete_all_expenses">Delete all expenses</string>
+    <string name="default_currency_summary" translatable="false">%1$s\u0020\u0020%2$s\u0020(%3$s)</string>
+    <string name="delete_all">Delete all</string>
     <string name="delete_all_expenses_message">Are you sure you want to delete all expenses?</string>
     <string name="expense_detail_title">Details</string>
+    <string name="expense_export_failure_message">Expenses could not be exported. Try again.</string>
+    <string name="expense_export_success_message">Expenses exported successfully into Downloads folder.</string>
     <string name="expenses">Expenses</string>
+    <string name="export_to_excel">Export to Excel</string>
     <string name="filter">Filter</string>
     <string name="filter_tags">Filter tags</string>
     <string name="general">General</string>
