@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_home"
     app:startDestination="@id/fragment_home">
 
     <fragment
         android:id="@+id/fragment_home"
-        android:name="com.nominalista.expenses.interface.home.HomeFragment"
-        android:label="HomeFragment" >
-        <action
-            android:id="@+id/action_fragment_home_to_newExpenseFragment"
-            app:destination="@id/fragment_new_expense" />
-    </fragment>
-    <fragment
-        android:id="@+id/fragment_new_expense"
-        android:name="com.nominalista.expenses.interface.newexpense.NewExpenseFragment"
-        android:label="NewExpenseFragment" />
+        android:name="com.nominalista.expenses.userinterface.home.HomeFragment"
+        android:label="HomeFragment" />
 
 </navigation>

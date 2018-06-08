@@ -2,7 +2,7 @@
 
 buildscript {
 
-    ext.gradleVersion = '3.2.0-alpha16'
+    ext.gradleVersion = '3.2.0-alpha17'
     ext.kotlinVersion = '1.2.41'
 
     repositories {
