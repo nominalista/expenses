@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -40,11 +40,25 @@
         android:layout_marginStart="8dp"
         app:chipIcon="@drawable/ic_arrow_down_active_dark_24dp"
         app:chipIconEnabled="true"
-        app:chipText="This week"
         app:layout_constraintBottom_toBottomOf="@+id/text_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/text_title"
         app:layout_constraintTop_toTopOf="@+id/text_title" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--<com.google.android.material.chip.Chip-->
+        <!--android:id="@+id/chip_date_range"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--app:chipIcon="@drawable/ic_arrow_down_active_dark_24dp"-->
+        <!--app:chipIconEnabled="true"-->
+        <!--app:chipText="This week"-->
+        <!--app:layout_constraintBottom_toBottomOf="@+id/text_title"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.5"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/text_title"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/text_title" />-->
+
+</androidx.constraintlayout.ConstraintLayout>

@@ -35,6 +35,7 @@ class SettingsFragmentModel(
     val requestWriteExternalStoragePermission = DataEvent<Int>()
 
     private var itemModelsDisposable: Disposable? = null
+    private var exportExpensesTask: ExportExpensesTask? = null
 
     init {
         loadItemModels()
@@ -116,6 +117,12 @@ class SettingsFragmentModel(
     override fun onCleared() {
         super.onCleared()
         itemModelsDisposable?.dispose()
+        maybeCancelExportExpenseTask()
+    }
+
+    private fun maybeCancelExportExpenseTask() {
+        exportExpensesTask?.cancel()
+        exportExpensesTask = null
     }
 
     // Public
@@ -131,9 +138,11 @@ class SettingsFragmentModel(
     }
 
     private fun exportExpenses() {
-        val task = ExportExpensesTask(getApplication<Application>(), databaseDataSource)
-        task.callback = { showExpenseExportMessage(it) }
-        task.execute()
+        if (exportExpensesTask != null) return
+        val context = getApplication<Application>()
+        exportExpensesTask = ExportExpensesTask(context, databaseDataSource)
+        exportExpensesTask?.callback = { showExpenseExportMessage(it); exportExpensesTask = null }
+        exportExpensesTask?.execute()
     }
 
     private fun showExpenseExportMessage(isSuccessful: Boolean) {

@@ -11,14 +11,14 @@ open class BaseActivity : AppCompatActivity() {
 
     companion object {
         @JvmStatic
-        protected val ANIMATION_NONE = 0
+        protected val ANIMATION_DEFAULT = 0
         @JvmStatic
         protected val ANIMATION_SLIDE_FROM_RIGHT = 1
         @JvmStatic
         protected val ANIMATION_SLIDE_FROM_BOTTOM = 2
     }
 
-    protected open var animationKind = ANIMATION_NONE
+    protected open var animationKind = ANIMATION_DEFAULT
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +27,10 @@ open class BaseActivity : AppCompatActivity() {
 
     private fun overridePendingEnterTransition() {
         when (animationKind) {
-            ANIMATION_NONE -> overridePendingTransition(0, 0)
             ANIMATION_SLIDE_FROM_RIGHT ->
-                overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out)
+                overridePendingTransition(R.anim.slide_from_right, R.anim.none)
             ANIMATION_SLIDE_FROM_BOTTOM ->
-                overridePendingTransition(R.anim.slide_from_bottom, R.anim.fade_scale_out)
+                overridePendingTransition(R.anim.slide_from_bottom, R.anim.none)
         }
     }
 
@@ -42,11 +41,10 @@ open class BaseActivity : AppCompatActivity() {
 
     private fun overridePendingExitTransition() {
         when (animationKind) {
-            ANIMATION_NONE -> overridePendingTransition(0, 0)
             ANIMATION_SLIDE_FROM_RIGHT ->
-                overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_right)
+                overridePendingTransition(R.anim.none, R.anim.slide_to_right)
             ANIMATION_SLIDE_FROM_BOTTOM ->
-                overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_bottom)
+                overridePendingTransition(R.anim.none, R.anim.slide_to_bottom)
         }
     }
 

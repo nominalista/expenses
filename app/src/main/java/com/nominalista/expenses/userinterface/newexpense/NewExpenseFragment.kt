@@ -18,8 +18,8 @@ import com.nominalista.expenses.infrastructure.extensions.afterTextChanged
 import com.nominalista.expenses.infrastructure.extensions.application
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
 import com.nominalista.expenses.userinterface.common.currencyselection.CurrencySelectionDialogFragment
-import com.nominalista.expenses.userinterface.common.dateselection.DateSelectionDialogFragment
-import com.nominalista.expenses.userinterface.common.timeselection.TimeSelectionDialogFragment
+import com.nominalista.expenses.userinterface.newexpense.dateselection.DateSelectionDialogFragment
+import com.nominalista.expenses.userinterface.newexpense.timeselection.TimeSelectionDialogFragment
 import io.reactivex.disposables.CompositeDisposable
 
 class NewExpenseFragment : Fragment() {
