@@ -1,4 +1,4 @@
-package com.nominalista.expenses.automaton
+package com.nominalista.expenses.infrastructure.automaton
 
 import io.reactivex.Observable
 

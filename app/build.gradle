@@ -31,7 +31,7 @@ dependencies {
 
     def appCompatVersion        = '1.0.0-alpha3'
     def cardViewVersion         = '1.0.0-alpha3'
-    def constraintLayoutVersion = '1.1.1'
+    def constraintLayoutVersion = '1.1.2'
     def coreKtxVersion          = '1.0.0-alpha3'
     def jUnitVersion            = '4.12'
     def jxlVersion              = '2.6'

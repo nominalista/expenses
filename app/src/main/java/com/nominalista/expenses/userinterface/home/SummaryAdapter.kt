@@ -29,15 +29,11 @@ class SummaryAdapter
         override fun areItemsTheSame(
                 oldItem: CurrencySummaryItemModel,
                 newItem: CurrencySummaryItemModel
-        ): Boolean {
-            return false
-        }
+        ) = oldItem == newItem
 
         override fun areContentsTheSame(
                 oldItem: CurrencySummaryItemModel,
                 newItem: CurrencySummaryItemModel
-        ): Boolean {
-            return false
-        }
+        ) = oldItem == newItem
     }
 }

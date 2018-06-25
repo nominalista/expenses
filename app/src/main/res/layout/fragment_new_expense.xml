@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
         android:layout_height="72dp"
@@ -47,7 +47,7 @@
             app:layout_constraintStart_toEndOf="@+id/text_symbol"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@id/layout_top"
         app:layout_constraintVertical_bias="0">
 
-        <androidx.constraintlayout.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -190,7 +190,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-        </androidx.constraintlayout.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

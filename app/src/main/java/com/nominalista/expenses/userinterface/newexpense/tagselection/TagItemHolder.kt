@@ -9,8 +9,8 @@ class TagItemHolder(itemView: View): TagSelectionItemHolder(itemView) {
 
     fun bind(model: TagItemModel) {
         itemView.text_name.text = model.name
-        itemView.check_box.isChecked = model.isSelected
-        itemView.check_box.setOnClickListener { model.selectClick?.invoke() }
+        itemView.check_box.isChecked = model.isChecked
+        itemView.check_box.setOnClickListener { model.checkClick?.invoke() }
         itemView.button_more.setOnClickListener { showMore(model) }
         itemView.setOnClickListener { itemView.check_box.performClick() }
     }
@@ -18,8 +18,8 @@ class TagItemHolder(itemView: View): TagSelectionItemHolder(itemView) {
     private fun showMore(model: TagItemModel) {
         val context = itemView.context
         val popupMenu = PopupMenu(context, itemView.button_more)
-        popupMenu.menu.add(context.getString(R.string.remove))
-        popupMenu.setOnMenuItemClickListener { model.removeClick?.invoke(); true }
+        popupMenu.menu.add(context.getString(R.string.delete))
+        popupMenu.setOnMenuItemClickListener { model.deleteClick?.invoke(); true }
         popupMenu.show()
     }
 

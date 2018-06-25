@@ -73,11 +73,20 @@ class HomeAdapter : ListAdapter<HomeItemModel, HomeItemHolder>(DiffCallback()) {
             return when {
                 (oldItem is ExpenseItemModel && newItem is ExpenseItemModel) ->
                     oldItem.expense == newItem.expense
-                (oldItem is SummaryItemModel && newItem is SummaryItemModel) -> false
+                (oldItem is SummaryItemModel && newItem is SummaryItemModel) ->
+                    areContentsOfSummaryItemModelsTheSame(oldItem, newItem)
                 (oldItem is TagFilterItemModel && newItem is TagFilterItemModel) ->
                     oldItem.tagFilter == newItem.tagFilter
                 else -> false
             }
+        }
+
+        private fun areContentsOfSummaryItemModelsTheSame(
+                oldItem: SummaryItemModel,
+                newItem: SummaryItemModel
+        ): Boolean {
+            return oldItem.currencySummaries == newItem.currencySummaries
+                    && oldItem.dateRange == newItem.dateRange
         }
     }
 }

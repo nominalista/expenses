@@ -11,11 +11,8 @@ class ExpenseDetailActivity: BaseActivity() {
 
     companion object {
 
-        const val EXTRA_EXPENSE = "expense"
-
-        fun start(context: Context, expense: Expense) {
+        fun start(context: Context) {
             val intent = Intent(context, ExpenseDetailActivity::class.java)
-            intent.putExtra(EXTRA_EXPENSE, expense)
             context.startActivity(intent)
         }
     }

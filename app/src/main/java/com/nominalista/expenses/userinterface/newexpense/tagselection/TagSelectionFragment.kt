@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nominalista.expenses.R
 import com.nominalista.expenses.infrastructure.extensions.application
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
-import com.nominalista.expenses.userinterface.newexpense.NewExpenseActivityModel
 import io.reactivex.disposables.CompositeDisposable
 
 class TagSelectionFragment : Fragment() {
@@ -19,7 +18,6 @@ class TagSelectionFragment : Fragment() {
     private lateinit var adapter: TagSelectionAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var model: TagSelectionFragmentModel
-    private lateinit var activityModel: NewExpenseActivityModel
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -39,7 +37,6 @@ class TagSelectionFragment : Fragment() {
         setupActionBar()
         setupRecyclerView()
         setupModel()
-        setupActivityModel()
         bindModel()
     }
 
@@ -67,11 +64,6 @@ class TagSelectionFragment : Fragment() {
         model = ViewModelProviders.of(this, factory).get(TagSelectionFragmentModel::class.java)
     }
 
-    private fun setupActivityModel() {
-        activityModel = ViewModelProviders.of(requireActivity())
-                .get(NewExpenseActivityModel::class.java)
-    }
-
     private fun bindModel() {
         compositeDisposable += model.itemModels.toObservable().subscribe(adapter::submitList)
         compositeDisposable += model.showNewTagDialog
@@ -81,6 +73,7 @@ class TagSelectionFragment : Fragment() {
 
     private fun showNewTagDialog() {
         val dialogFragment = NewTagDialogFragment.newInstance()
+        dialogFragment.tagCreated = { model.createTag(it) }
         dialogFragment.show(requireFragmentManager(), "NewTagDialogFragment")
     }
 
@@ -116,7 +109,7 @@ class TagSelectionFragment : Fragment() {
     }
 
     private fun confirmSelected(): Boolean {
-        activityModel.selectTags(model.selectedTags)
+        model.confirm()
         requireActivity().onBackPressed()
         return true
     }

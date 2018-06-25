@@ -1,4 +1,4 @@
-package com.nominalista.expenses.data.dao
+package com.nominalista.expenses.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

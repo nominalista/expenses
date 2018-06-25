@@ -20,6 +20,8 @@ import io.reactivex.disposables.CompositeDisposable
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import android.content.Intent
+import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import com.nominalista.expenses.infrastructure.utils.isGranted
 import com.nominalista.expenses.infrastructure.utils.isPermissionGranted
 
@@ -36,8 +38,10 @@ class SettingsFragment : Fragment() {
 
     // Lifecycle start
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
@@ -46,7 +50,7 @@ class SettingsFragment : Fragment() {
         bindWidgets(view)
         setupActionBar()
         setupRecyclerView()
-        setupViewModel()
+        setupModel()
         bindModel()
     }
 
@@ -70,7 +74,7 @@ class SettingsFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
     }
 
-    private fun setupViewModel() {
+    private fun setupModel() {
         val factory = SettingsFragmentModel.Factory(requireContext().application)
         model = ViewModelProviders.of(this, factory).get(SettingsFragmentModel::class.java)
     }
@@ -108,8 +112,8 @@ class SettingsFragment : Fragment() {
     private fun showDeleteAllExpensesDialog() {
         AlertDialog.Builder(requireActivity())
                 .setMessage(R.string.delete_all_expenses_message)
-                .setPositiveButton(R.string.yes, { _, _ -> model.deleteAllExpenses() })
-                .setNegativeButton(R.string.no, { _, _ -> })
+                .setPositiveButton(R.string.yes) { _, _ -> model.deleteAllExpenses() }
+                .setNegativeButton(R.string.no) { _, _ -> }
                 .create()
                 .show()
     }

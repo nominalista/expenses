@@ -7,8 +7,8 @@ import kotlinx.android.synthetic.main.item_currency_summary.view.*
 class CurrencySummaryItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(itemModel: CurrencySummaryItemModel) {
-        itemView.text_amount.text = itemModel.amount
-        itemView.text_symbol.text = itemModel.currency
+        itemView.text_amount.text = itemModel.amountText
+        itemView.text_symbol.text = itemModel.currencyText
     }
 
     fun recycle() {

@@ -6,9 +6,9 @@ import androidx.room.TypeConverters
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.ExpenseTagJoin
 import com.nominalista.expenses.data.Tag
-import com.nominalista.expenses.data.dao.ExpenseDao
-import com.nominalista.expenses.data.dao.ExpenseTagJoinDao
-import com.nominalista.expenses.data.dao.TagDao
+import com.nominalista.expenses.data.database.dao.ExpenseDao
+import com.nominalista.expenses.data.database.dao.ExpenseTagJoinDao
+import com.nominalista.expenses.data.database.dao.TagDao
 import com.nominalista.expenses.infrastructure.utils.CurrencyConverter
 import com.nominalista.expenses.infrastructure.utils.DateConverter
 

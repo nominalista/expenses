@@ -2,8 +2,7 @@ package com.nominalista.expenses.userinterface.home
 
 import com.nominalista.expenses.data.Currency
 
-class CurrencySummaryItemModel(currency: Currency, amount: Float) {
-
-    val amount = "${"%.2f".format(amount)} ${currency.symbol}"
-    val currency = "(${currency.title} • ${currency.code})"
+data class CurrencySummaryItemModel(val currency: Currency, val amount: Float) {
+    val amountText by lazy { "${"%.2f".format(amount)} ${currency.symbol}" }
+    val currencyText by lazy { "(${currency.title} • ${currency.code})" }
 }

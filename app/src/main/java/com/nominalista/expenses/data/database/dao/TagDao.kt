@@ -1,17 +1,16 @@
-package com.nominalista.expenses.data.dao
+package com.nominalista.expenses.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.nominalista.expenses.data.Tag
-import io.reactivex.Flowable
 
 @Dao
 interface TagDao {
 
     @Query("SELECT * FROM tags")
-    fun getAll(): Flowable<List<Tag>>
+    fun getAll(): List<Tag>
 
     @Insert
     fun insert(tag: Tag): Long

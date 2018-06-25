@@ -8,7 +8,7 @@ import com.nominalista.expenses.data.Date
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import jxl.Workbook
@@ -33,7 +33,7 @@ class ExportExpensesTask(
                 .observeOn(Schedulers.io())
                 .map { sort(it) }
                 .map { export(it) }
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(mainThread())
                 .subscribe({ callback?.invoke(it) }, { callback?.invoke(false) })
     }
 

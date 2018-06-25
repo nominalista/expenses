@@ -7,26 +7,29 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
+import com.nominalista.expenses.automaton.ApplicationAutomaton
+import com.nominalista.expenses.automaton.settings.SettingsInputs.*
+import com.nominalista.expenses.automaton.settings.SettingsState.ExpenseExportState
+import com.nominalista.expenses.automaton.settings.SettingsState
 import com.nominalista.expenses.data.Currency
-import com.nominalista.expenses.data.database.DatabaseDataSource
-import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.infrastructure.utils.DataEvent
 import com.nominalista.expenses.infrastructure.utils.Event
 import com.nominalista.expenses.infrastructure.utils.Variable
-import com.nominalista.expenses.task.ExportExpensesTask
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1
 private val GITHUB_URI = Uri.parse("https://github.com/Nominalista/Expenses")
 
 class SettingsFragmentModel(
         application: Application,
-        private val databaseDataSource: DatabaseDataSource,
-        private val preferenceDataSource: PreferenceDataSource
+        private val automaton: ApplicationAutomaton
 ) : AndroidViewModel(application) {
 
     val itemModels = Variable(emptyList<SettingItemModel>())
+
     val showCurrencySelectionDialog = Event()
     val showDeleteAllExpensesDialog = Event()
     val showAllExpensesDeletedMessage = Event()
@@ -34,28 +37,57 @@ class SettingsFragmentModel(
     val showWebsite = DataEvent<Uri>()
     val requestWriteExternalStoragePermission = DataEvent<Int>()
 
-    private var itemModelsDisposable: Disposable? = null
-    private var exportExpensesTask: ExportExpensesTask? = null
+    private var automatonDisposable: Disposable? = null
+    private var updateDisposable: Disposable? = null
+
+    // Lifecycle start
 
     init {
-        loadItemModels()
+        subscribeAutomaton()
+        sendLoadDefaultCurrency(getApplication())
     }
 
-    private fun loadItemModels() {
-        itemModelsDisposable = getItemModels().subscribe { itemModels.value = it }
+    private fun subscribeAutomaton() {
+        automatonDisposable = automaton.state
+                .map { it.settingsState }
+                .distinctUntilChanged()
+                .subscribe { stateChanged(it) }
     }
 
-    private fun getItemModels(): Observable<List<SettingItemModel>> {
-        return Observable.just(createExpenseSection() + createGeneralSection())
+    private fun stateChanged(state: SettingsState) {
+        updateItemModels(state.defaultCurrency)
+
+        when (state.expenseExportState) {
+            is ExpenseExportState.Failed -> showExpenseExportMessage(false)
+            is ExpenseExportState.Finished -> showExpenseExportMessage(true)
+        }
+    }
+
+    private fun updateItemModels(defaultCurrency: Currency?) {
+        updateDisposable?.dispose()
+
+        if (defaultCurrency == null) {
+            itemModels.value = emptyList()
+            return
+        }
+
+        updateDisposable = Observable.just(defaultCurrency)
+                .observeOn(Schedulers.computation())
+                .map { createExpenseSection(it) + createGeneralSection() }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    itemModels.value = it
+                    updateDisposable = null
+                }
     }
 
     // Expense section
 
-    private fun createExpenseSection(): List<SettingItemModel> {
+    private fun createExpenseSection(defaultCurrency: Currency): List<SettingItemModel> {
         val context = getApplication<Application>()
         var itemModels = listOf<SettingItemModel>()
         itemModels += createExpenseHeader(context)
-        itemModels += createDefaultCurrency(context)
+        itemModels += createDefaultCurrency(context, defaultCurrency)
         itemModels += createExportExpenses(context)
         itemModels += createDeleteAllExpenses(context)
         return itemModels
@@ -65,13 +97,15 @@ class SettingsFragmentModel(
         return SettingsHeaderModel(context.getString(R.string.expenses))
     }
 
-    private fun createDefaultCurrency(context: Context): SettingItemModel {
-        val currency = preferenceDataSource.getDefaultCurrency(context)
+    private fun createDefaultCurrency(
+            context: Context,
+            defaultCurrency: Currency
+    ): SettingItemModel {
         val title = context.getString(R.string.default_currency)
         val summary = context.getString(R.string.default_currency_summary,
-                currency.flag,
-                currency.title,
-                currency.code)
+                defaultCurrency.flag,
+                defaultCurrency.title,
+                defaultCurrency.code)
         val itemModel = SummaryActionSettingItemModel(title, summary)
         itemModel.click = { showCurrencySelectionDialog.next() }
         return itemModel
@@ -114,23 +148,36 @@ class SettingsFragmentModel(
         return itemModel
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        itemModelsDisposable?.dispose()
-        maybeCancelExportExpenseTask()
+    // Expense export
+
+    private fun showExpenseExportMessage(isSuccessful: Boolean) {
+        val messageResId = if (isSuccessful) {
+            R.string.expense_export_success_message
+        } else {
+            R.string.expense_export_failure_message
+        }
+        val message = getApplication<Application>().getString(messageResId)
+        showExpenseExportMessage.next(message)
     }
 
-    private fun maybeCancelExportExpenseTask() {
-        exportExpensesTask?.cancel()
-        exportExpensesTask = null
+    // Lifecycle end
+
+    override fun onCleared() {
+        super.onCleared()
+        unsubscribeAutomaton()
+        sendRestoreState()
+    }
+
+    private fun unsubscribeAutomaton() {
+        automatonDisposable?.dispose()
+        automatonDisposable = null
     }
 
     // Public
 
-    fun updateDefaultCurrency(currency: Currency) {
+    fun updateDefaultCurrency(defaultCurrency: Currency) {
         val context = getApplication<Application>()
-        preferenceDataSource.setDefaultCurrency(context, currency)
-        reloadItemModels()
+        sendSaveDefaultCurrency(context, defaultCurrency)
     }
 
     fun permissionGranted(requestCode: Int) {
@@ -138,36 +185,38 @@ class SettingsFragmentModel(
     }
 
     private fun exportExpenses() {
-        if (exportExpensesTask != null) return
+        if (isExporting()) return
         val context = getApplication<Application>()
-        exportExpensesTask = ExportExpensesTask(context, databaseDataSource)
-        exportExpensesTask?.callback = { showExpenseExportMessage(it); exportExpensesTask = null }
-        exportExpensesTask?.execute()
+        sendExportExpenses(context)
     }
 
-    private fun showExpenseExportMessage(isSuccessful: Boolean) {
-        val messageResId = if (isSuccessful) R.string.expense_export_success_message else R.string.expense_export_failure_message
-        val message = getApplication<Application>().getString(messageResId)
-        showExpenseExportMessage.next(message)
-    }
+    private fun isExporting()
+            = automaton.state.value.settingsState.expenseExportState == ExpenseExportState.Working
 
     fun deleteAllExpenses() {
-        databaseDataSource.deleteAllExpenses()
+        sendDeleteAllExpenses()
         showAllExpensesDeletedMessage.next()
     }
 
-    private fun reloadItemModels() {
-        itemModelsDisposable?.dispose()
-        loadItemModels()
-    }
+    // Sending inputs
+
+    private fun sendLoadDefaultCurrency(context: Context)
+            = automaton.send(LoadDefaultCurrencyInput(context))
+
+    private fun sendSaveDefaultCurrency(context: Context, defaultCurrency: Currency)
+            = automaton.send(SaveDefaultCurrencyInput(context, defaultCurrency))
+
+    private fun sendExportExpenses(context: Context) = automaton.send(ExportExpensesInput(context))
+
+    private fun sendDeleteAllExpenses() = automaton.send(DeleteAllExpensesInput)
+
+    private fun sendRestoreState() = automaton.send(RestoreStateInput)
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val databaseDataSource = DatabaseDataSource(application.database)
-            val preferenceDataSource = PreferenceDataSource()
-            return SettingsFragmentModel(application, databaseDataSource, preferenceDataSource) as T
+            return SettingsFragmentModel(application, application.automaton) as T
         }
     }
 }

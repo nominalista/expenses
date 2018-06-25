@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.nominalista.expenses.R
+import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.infrastructure.extensions.application
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
-import com.nominalista.expenses.data.Expense
-import com.nominalista.expenses.userinterface.expensedetail.ExpenseDetailActivity.Companion.EXTRA_EXPENSE
 import io.reactivex.disposables.CompositeDisposable
 
 class ExpenseDetailFragment : Fragment() {
@@ -65,29 +65,27 @@ class ExpenseDetailFragment : Fragment() {
     }
 
     private fun setupModel() {
-        val extras = requireActivity().intent?.extras ?: return
-        val expense = extras.getParcelable<Expense>(EXTRA_EXPENSE)
-        val factory = ExpenseDetailFragmentModel.Factory(requireContext().application, expense)
+        val factory = ExpenseDetailFragmentModel.Factory(requireContext().application)
         model = ViewModelProviders.of(this, factory).get(ExpenseDetailFragmentModel::class.java)
     }
 
     private fun subscribeModel() {
-        currencyText.text = model.currency
-        amountText.text = model.amount
-        titleText.text = model.title
-        dateText.text = model.date
-        notesText.text = model.notes
-
-        setupChipGroup()
-        setupNoTagsText()
-
+        compositeDisposable += model.amount.toObservable().subscribe { amountText.text = it }
+        compositeDisposable += model.currency.toObservable().subscribe { currencyText.text = it }
+        compositeDisposable += model.title.toObservable().subscribe { titleText.text = it }
+        compositeDisposable += model.date.toObservable().subscribe { dateText.text = it }
+        compositeDisposable += model.notes.toObservable().subscribe { notesText.text = it }
+        compositeDisposable += model.tags
+                .toObservable()
+                .subscribe { configureChipGroup(it); configureNoTagsText(it.isEmpty()) }
         compositeDisposable += model.finish
                 .toObservable()
                 .subscribe { requireActivity().onBackPressed() }
     }
 
-    private fun setupChipGroup() {
-        model.tags.forEach { chipGroup.addView(createChip(it.name)) }
+    private fun configureChipGroup(tags: List<Tag>) {
+        chipGroup.removeAllViews()
+        tags.forEach { chipGroup.addView(createChip(it.name)) }
     }
 
     private fun createChip(text: String): Chip {
@@ -97,9 +95,8 @@ class ExpenseDetailFragment : Fragment() {
         return chip
     }
 
-    private fun setupNoTagsText() {
-        val isVisible = model.tags.isEmpty()
-        noTagsText.visibility = if (isVisible) View.VISIBLE else View.GONE
+    private fun configureNoTagsText(isVisible: Boolean) {
+        noTagsText.isVisible = isVisible
     }
 
     override fun onDestroyView() {
@@ -115,7 +112,7 @@ class ExpenseDetailFragment : Fragment() {
         notesText.text = ""
 
         chipGroup.removeAllViews()
-        noTagsText.visibility = View.VISIBLE
+        noTagsText.isVisible = false
 
         compositeDisposable.clear()
     }

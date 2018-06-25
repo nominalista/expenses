@@ -3,15 +3,17 @@ package com.nominalista.expenses.data.database
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.ExpenseTagJoin
 import com.nominalista.expenses.data.Tag
-import com.nominalista.expenses.infrastructure.utils.runOnBackground
-import io.reactivex.Flowable
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 
 class DatabaseDataSource(private val database: ApplicationDatabase) {
 
     // Expenses
 
-    fun getExpenses(): Flowable<List<Expense>> {
-        return database.expenseDao().getAll()
+    fun getExpenses(): Observable<List<Expense>> {
+        return Observable.defer { Observable.just(database.expenseDao().getAll()) }
+                .subscribeOn(Schedulers.io())
                 .map { it.map { expense -> addTagsToExpense(expense) } }
     }
 
@@ -24,41 +26,38 @@ class DatabaseDataSource(private val database: ApplicationDatabase) {
         return database.expenseTagJoinDao().getTagsWithExpenseId(expense.id)
     }
 
-    fun insertExpense(expense: Expense) {
-        runOnBackground {
+    fun insertExpense(expense: Expense): Observable<Long> {
+        return Observable.defer {
             val id = database.expenseDao().insert(expense)
-            insertExpenseTagJoins(id, expense.tags)
+
+            for (tag in expense.tags) {
+                val join = ExpenseTagJoin(id, tag.id)
+                database.expenseTagJoinDao().insert(join)
+            }
+
+            Observable.just(id)
         }
     }
 
-    private fun insertExpenseTagJoins(expenseId: Long, tags: List<Tag>) {
-        for (tag in tags) {
-            val join = ExpenseTagJoin(expenseId, tag.id)
-            database.expenseTagJoinDao().insert(join)
-        }
+    fun deleteExpense(expense: Expense): Completable {
+        return Completable.defer { database.expenseDao().delete(expense); Completable.complete() }
     }
 
-    fun deleteExpense(expense: Expense) {
-        runOnBackground {
-            database.expenseDao().delete(expense)
-        }
-    }
-
-    fun deleteAllExpenses() {
-        runOnBackground { database.expenseDao().deleteAll() }
+    fun deleteAllExpenses(): Completable {
+        return Completable.defer { database.expenseDao().deleteAll(); Completable.complete() }
     }
 
     // Tags
 
-    fun getTags(): Flowable<List<Tag>> {
-        return database.tagDao().getAll()
+    fun getTags(): Observable<List<Tag>> {
+        return Observable.defer { Observable.just(database.tagDao().getAll()) }
     }
 
-    fun insertTag(tag: Tag) {
-        runOnBackground { database.tagDao().insert(tag) }
+    fun insertTag(tag: Tag): Observable<Long> {
+        return Observable.defer { Observable.just(database.tagDao().insert(tag)) }
     }
 
-    fun deleteTag(tag: Tag) {
-        runOnBackground { database.tagDao().delete(tag) }
+    fun deleteTag(tag: Tag): Completable {
+        return Completable.defer { database.tagDao().delete(tag); Completable.complete() }
     }
 }

@@ -28,7 +28,7 @@
 
         <activity android:name=".userinterface.newexpense.NewExpenseActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
         <activity android:name=".userinterface.settings.SettingsActivity"
             android:screenOrientation="portrait"/>

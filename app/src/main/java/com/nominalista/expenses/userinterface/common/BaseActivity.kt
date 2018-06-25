@@ -28,9 +28,9 @@ open class BaseActivity : AppCompatActivity() {
     private fun overridePendingEnterTransition() {
         when (animationKind) {
             ANIMATION_SLIDE_FROM_RIGHT ->
-                overridePendingTransition(R.anim.slide_from_right, R.anim.none)
+                overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out)
             ANIMATION_SLIDE_FROM_BOTTOM ->
-                overridePendingTransition(R.anim.slide_from_bottom, R.anim.none)
+                overridePendingTransition(R.anim.slide_from_bottom, R.anim.fade_scale_out)
         }
     }
 
@@ -42,9 +42,9 @@ open class BaseActivity : AppCompatActivity() {
     private fun overridePendingExitTransition() {
         when (animationKind) {
             ANIMATION_SLIDE_FROM_RIGHT ->
-                overridePendingTransition(R.anim.none, R.anim.slide_to_right)
+                overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_right)
             ANIMATION_SLIDE_FROM_BOTTOM ->
-                overridePendingTransition(R.anim.none, R.anim.slide_to_bottom)
+                overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_bottom)
         }
     }
 

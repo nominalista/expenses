@@ -34,7 +34,6 @@ class NewExpenseFragment : Fragment() {
     private lateinit var dateText: TextView
 
     private lateinit var model: NewExpenseFragmentModel
-    private lateinit var activityModel: NewExpenseActivityModel
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -54,8 +53,7 @@ class NewExpenseFragment : Fragment() {
         watchEditTexts()
         addListeners()
         setupModel()
-        setupActivityModel()
-        bindModels()
+        bindModel()
     }
 
     private fun bindWidgets(view: View) {
@@ -120,19 +118,13 @@ class NewExpenseFragment : Fragment() {
         model = ViewModelProviders.of(this, factory).get(NewExpenseFragmentModel::class.java)
     }
 
-    private fun setupActivityModel() {
-        activityModel = ViewModelProviders.of(requireActivity())
-                .get(NewExpenseActivityModel::class.java)
-    }
-
-    private fun bindModels() {
+    private fun bindModel() {
         compositeDisposable += model.selectedCurrency
                 .toObservable()
                 .subscribe { updateCurrencyText(it) }
         compositeDisposable += model.selectedDate.toObservable().subscribe { updateDateText(it) }
         compositeDisposable += model.selectedTags.toObservable().subscribe { updateTagLayout(it) }
         compositeDisposable += model.finish.toObservable().subscribe { finish() }
-        compositeDisposable += activityModel.selectedTags.toObservable().subscribe { selectTags(it) }
     }
 
     private fun updateCurrencyText(currency: Currency) {
@@ -172,16 +164,14 @@ class NewExpenseFragment : Fragment() {
         requireActivity().onBackPressed()
     }
 
-    private fun selectTags(tags: List<Tag>) {
-        model.selectTags(tags)
-    }
+    // Lifecycle end
 
     override fun onDestroyView() {
         super.onDestroyView()
-        unbindModels()
+        unbindModel()
     }
 
-    private fun unbindModels() {
+    private fun unbindModel() {
         compositeDisposable.clear()
     }
 

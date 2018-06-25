@@ -3,37 +3,56 @@ package com.nominalista.expenses.userinterface.newexpense.tagselection
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
+import com.nominalista.expenses.automaton.ApplicationAutomaton
+import com.nominalista.expenses.automaton.newexpense.NewExpenseInputs.SetSelectedTagsInput
+import com.nominalista.expenses.automaton.newexpense.tagselection.TagSelectionInputs.*
+import com.nominalista.expenses.automaton.newexpense.tagselection.TagSelectionState
 import com.nominalista.expenses.data.Tag
-import com.nominalista.expenses.data.database.DatabaseDataSource
-import com.nominalista.expenses.infrastructure.extensions.plusAssign
 import com.nominalista.expenses.infrastructure.utils.Event
 import com.nominalista.expenses.infrastructure.utils.Variable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSource) : ViewModel() {
+class TagSelectionFragmentModel(private val automaton: ApplicationAutomaton) : ViewModel() {
 
     val itemModels = Variable(emptyList<TagSelectionItemModel>())
-    val selectedTags = ArrayList<Tag>()
     val showNewTagDialog = Event()
 
-    private val compositeDisposable = CompositeDisposable()
+    private var automatonDisposable: Disposable? = null
+    private var updateDisposable: Disposable? = null
+
+    // Lifecycle start
 
     init {
-        loadItemModels()
+        subscribeAutomaton()
+        sendLoadTags()
     }
 
-    private fun loadItemModels() {
-        compositeDisposable += getTags()
-                .observeOn(Schedulers.io())
+    private fun subscribeAutomaton() {
+        automatonDisposable = automaton.state
+                .map { it.newExpenseState.tagSelectionState }
+                .distinctUntilChanged()
+                .subscribe { stateChanged(it) }
+    }
+
+    private fun stateChanged(state: TagSelectionState) {
+        updateItemModels(state.tags)
+    }
+
+    private fun updateItemModels(tags: List<Tag>) {
+        updateDisposable?.dispose()
+        updateDisposable = Observable.just(tags)
+                .observeOn(Schedulers.computation())
                 .map { sortTags(it) }
                 .map { createTagSection(it) + createAddTagSection() }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { itemModels.value = it }
+                .subscribe {
+                    itemModels.value = it
+                    updateDisposable = null
+                }
     }
-
-    private fun getTags() = databaseDataSource.getTags()
 
     private fun sortTags(tags: List<Tag>) = tags.sortedBy { it.name }
 
@@ -41,24 +60,25 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
 
     private fun createTagItemModel(tag: Tag): TagItemModel {
         val itemModel = TagItemModel(tag)
-        itemModel.selectClick = { selectTag(itemModel) }
-        itemModel.removeClick = { removeTag(itemModel) }
+        itemModel.checkClick = { checkTag(itemModel) }
+        itemModel.deleteClick = { deleteTag(itemModel) }
         return itemModel
     }
 
-    private fun selectTag(itemModel: TagItemModel) {
-        if (itemModel.isSelected) {
-            selectedTags.remove(itemModel.tag)
-            itemModel.isSelected = false
+    private fun checkTag(itemModel: TagItemModel) {
+        if (itemModel.isChecked) {
+            itemModel.isChecked = false
+            sendUncheckTag(itemModel.tag)
         } else {
-            selectedTags.add(itemModel.tag)
-            itemModel.isSelected = true
+            itemModel.isChecked = true
+            sendCheckTag(itemModel.tag)
         }
     }
 
-    private fun removeTag(itemModel: TagItemModel) {
-        selectedTags.remove(itemModel.tag)
-        databaseDataSource.deleteTag(itemModel.tag)
+    private fun deleteTag(itemModel: TagItemModel) {
+        val tag = itemModel.tag
+        sendUncheckTag(tag)
+        sendDeleteTag(tag)
     }
 
     private fun createAddTagSection() = listOf(createAddTagItemModel())
@@ -69,18 +89,59 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
         return itemModel
     }
 
+    // Lifecycle end
+
     override fun onCleared() {
         super.onCleared()
-        compositeDisposable.clear()
+        unsubscribeAutomaton()
+        maybeDisposeUpdate()
+        sendRestoreState()
     }
+
+    private fun unsubscribeAutomaton() {
+        automatonDisposable?.dispose()
+        automatonDisposable = null
+    }
+
+    private fun maybeDisposeUpdate() {
+        updateDisposable?.dispose()
+        updateDisposable = null
+    }
+
+    // Public
+
+    fun createTag(tag: Tag) = sendCreateTag(tag)
+
+    fun confirm() {
+        val checkedTags = automaton.state.value.newExpenseState.tagSelectionState.checkedTags
+        sendSetSelectedTags(checkedTags.toList())
+    }
+
+    // Sending inputs
+
+    private fun sendLoadTags() = automaton.send(LoadTagsInput)
+
+    private fun sendCreateTag(tag: Tag) = automaton.send(CreateTagInput(
+            tag))
+
+    private fun sendCheckTag(tag: Tag) = automaton.send(CheckTagInput(tag))
+
+    private fun sendUncheckTag(tag: Tag) = automaton.send(UncheckTagInput(tag))
+
+    private fun sendDeleteTag(tag: Tag) = automaton.send(DeleteTagInput(
+            tag))
+
+    private fun sendSetSelectedTags(selectedTags: List<Tag>) =
+            automaton.send(SetSelectedTagsInput(selectedTags))
+
+    private fun sendRestoreState() = automaton.send(RestoreStateInput)
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val databaseDataSource = DatabaseDataSource(application.database)
-            return TagSelectionFragmentModel(
-                    databaseDataSource) as T
+            val automaton = application.automaton
+            return TagSelectionFragmentModel(automaton) as T
         }
     }
 }

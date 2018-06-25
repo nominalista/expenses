@@ -1,4 +1,4 @@
-package com.nominalista.expenses.automaton
+package com.nominalista.expenses.infrastructure.automaton
 
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -35,7 +35,7 @@ open class Automaton<State, Input>(state: State, private val mapper: Mapper<Stat
         // Recurs successfully mapped replies.
         val successObservable = replyObservable
                 .filter { it.output != null }
-                .switchMap { recurReply(it.output!!).startWith(it) }
+                .flatMap { recurReply(it.output!!).startWith(it) }
 
         // Emits replies without output.
         val failureObservable = replyObservable
