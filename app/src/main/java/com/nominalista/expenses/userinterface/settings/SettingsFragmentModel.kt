@@ -57,9 +57,8 @@ class SettingsFragmentModel(
     private fun stateChanged(state: SettingsState) {
         updateItemModels(state.defaultCurrency)
 
-        when (state.expenseExportState) {
-            is ExpenseExportState.Failed -> showExpenseExportMessage(false)
-            is ExpenseExportState.Finished -> showExpenseExportMessage(true)
+        if (state.expenseExportState is ExpenseExportState.Finished) {
+            showExpenseExportMessage(state.expenseExportState.isSuccessful)
         }
     }
 
