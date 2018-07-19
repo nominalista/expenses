@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
 import com.nominalista.expenses.automaton.ApplicationAutomaton
-import com.nominalista.expenses.automaton.settings.SettingsInputs.*
+import com.nominalista.expenses.automaton.settings.SettingsInput.*
 import com.nominalista.expenses.automaton.settings.SettingsState.ExpenseExportState
 import com.nominalista.expenses.automaton.settings.SettingsState
 import com.nominalista.expenses.data.Currency

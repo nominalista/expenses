@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.automaton.ApplicationAutomaton
-import com.nominalista.expenses.automaton.newexpense.NewExpenseInputs.SetSelectedTagsInput
-import com.nominalista.expenses.automaton.newexpense.tagselection.TagSelectionInputs.*
+import com.nominalista.expenses.automaton.newexpense.NewExpenseInput.SetSelectedTagsInput
+import com.nominalista.expenses.automaton.newexpense.tagselection.TagSelectionInput.*
 import com.nominalista.expenses.automaton.newexpense.tagselection.TagSelectionState
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.infrastructure.utils.Event

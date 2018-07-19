@@ -8,5 +8,4 @@ class ApplicationAutomaton(
         databaseDataSource: DatabaseDataSource,
         preferenceDataSource: PreferenceDataSource
 ) : Automaton<ApplicationState, ApplicationInput>(ApplicationState.INITIAL,
-        ApplicationMapper(databaseDataSource,
-                preferenceDataSource))
+        ApplicationMapper(databaseDataSource, preferenceDataSource))

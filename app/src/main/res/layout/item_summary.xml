@@ -47,18 +47,16 @@
         app:layout_constraintTop_toTopOf="@+id/text_title" />
 
 
-    <!--<com.google.android.material.chip.Chip-->
-        <!--android:id="@+id/chip_date_range"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--app:chipIcon="@drawable/ic_arrow_down_active_dark_24dp"-->
-        <!--app:chipIconEnabled="true"-->
-        <!--app:chipText="This week"-->
-        <!--app:layout_constraintBottom_toBottomOf="@+id/text_title"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.5"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/text_title"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/text_title" />-->
+    <TextView
+        android:id="@+id/text_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_expenses"
+        android:textAppearance="@style/TextAppearance.Expenses.Subtitle1"
+        android:textColor="@color/text_primary_light"
+        app:layout_constraintBottom_toBottomOf="@id/recycler_view"
+        app:layout_constraintEnd_toEndOf="@id/recycler_view"
+        app:layout_constraintStart_toStartOf="@id/recycler_view"
+        app:layout_constraintTop_toTopOf="@id/recycler_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

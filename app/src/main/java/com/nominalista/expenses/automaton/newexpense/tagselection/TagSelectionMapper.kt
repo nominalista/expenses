@@ -1,8 +1,8 @@
 package com.nominalista.expenses.automaton.newexpense.tagselection
 
 import com.nominalista.expenses.automaton.ApplicationInput
-import com.nominalista.expenses.automaton.home.HomeInputs
-import com.nominalista.expenses.automaton.newexpense.tagselection.TagSelectionInputs.*
+import com.nominalista.expenses.automaton.home.HomeInput
+import com.nominalista.expenses.automaton.newexpense.tagselection.TagSelectionInput.*
 import com.nominalista.expenses.automaton.ApplicationOutput
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.data.database.DatabaseDataSource
@@ -16,7 +16,7 @@ typealias TagSelectionMapperResult = Pair<TagSelectionState, ApplicationOutput?>
 
 class TagSelectionMapper(private val databaseDataSource: DatabaseDataSource) {
 
-    fun map(state: TagSelectionState, input: ApplicationInput): TagSelectionMapperResult {
+    fun map(state: TagSelectionState, input: TagSelectionInput): TagSelectionMapperResult {
         return when (input) {
             is SetTagsInput -> setTags(state, input)
             is LoadTagsInput -> loadTags(state)
@@ -25,30 +25,14 @@ class TagSelectionMapper(private val databaseDataSource: DatabaseDataSource) {
             is CheckTagInput -> checkTag(state, input)
             is UncheckTagInput -> uncheckTag(state, input)
             is RestoreStateInput -> restoreState()
-            else -> TagSelectionMapperResult(
-                    state,
-                    null)
         }
     }
 
-    private fun setTags(
-            oldState: TagSelectionState,
-            input: SetTagsInput
-    ): TagSelectionMapperResult {
-        val newState = TagSelectionState(
-                input.tags,
-                oldState.checkedTags)
-        return TagSelectionMapperResult(
-                newState,
-                empty())
-    }
+    private fun setTags(state: TagSelectionState, input: SetTagsInput) =
+            TagSelectionMapperResult(state.copy(tags = input.tags), empty())
 
-    private fun loadTags(oldState: TagSelectionState): TagSelectionMapperResult {
-        val output: ApplicationOutput = loadTagsFromDatabase().map { SetTagsInput(it) }
-        return TagSelectionMapperResult(
-                oldState,
-                output)
-    }
+    private fun loadTags(state: TagSelectionState) =
+            TagSelectionMapperResult(state, loadTagsFromDatabase().map { SetTagsInput(it) })
 
     private fun loadTagsFromDatabase(): Observable<List<Tag>> {
         return databaseDataSource.getTags()
@@ -57,16 +41,14 @@ class TagSelectionMapper(private val databaseDataSource: DatabaseDataSource) {
     }
 
     private fun createTag(
-            oldState: TagSelectionState,
+            state: TagSelectionState,
             input: CreateTagInput
     ): TagSelectionMapperResult {
         val loadTags = Observable.just(LoadTagsInput as ApplicationInput)
-        val loadHomeTags = Observable.just(HomeInputs.LoadTagsInput as ApplicationInput)
-        val output: ApplicationOutput = insertTagIntoDatabase(input.tag)
+        val loadHomeTags = Observable.just(HomeInput.LoadTagsInput as ApplicationInput)
+        val output = insertTagIntoDatabase(input.tag)
                 .flatMap { Observable.merge(loadTags, loadHomeTags) }
-        return TagSelectionMapperResult(
-                oldState,
-                output)
+        return TagSelectionMapperResult(state, output)
     }
 
     private fun insertTagIntoDatabase(tag: Tag): Observable<Long> {
@@ -76,16 +58,14 @@ class TagSelectionMapper(private val databaseDataSource: DatabaseDataSource) {
     }
 
     private fun deleteTag(
-            oldState: TagSelectionState,
+            state: TagSelectionState,
             input: DeleteTagInput
     ): TagSelectionMapperResult {
         val loadTags = Observable.just(LoadTagsInput as ApplicationInput)
-        val loadHomeTags = Observable.just(HomeInputs.LoadTagsInput as ApplicationInput)
+        val loadHomeTags = Observable.just(HomeInput.LoadTagsInput as ApplicationInput)
         val output = deleteTagFromDatabase(input.tag)
                 .andThen(Observable.merge(loadTags, loadHomeTags))
-        return TagSelectionMapperResult(
-                oldState,
-                output)
+        return TagSelectionMapperResult(state, output)
     }
 
     private fun deleteTagFromDatabase(tag: Tag): Completable {
@@ -95,28 +75,24 @@ class TagSelectionMapper(private val databaseDataSource: DatabaseDataSource) {
     }
 
     private fun checkTag(
-            oldState: TagSelectionState,
+            state: TagSelectionState,
             input: CheckTagInput
     ): TagSelectionMapperResult {
-        val checkedTags = HashSet(oldState.checkedTags)
+        val checkedTags = HashSet(state.checkedTags)
         checkedTags.add(input.tag)
-        val newState = TagSelectionState(oldState.tags, checkedTags)
+        val newState = state.copy(checkedTags = checkedTags)
         return TagSelectionMapperResult(newState, empty())
     }
 
     private fun uncheckTag(
-            oldState: TagSelectionState,
+            state: TagSelectionState,
             input: UncheckTagInput
     ): TagSelectionMapperResult {
-        val checkedTags = HashSet(oldState.checkedTags)
+        val checkedTags = HashSet(state.checkedTags)
         checkedTags.remove(input.tag)
-        val newState = TagSelectionState(oldState.tags, checkedTags)
+        val newState = state.copy(checkedTags = checkedTags)
         return TagSelectionMapperResult(newState, empty())
     }
 
-    private fun restoreState(): TagSelectionMapperResult {
-        return TagSelectionMapperResult(
-                TagSelectionState.INITIAL,
-                empty())
-    }
+    private fun restoreState() = TagSelectionMapperResult(TagSelectionState.INITIAL, empty())
 }

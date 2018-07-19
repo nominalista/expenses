@@ -7,8 +7,6 @@ data class TagSelectionState(
         val checkedTags: HashSet<Tag>
 ) {
     companion object {
-        val INITIAL = TagSelectionState(
-                ArrayList(),
-                HashSet())
+        val INITIAL = TagSelectionState(ArrayList(), HashSet())
     }
 }

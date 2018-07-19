@@ -16,6 +16,7 @@ import com.nominalista.expenses.data.Date
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.infrastructure.extensions.afterTextChanged
 import com.nominalista.expenses.infrastructure.extensions.application
+import com.nominalista.expenses.infrastructure.extensions.hideKeyboard
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
 import com.nominalista.expenses.userinterface.common.currencyselection.CurrencySelectionDialogFragment
 import com.nominalista.expenses.userinterface.newexpense.dateselection.DateSelectionDialogFragment
@@ -155,7 +156,7 @@ class NewExpenseFragment : Fragment() {
 
     private fun createChip(text: String): Chip {
         val chip = Chip(context)
-        chip.chipText = text
+        chip.text = text
         chip.isClickable = false
         return chip
     }
@@ -169,6 +170,7 @@ class NewExpenseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         unbindModel()
+        hideKeyboard()
     }
 
     private fun unbindModel() {

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.automaton.ApplicationAutomaton
-import com.nominalista.expenses.automaton.newexpense.NewExpenseInputs.*
+import com.nominalista.expenses.automaton.newexpense.NewExpenseInput.*
 import com.nominalista.expenses.automaton.newexpense.NewExpenseState
 import com.nominalista.expenses.data.Currency
 import com.nominalista.expenses.data.Date

@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.automaton.ApplicationAutomaton
-import com.nominalista.expenses.automaton.expensedetail.ExpenseDetailInputs.SetExpenseInput
-import com.nominalista.expenses.automaton.home.HomeInputs.*
+import com.nominalista.expenses.automaton.expensedetail.ExpenseDetailInput.SetExpenseInput
+import com.nominalista.expenses.automaton.home.HomeInput.*
 import com.nominalista.expenses.automaton.home.HomeState
 import com.nominalista.expenses.automaton.home.HomeState.ExpenseState
 import com.nominalista.expenses.automaton.home.HomeState.TagState

@@ -1,8 +1,8 @@
 package com.nominalista.expenses.automaton.expensedetail
 
 import com.nominalista.expenses.automaton.ApplicationInput
-import com.nominalista.expenses.automaton.expensedetail.ExpenseDetailInputs.*
-import com.nominalista.expenses.automaton.home.HomeInputs.LoadExpensesInput
+import com.nominalista.expenses.automaton.expensedetail.ExpenseDetailInput.*
+import com.nominalista.expenses.automaton.home.HomeInput.LoadExpensesInput
 import com.nominalista.expenses.automaton.ApplicationOutput
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.database.DatabaseDataSource
@@ -16,21 +16,16 @@ typealias ExpenseDetailMapperResult = Pair<ExpenseDetailState, ApplicationOutput
 
 class ExpenseDetailMapper(private val databaseDataSource: DatabaseDataSource) {
 
-    fun map(state: ExpenseDetailState, input: ApplicationInput): ExpenseDetailMapperResult {
+    fun map(state: ExpenseDetailState, input: ExpenseDetailInput): ExpenseDetailMapperResult {
         return when (input) {
             is SetExpenseInput -> setExpense(input)
-            is ExpenseDetailInputs.DeleteExpenseInput -> deleteExpense(state, input)
+            is ExpenseDetailInput.DeleteExpenseInput -> deleteExpense(state, input)
             is RestoreStateInput -> restoreState()
-            else -> ExpenseDetailMapperResult(state,
-                    null)
         }
     }
 
-    private fun setExpense(input: SetExpenseInput): ExpenseDetailMapperResult {
-        val newState = ExpenseDetailState(input.expense)
-        return ExpenseDetailMapperResult(newState,
-                empty())
-    }
+    private fun setExpense(input: SetExpenseInput) =
+            ExpenseDetailMapperResult(ExpenseDetailState(input.expense), empty())
 
     private fun deleteExpense(
             state: ExpenseDetailState,
@@ -38,8 +33,7 @@ class ExpenseDetailMapper(private val databaseDataSource: DatabaseDataSource) {
     ): ExpenseDetailMapperResult {
         val output = deleteExpenseFromDatabase(input.expense)
                 .andThen(Observable.just(LoadExpensesInput as ApplicationInput))
-        return ExpenseDetailMapperResult(state,
-                output)
+        return ExpenseDetailMapperResult(state, output)
     }
 
     private fun deleteExpenseFromDatabase(expense: Expense): Completable {
@@ -48,8 +42,5 @@ class ExpenseDetailMapper(private val databaseDataSource: DatabaseDataSource) {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    private fun restoreState() =
-            ExpenseDetailMapperResult(
-                    ExpenseDetailState.INITIAL,
-                    empty())
+    private fun restoreState() = ExpenseDetailMapperResult(ExpenseDetailState.INITIAL, empty())
 }

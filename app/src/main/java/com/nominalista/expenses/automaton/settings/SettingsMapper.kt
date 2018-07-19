@@ -3,8 +3,8 @@ package com.nominalista.expenses.automaton.settings
 import android.content.Context
 import com.nominalista.expenses.automaton.ApplicationInput
 import com.nominalista.expenses.automaton.ApplicationOutput
-import com.nominalista.expenses.automaton.home.HomeInputs
-import com.nominalista.expenses.automaton.settings.SettingsInputs.*
+import com.nominalista.expenses.automaton.home.HomeInput
+import com.nominalista.expenses.automaton.settings.SettingsInput.*
 import com.nominalista.expenses.automaton.settings.SettingsState.ExpenseExportState
 import com.nominalista.expenses.data.Currency
 import com.nominalista.expenses.data.database.DatabaseDataSource
@@ -23,7 +23,7 @@ class SettingsMapper(
         private val preferenceDataSource: PreferenceDataSource
 ) {
 
-    fun map(state: SettingsState, input: ApplicationInput): SettingsMapperResult {
+    fun map(state: SettingsState, input: SettingsInput): SettingsMapperResult {
         return when (input) {
             is SetDefaultCurrencyInput -> setDefaultCurrency(state, input)
             is SetExpenseExportStateInput -> setExpenseExportState(state, input)
@@ -32,28 +32,22 @@ class SettingsMapper(
             is ExportExpensesInput -> exportExpenses(state, input)
             is DeleteAllExpensesInput -> deleteAllExpenses(state)
             is RestoreStateInput -> restoreState()
-            else -> SettingsMapperResult(state, null)
         }
     }
 
-    private fun setDefaultCurrency(
-            oldState: SettingsState,
-            input: SetDefaultCurrencyInput
-    ): SettingsMapperResult {
-        val newState = SettingsState(input.defaultCurrency, oldState.expenseExportState)
-        return SettingsMapperResult(newState, empty())
-    }
+    private fun setDefaultCurrency(state: SettingsState, input: SetDefaultCurrencyInput) =
+            SettingsMapperResult(state.copy(defaultCurrency = input.defaultCurrency), empty())
 
     private fun setExpenseExportState(
-            oldState: SettingsState,
+            state: SettingsState,
             input: SetExpenseExportStateInput
     ): SettingsMapperResult {
-        val exportExpensesState = input.expenseExportState
-        val output = when (exportExpensesState) {
+        val expenseExportState = input.expenseExportState
+        val output = when (expenseExportState) {
             is ExpenseExportState.None, is ExpenseExportState.Working -> empty()
             is ExpenseExportState.Finished -> restoreExportExpenseState()
         }
-        val newState = SettingsState(oldState.defaultCurrency, exportExpensesState)
+        val newState = state.copy(expenseExportState = expenseExportState)
         return SettingsMapperResult(newState, output)
     }
 
@@ -61,12 +55,12 @@ class SettingsMapper(
             Observable.just(SetExpenseExportStateInput(ExpenseExportState.INITIAL))
 
     private fun loadDefaultCurrency(
-            oldState: SettingsState,
+            state: SettingsState,
             input: LoadDefaultCurrencyInput
     ): SettingsMapperResult {
-        val output: ApplicationOutput = loadDefaultCurrencyFromPreferences(input.context)
-                .map { SetDefaultCurrencyInput(it) }
-        return SettingsMapperResult(oldState, output)
+        val output = loadDefaultCurrencyFromPreferences(input.context)
+                .map { SetDefaultCurrencyInput(it) as ApplicationInput }
+        return SettingsMapperResult(state, output)
     }
 
     private fun loadDefaultCurrencyFromPreferences(context: Context): Observable<Currency> {
@@ -76,14 +70,14 @@ class SettingsMapper(
     }
 
     private fun saveDefaultCurrency(
-            oldState: SettingsState,
+            state: SettingsState,
             input: SaveDefaultCurrencyInput
     ): SettingsMapperResult {
         val context = input.context
         val defaultCurrency = input.defaultCurrency
         val output = setDefaultCurrencyInPreferences(context, defaultCurrency)
                 .andThen(Observable.just<ApplicationInput>(LoadDefaultCurrencyInput(input.context)))
-        return SettingsMapperResult(oldState, output)
+        return SettingsMapperResult(state, output)
     }
 
     private fun setDefaultCurrencyInPreferences(
@@ -95,14 +89,8 @@ class SettingsMapper(
                 .observeOn(mainThread())
     }
 
-    private fun exportExpenses(
-            oldState: SettingsState,
-            input: ExportExpensesInput
-    ): SettingsMapperResult {
-        val output = executeExpenseExportTask(input.context, databaseDataSource)
-        val newState = SettingsState(oldState.defaultCurrency, oldState.expenseExportState)
-        return SettingsMapperResult(newState, output)
-    }
+    private fun exportExpenses(state: SettingsState, input: ExportExpensesInput) =
+            SettingsMapperResult(state, executeExpenseExportTask(input.context, databaseDataSource))
 
     private fun executeExpenseExportTask(
             context: Context,
@@ -127,10 +115,10 @@ class SettingsMapper(
                 .observeOn(mainThread())
     }
 
-    private fun deleteAllExpenses(oldState: SettingsState): SettingsMapperResult {
+    private fun deleteAllExpenses(state: SettingsState): SettingsMapperResult {
         val output = deleteAllExpensesFromDatabase()
-                .andThen(Observable.just(HomeInputs.LoadExpensesInput as ApplicationInput))
-        return SettingsMapperResult(oldState, output)
+                .andThen(Observable.just(HomeInput.LoadExpensesInput as ApplicationInput))
+        return SettingsMapperResult(state, output)
     }
 
     private fun deleteAllExpensesFromDatabase(): Completable {
@@ -139,6 +127,5 @@ class SettingsMapper(
                 .observeOn(mainThread())
     }
 
-    private fun restoreState() =
-            SettingsMapperResult(SettingsState.INITIAL, empty())
+    private fun restoreState() = SettingsMapperResult(SettingsState.INITIAL, empty())
 }

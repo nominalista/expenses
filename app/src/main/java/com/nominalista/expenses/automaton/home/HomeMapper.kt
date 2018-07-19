@@ -1,8 +1,8 @@
 package com.nominalista.expenses.automaton.home
 
 import com.nominalista.expenses.automaton.ApplicationInput
-import com.nominalista.expenses.automaton.home.HomeInputs.*
 import com.nominalista.expenses.automaton.ApplicationOutput
+import com.nominalista.expenses.automaton.home.HomeInput.*
 import com.nominalista.expenses.automaton.home.HomeState.ExpenseState
 import com.nominalista.expenses.automaton.home.HomeState.TagState
 import com.nominalista.expenses.data.Expense
@@ -17,7 +17,7 @@ typealias HomeMapperResult = Pair<HomeState, ApplicationOutput?>
 
 class HomeMapper(private val databaseDataSource: DatabaseDataSource) {
 
-    fun map(state: HomeState, input: ApplicationInput): HomeMapperResult {
+    fun map(state: HomeState, input: HomeInput): HomeMapperResult {
         return when (input) {
             is SetExpenseStateInput -> setExpenseState(state, input)
             is SetTagStateInput -> setTagState(state, input)
@@ -26,47 +26,26 @@ class HomeMapper(private val databaseDataSource: DatabaseDataSource) {
             is LoadExpensesInput -> loadExpenses(state)
             is LoadTagsInput -> loadTags(state)
             is RestoreStateInput -> restoreState()
-            else -> HomeMapperResult(state, null)
         }
     }
 
-    private fun setExpenseState(state: HomeState, input: SetExpenseStateInput): HomeMapperResult {
-        val newState = HomeState(input.expenseState,
-                state.tagState,
-                state.dateRange,
-                state.tagFilter)
-        return HomeMapperResult(newState, empty())
-    }
+    private fun setExpenseState(state: HomeState, input: SetExpenseStateInput) =
+            HomeMapperResult(state.copy(expenseState = input.expenseState), empty())
 
-    private fun setTagState(state: HomeState, input: SetTagStateInput): HomeMapperResult {
-        val newState = HomeState(state.expenseState,
-                input.tagState,
-                state.dateRange,
-                state.tagFilter)
-        return HomeMapperResult(newState, empty())
-    }
+    private fun setTagState(state: HomeState, input: SetTagStateInput) =
+            HomeMapperResult(state.copy(tagState = input.tagState), empty())
 
-    private fun setDateRange(oldDate: HomeState, input: SetDateRangeInput): HomeMapperResult {
-        val newState = HomeState(oldDate.expenseState,
-                oldDate.tagState,
-                input.dateRange,
-                oldDate.tagFilter)
-        return HomeMapperResult(newState, empty())
-    }
+    private fun setDateRange(state: HomeState, input: SetDateRangeInput) =
+            HomeMapperResult(state.copy(dateRange = input.dateRange), empty())
 
-    private fun setTagFilter(oldState: HomeState, input: SetTagFilterInput): HomeMapperResult {
-        val newState = HomeState(oldState.expenseState,
-                oldState.tagState,
-                oldState.dateRange,
-                input.tagFilter)
-        return HomeMapperResult(newState, empty())
-    }
+    private fun setTagFilter(state: HomeState, input: SetTagFilterInput) =
+            HomeMapperResult(state.copy(tagFilter = input.tagFilter), empty())
 
-    private fun loadExpenses(oldState: HomeState): HomeMapperResult {
+    private fun loadExpenses(state: HomeState): HomeMapperResult {
         val output = loadExpensesFromDatabase()
                 .map { SetExpenseStateInput(ExpenseState.Expenses(it)) as ApplicationInput }
                 .startWith(SetExpenseStateInput(ExpenseState.Loading) as ApplicationInput)
-        return HomeMapperResult(oldState, output)
+        return HomeMapperResult(state, output)
     }
 
     private fun loadExpensesFromDatabase(): Observable<List<Expense>> {
@@ -75,11 +54,11 @@ class HomeMapper(private val databaseDataSource: DatabaseDataSource) {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    private fun loadTags(oldState: HomeState): HomeMapperResult {
+    private fun loadTags(state: HomeState): HomeMapperResult {
         val output = loadTagsFromDatabase()
                 .map { SetTagStateInput(TagState.Tags(it)) as ApplicationInput }
                 .startWith(SetTagStateInput(TagState.Loading) as ApplicationInput)
-        return HomeMapperResult(oldState, output)
+        return HomeMapperResult(state, output)
     }
 
     private fun loadTagsFromDatabase(): Observable<List<Tag>> {
@@ -88,7 +67,5 @@ class HomeMapper(private val databaseDataSource: DatabaseDataSource) {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    private fun restoreState() = HomeMapperResult(
-            HomeState.INITIAL,
-            empty())
+    private fun restoreState() = HomeMapperResult(HomeState.INITIAL, empty())
 }

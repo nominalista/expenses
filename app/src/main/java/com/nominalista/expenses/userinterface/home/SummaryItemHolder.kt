@@ -3,6 +3,7 @@ package com.nominalista.expenses.userinterface.home
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.nominalista.expenses.R
@@ -27,13 +28,15 @@ class SummaryItemHolder(itemView: View) : HomeItemHolder(itemView) {
     private fun setupRecyclerView() {
         itemView.recycler_view.adapter = adapter
         itemView.recycler_view.layoutManager = layoutManager
+        itemView.recycler_view.itemAnimator = null
         itemView.recycler_view.addItemDecoration(indicatorDecoration)
         snapHelper.attachToRecyclerView(itemView.recycler_view)
     }
 
     fun bind(model: SummaryItemModel) {
-        itemView.chip_date_range.chipText = model.dateRangeText
+        itemView.chip_date_range.text = model.dateRangeText
         itemView.chip_date_range.setOnClickListener { showPopupMenu(model) }
+        itemView.text_message.isVisible = model.itemModels.isEmpty()
         adapter.submitList(model.itemModels)
     }
 
@@ -55,8 +58,9 @@ class SummaryItemHolder(itemView: View) : HomeItemHolder(itemView) {
     }
 
     fun recycle() {
-        itemView.chip_date_range.chipText = ""
+        itemView.chip_date_range.text = ""
         itemView.chip_date_range.setOnClickListener(null)
+        itemView.text_message.isVisible = false
         adapter.submitList(emptyList())
     }
 }

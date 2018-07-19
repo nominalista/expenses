@@ -30,6 +30,7 @@
     <string name="general">General</string>
     <string name="name">Name</string>
     <string name="no">No</string>
+    <string name="no_expenses">No expenses</string>
     <string name="no_notes">No notes</string>
     <string name="no_tags">No tags</string>
     <string name="notes_title">Notes</string>
