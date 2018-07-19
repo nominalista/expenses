@@ -90,7 +90,7 @@ class ExpenseDetailFragment : Fragment() {
 
     private fun createChip(text: String): Chip {
         val chip = Chip(context)
-        chip.chipText = text
+        chip.text = text
         chip.isClickable = false
         return chip
     }

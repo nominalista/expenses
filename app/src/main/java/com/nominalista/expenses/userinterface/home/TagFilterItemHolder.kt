@@ -13,7 +13,7 @@ class TagFilterItemHolder(itemView: View) : HomeItemHolder(itemView) {
 
     private fun createChip(text: String): Chip {
         val chip = Chip(itemView.context)
-        chip.chipText = text
+        chip.text = text
         chip.isClickable = false
         return chip
     }
