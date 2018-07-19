@@ -29,6 +29,7 @@
     <string name="general">Ogólne</string>
     <string name="name">Nazwa</string>
     <string name="no">Nie</string>
+    <string name="no_added_tags_message">Brak dodanych tagów. Możesz zarządzać swoimi tagami w ekranie dodawania nowego wydatku.</string>
     <string name="no_expenses">Brak wydatków</string>
     <string name="no_notes">Brak notatek</string>
     <string name="no_tags">Brak tagów</string>

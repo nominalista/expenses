@@ -29,6 +29,8 @@ class HomeFragmentModel(
     val itemModels = Variable(emptyList<HomeItemModel>())
     val isLoading = Variable(false)
     val showExpenseDetail = Event()
+    val showTagFiltering = Event()
+    val showNoAddedTags = Event()
 
     var tags = emptyList<Tag>()
 
@@ -162,6 +164,11 @@ class HomeFragmentModel(
     }
 
     // Public
+
+    fun filterSelected() {
+        if (tags.isEmpty()) showNoAddedTags.next()
+        else showTagFiltering.next()
+    }
 
     fun tagsFiltered(tagFilter: TagFilter) = sendSetTagFilter(tagFilter)
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.ProgressBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -11,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.infrastructure.extensions.application
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
 import com.nominalista.expenses.userinterface.expensedetail.ExpenseDetailActivity
@@ -85,6 +85,12 @@ class HomeFragment : Fragment() {
         compositeDisposable += model.showExpenseDetail
                 .toObservable()
                 .subscribe { showExpenseDetail() }
+        compositeDisposable += model.showTagFiltering
+                .toObservable()
+                .subscribe { showTagFiltering() }
+        compositeDisposable += model.showNoAddedTags
+                .toObservable()
+                .subscribe { showNoAddedTags() }
     }
 
     private fun configureProgressBar(isVisible: Boolean) {
@@ -93,6 +99,20 @@ class HomeFragment : Fragment() {
 
     private fun showExpenseDetail() {
         ExpenseDetailActivity.start(requireContext())
+    }
+
+    private fun showTagFiltering() {
+        val dialogFragment = TagFilteringDialogFragment.newInstance(model.tags)
+        dialogFragment.tagsFiltered = { model.tagsFiltered(it) }
+        dialogFragment.show(requireFragmentManager(), "TagFilteringDialogFragment")
+    }
+
+    private fun showNoAddedTags() {
+        AlertDialog.Builder(requireActivity())
+                .setMessage(R.string.no_added_tags_message)
+                .setPositiveButton(R.string.ok) { _, _ -> }
+                .create()
+                .show()
     }
 
     // Lifecycle end
@@ -127,13 +147,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun filterSelected(): Boolean {
-        showTagFiltering()
+        model.filterSelected()
         return true
-    }
-
-    private fun showTagFiltering() {
-        val dialogFragment = TagFilteringDialogFragment.newInstance(model.tags)
-        dialogFragment.tagsFiltered = { model.tagsFiltered(it) }
-        dialogFragment.show(requireFragmentManager(), "TagFilteringDialogFragment")
     }
 }
