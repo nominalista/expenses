@@ -10,12 +10,9 @@ import com.nominalista.expenses.R
 open class BaseActivity : AppCompatActivity() {
 
     companion object {
-        @JvmStatic
-        protected val ANIMATION_DEFAULT = 0
-        @JvmStatic
-        protected val ANIMATION_SLIDE_FROM_RIGHT = 1
-        @JvmStatic
-        protected val ANIMATION_SLIDE_FROM_BOTTOM = 2
+        const val ANIMATION_DEFAULT = 0
+        const val ANIMATION_SLIDE_FROM_RIGHT = 1
+        const val ANIMATION_SLIDE_FROM_BOTTOM = 2
     }
 
     protected open var animationKind = ANIMATION_DEFAULT

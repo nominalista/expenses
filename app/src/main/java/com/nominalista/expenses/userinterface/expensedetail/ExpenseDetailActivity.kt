@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.userinterface.common.BaseActivity
 
 class ExpenseDetailActivity: BaseActivity() {
