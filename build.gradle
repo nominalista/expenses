@@ -2,19 +2,18 @@
 
 buildscript {
 
-    ext.gradleVersion = '3.3.0-alpha03'
-    ext.kotlinVersion = '1.2.50'
-
     repositories {
         google()
         jcenter()
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:$gradleVersion"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'com.android.tools.build:gradle:3.3.0-alpha03'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.50'
     }
 }
+
+apply from: 'dependencies.gradle'
 
 allprojects {
     
