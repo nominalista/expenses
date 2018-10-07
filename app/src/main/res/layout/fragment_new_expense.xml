@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/background"
     android:id="@+id/layout_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -120,10 +120,10 @@
                     android:id="@+id/chip_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/spacing_normal"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    app:chipSpacingHorizontal="@dimen/spacing_normal"
-                    app:chipSpacingVertical="@dimen/spacing_normal" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    app:chipSpacing="@dimen/spacing_normal"/>
 
             </FrameLayout>
 
