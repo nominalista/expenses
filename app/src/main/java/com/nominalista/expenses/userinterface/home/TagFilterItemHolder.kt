@@ -2,6 +2,7 @@ package com.nominalista.expenses.userinterface.home
 
 import android.view.View
 import com.google.android.material.chip.Chip
+import com.nominalista.expenses.R
 import kotlinx.android.synthetic.main.item_tag_filter.view.*
 
 class TagFilterItemHolder(itemView: View) : HomeItemHolder(itemView) {

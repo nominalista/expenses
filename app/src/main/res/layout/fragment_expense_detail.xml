@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/primary"
         android:textAppearance="@style/TextAppearance.Expenses.Headline4"
+        android:textColor="@color/primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +71,7 @@
         app:layout_constraintTop_toTopOf="@+id/text_title"
         app:srcCompat="@drawable/ic_title_inactive_dark_24dp" />
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_tag"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
 
         <TextView
             android:id="@+id/text_no_tags"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_large"
@@ -92,18 +92,25 @@
             android:paddingBottom="@dimen/spacing_large"
             android:text="@string/no_tags"
             android:textAppearance="@style/TextAppearance.Expenses.Subtitle1"
-            android:textColor="@color/text_secondary_dark" />
+            android:textColor="@color/text_secondary_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/spacing_normal"
-            android:paddingBottom="@dimen/spacing_normal"
-            app:chipSpacingHorizontal="@dimen/spacing_normal"
-            app:chipSpacingVertical="@dimen/spacing_normal" />
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            app:chipSpacing="@dimen/spacing_normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/image_tags"

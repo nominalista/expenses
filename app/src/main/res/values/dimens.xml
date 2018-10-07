@@ -11,4 +11,6 @@
 
     <dimen name="divider">0.5dp</dimen>
 
+    <dimen name="chip_height">32dp</dimen>
+
 </resources>

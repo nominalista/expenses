@@ -10,6 +10,7 @@
     <string name="all_time">Cały czas</string>
     <string name="cancel">Anuluj</string>
     <string name="column_amount">Kwota</string>
+    <string name="column_currency">Waluta</string>
     <string name="column_date">Data</string>
     <string name="column_notes">Notatki</string>
     <string name="column_tags">Tagi</string>

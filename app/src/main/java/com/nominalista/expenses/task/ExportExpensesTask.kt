@@ -76,6 +76,7 @@ class ExportExpensesTask(
     private fun createColumnNames(): List<String> {
         val list = ArrayList<String>()
         list.add(context.getString(R.string.column_amount))
+        list.add(context.getString(R.string.column_currency))
         list.add(context.getString(R.string.column_title))
         list.add(context.getString(R.string.column_date))
         list.add(context.getString(R.string.column_notes))
@@ -94,7 +95,8 @@ class ExportExpensesTask(
 
     private fun createExpenseColumns(expense: Expense): List<String> {
         val list = ArrayList<String>()
-        list.add("%.2f".format(expense.amount) + " " + expense.currency.symbol)
+        list.add("%.2f".format(expense.amount))
+        list.add(expense.currency.code)
         list.add(expense.title)
         list.add(expense.date.toReadableString())
         list.add(expense.notes)

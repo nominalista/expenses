@@ -9,6 +9,7 @@
     <string name="all_time">All time</string>
     <string name="cancel">Cancel</string>
     <string name="column_amount">Amount</string>
+    <string name="column_currency">Currency</string>
     <string name="column_date">Date</string>
     <string name="column_notes">Notes</string>
     <string name="column_tags">Tags</string>
