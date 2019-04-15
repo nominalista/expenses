@@ -1,4 +1,4 @@
-package com.nominalista.expenses.userinterface.newexpense.tagselection
+package com.nominalista.expenses.userinterface.addeditexpense.tagselection
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

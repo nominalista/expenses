@@ -1,4 +1,4 @@
-package com.nominalista.expenses.userinterface.newexpense.dateselection
+package com.nominalista.expenses.userinterface.addeditexpense.dateselection
 
 import android.app.DatePickerDialog
 import android.app.Dialog

@@ -1,8 +1,9 @@
-package com.nominalista.expenses.userinterface.newexpense.tagselection
+package com.nominalista.expenses.userinterface.addeditexpense.tagselection
 
 import com.nominalista.expenses.data.Tag
 
-class TagItemModel(val tag: Tag): TagSelectionItemModel {
+class TagItemModel(val tag: Tag):
+    TagSelectionItemModel {
 
     var isChecked = false
     val name = tag.name

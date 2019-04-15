@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nominalista.expenses.R
 import com.nominalista.expenses.infrastructure.extensions.application
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
+import com.nominalista.expenses.userinterface.addeditexpense.AddEditExpenseActivity
 import com.nominalista.expenses.userinterface.expensedetail.ExpenseDetailActivity
-import com.nominalista.expenses.userinterface.newexpense.NewExpenseActivity
 import com.nominalista.expenses.userinterface.settings.SettingsActivity
 import io.reactivex.disposables.CompositeDisposable
 
@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupNewExpenseLayout() {
-        newExpenseButton.setOnClickListener { NewExpenseActivity.start(requireContext()) }
+        newExpenseButton.setOnClickListener { AddEditExpenseActivity.start(requireContext()) }
     }
 
     private fun setupViewModel() {

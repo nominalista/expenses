@@ -76,7 +76,7 @@ class NewExpenseMapper(
     }
 
     private fun loadDefaultCurrencyFromPreferences(context: Context): Observable<Currency> {
-        return preferenceDataSource.getDefaultCurrency(context)
+        return preferenceDataSource.loadDefaultCurrency(context)
                 .subscribeOn(io())
                 .observeOn(mainThread())
     }

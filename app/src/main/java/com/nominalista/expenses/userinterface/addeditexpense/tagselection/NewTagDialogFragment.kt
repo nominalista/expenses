@@ -1,4 +1,4 @@
-package com.nominalista.expenses.userinterface.newexpense.tagselection
+package com.nominalista.expenses.userinterface.addeditexpense.tagselection
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -16,7 +16,8 @@ import com.nominalista.expenses.infrastructure.extensions.afterTextChanged
 class NewTagDialogFragment : DialogFragment() {
 
     companion object {
-        fun newInstance() = NewTagDialogFragment()
+        fun newInstance() =
+            NewTagDialogFragment()
     }
 
     var tagCreated: ((Tag) -> Unit)? = null

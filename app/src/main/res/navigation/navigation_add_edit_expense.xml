@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_home"
+    app:startDestination="@id/fragment_add_edit_expense">
+
+    <fragment
+        android:id="@+id/fragment_add_edit_expense"
+        android:name="com.nominalista.expenses.userinterface.addeditexpense.AddEditExpenseFragment"
+        android:label="AddEditExpenseFragment">
+
+        <argument
+            android:name="expense"
+            app:argType="com.nominalista.expenses.data.Expense"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/action_tag_selection"
+            app:destination="@id/fragment_tag_selection" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_tag_selection"
+        android:name="com.nominalista.expenses.userinterface.addeditexpense.tagselection.TagSelectionFragment"
+        android:label="TagSelectionFragment" />
+
+</navigation>

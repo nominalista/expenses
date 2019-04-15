@@ -1,9 +1,6 @@
 package com.nominalista.expenses.data.database.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.nominalista.expenses.data.Expense
 
 @Dao
@@ -14,6 +11,9 @@ interface ExpenseDao {
 
     @Insert
     fun insert(expense: Expense): Long
+
+    @Update
+    fun update(expense: Expense)
 
     @Delete
     fun delete(expense: Expense)

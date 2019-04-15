@@ -39,6 +39,19 @@ class DatabaseDataSource(private val database: ApplicationDatabase) {
         }
     }
 
+    fun updateExpense(expense: Expense): Completable {
+        return Completable.fromAction {
+            database.expenseTagJoinDao().deleteByExpenseId(expense.id)
+
+            database.expenseDao().update(expense)
+
+            for (tag in expense.tags) {
+                val join = ExpenseTagJoin(expense.id, tag.id)
+                database.expenseTagJoinDao().insert(join)
+            }
+        }
+    }
+
     fun deleteExpense(expense: Expense): Completable {
         return Completable.defer { database.expenseDao().delete(expense); Completable.complete() }
     }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".userinterface.newexpense.NewExpenseActivity">
+    tools:context=".userinterface.addeditexpense.AddEditExpenseActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -22,6 +22,6 @@
         android:id="@+id/fragment_navigation_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation_new_expense" />
+        app:navGraph="@navigation/navigation_add_edit_expense" />
 
 </LinearLayout>

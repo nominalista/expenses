@@ -1,4 +1,4 @@
-package com.nominalista.expenses.userinterface.newexpense.timeselection
+package com.nominalista.expenses.userinterface.addeditexpense.timeselection
 
 import android.app.Dialog
 import android.app.TimePickerDialog

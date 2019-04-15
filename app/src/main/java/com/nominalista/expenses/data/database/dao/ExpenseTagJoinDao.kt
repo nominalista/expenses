@@ -20,4 +20,7 @@ interface ExpenseTagJoinDao {
 
     @Insert
     fun insert(join: ExpenseTagJoin)
+
+    @Query("DELETE FROM expense_tag_joins WHERE expense_tag_joins.expense_id = :expenseId")
+    fun deleteByExpenseId(expenseId: Long)
 }

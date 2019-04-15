@@ -26,7 +26,7 @@
         <activity android:name=".userinterface.expensedetail.ExpenseDetailActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".userinterface.newexpense.NewExpenseActivity"
+        <activity android:name=".userinterface.addeditexpense.AddEditExpenseActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
 

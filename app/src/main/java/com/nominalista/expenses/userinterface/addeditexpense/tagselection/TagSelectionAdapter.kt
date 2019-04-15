@@ -1,4 +1,4 @@
-package com.nominalista.expenses.userinterface.newexpense.tagselection
+package com.nominalista.expenses.userinterface.addeditexpense.tagselection
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,14 +10,20 @@ private const val ADD_TAG_ITEM_TYPE = R.layout.item_add_tag
 private const val TAG_ITEM_TYPE = R.layout.item_tag
 
 class TagSelectionAdapter
-    : ListAdapter<TagSelectionItemModel, TagSelectionItemHolder>(DiffCallback()) {
+    : ListAdapter<TagSelectionItemModel, TagSelectionItemHolder>(
+    DiffCallback()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagSelectionItemHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemView = inflater.inflate(viewType, parent, false)
         return when (viewType) {
-            ADD_TAG_ITEM_TYPE -> AddTagItemHolder(itemView)
-            TAG_ITEM_TYPE -> TagItemHolder(itemView)
+            ADD_TAG_ITEM_TYPE -> AddTagItemHolder(
+                itemView
+            )
+            TAG_ITEM_TYPE -> TagItemHolder(
+                itemView
+            )
             else -> throw IllegalArgumentException()
         }
     }
@@ -49,8 +55,8 @@ class TagSelectionAdapter
     private class DiffCallback : DiffUtil.ItemCallback<TagSelectionItemModel>() {
 
         override fun areItemsTheSame(
-                oldItem: TagSelectionItemModel,
-                newItem: TagSelectionItemModel
+            oldItem: TagSelectionItemModel,
+            newItem: TagSelectionItemModel
         ): Boolean {
             return when {
                 oldItem is AddTagItemModel && newItem is AddTagItemModel -> true
@@ -61,8 +67,8 @@ class TagSelectionAdapter
         }
 
         override fun areContentsTheSame(
-                oldItem: TagSelectionItemModel,
-                newItem: TagSelectionItemModel
+            oldItem: TagSelectionItemModel,
+            newItem: TagSelectionItemModel
         ): Boolean {
             return when {
                 oldItem is AddTagItemModel && newItem is AddTagItemModel -> true

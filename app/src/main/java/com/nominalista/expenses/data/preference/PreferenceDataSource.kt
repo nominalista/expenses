@@ -10,7 +10,7 @@ import io.reactivex.Observable
 
 class PreferenceDataSource {
 
-    fun getDefaultCurrency(context: Context): Observable<Currency> {
+    fun loadDefaultCurrency(context: Context): Observable<Currency> {
         return Observable.defer {
             val preferences = getPreferences(context)
             val key = context.getString(R.string.key_default_currency)

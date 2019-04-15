@@ -1,4 +1,4 @@
-package com.nominalista.expenses.userinterface.newexpense.tagselection
+package com.nominalista.expenses.userinterface.addeditexpense.tagselection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -59,7 +59,8 @@ class TagSelectionFragmentModel(private val automaton: ApplicationAutomaton) : V
     private fun createTagSection(tags: List<Tag>) = tags.map { createTagItemModel(it) }
 
     private fun createTagItemModel(tag: Tag): TagItemModel {
-        val itemModel = TagItemModel(tag)
+        val itemModel =
+            TagItemModel(tag)
         itemModel.checkClick = { checkTag(itemModel) }
         itemModel.deleteClick = { deleteTag(itemModel) }
         return itemModel
@@ -84,7 +85,8 @@ class TagSelectionFragmentModel(private val automaton: ApplicationAutomaton) : V
     private fun createAddTagSection() = listOf(createAddTagItemModel())
 
     private fun createAddTagItemModel(): AddTagItemModel {
-        val itemModel = AddTagItemModel()
+        val itemModel =
+            AddTagItemModel()
         itemModel.click = { showNewTagDialog.next() }
         return itemModel
     }
@@ -141,7 +143,9 @@ class TagSelectionFragmentModel(private val automaton: ApplicationAutomaton) : V
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             val automaton = application.automaton
-            return TagSelectionFragmentModel(automaton) as T
+            return TagSelectionFragmentModel(
+                automaton
+            ) as T
         }
     }
 }

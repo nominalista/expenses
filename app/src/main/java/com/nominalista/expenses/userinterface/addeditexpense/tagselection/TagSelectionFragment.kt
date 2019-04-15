@@ -1,4 +1,4 @@
-package com.nominalista.expenses.userinterface.newexpense.tagselection
+package com.nominalista.expenses.userinterface.addeditexpense.tagselection
 
 import android.os.Bundle
 import android.view.*
@@ -53,14 +53,18 @@ class TagSelectionFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = TagSelectionAdapter()
+        adapter =
+            TagSelectionAdapter()
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
     }
 
     private fun setupModel() {
-        val factory = TagSelectionFragmentModel.Factory(requireContext().application)
+        val factory =
+            TagSelectionFragmentModel.Factory(
+                requireContext().application
+            )
         model = ViewModelProviders.of(this, factory).get(TagSelectionFragmentModel::class.java)
     }
 
@@ -72,7 +76,8 @@ class TagSelectionFragment : Fragment() {
     }
 
     private fun showNewTagDialog() {
-        val dialogFragment = NewTagDialogFragment.newInstance()
+        val dialogFragment =
+            NewTagDialogFragment.newInstance()
         dialogFragment.tagCreated = { model.createTag(it) }
         dialogFragment.show(requireFragmentManager(), "NewTagDialogFragment")
     }

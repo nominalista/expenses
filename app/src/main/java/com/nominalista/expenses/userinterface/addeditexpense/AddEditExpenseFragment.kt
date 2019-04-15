@@ -1,71 +1,50 @@
-package com.nominalista.expenses.userinterface.newexpense
+package com.nominalista.expenses.userinterface.addeditexpense
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Currency
 import com.nominalista.expenses.data.Date
+import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.infrastructure.extensions.afterTextChanged
 import com.nominalista.expenses.infrastructure.extensions.application
 import com.nominalista.expenses.infrastructure.extensions.hideKeyboard
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
 import com.nominalista.expenses.userinterface.common.currencyselection.CurrencySelectionDialogFragment
-import com.nominalista.expenses.userinterface.newexpense.dateselection.DateSelectionDialogFragment
-import com.nominalista.expenses.userinterface.newexpense.timeselection.TimeSelectionDialogFragment
+import com.nominalista.expenses.userinterface.addeditexpense.dateselection.DateSelectionDialogFragment
+import com.nominalista.expenses.userinterface.addeditexpense.timeselection.TimeSelectionDialogFragment
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.fragment_add_edit_expense.*
 
-class NewExpenseFragment : Fragment() {
+class AddEditExpenseFragment : Fragment() {
 
-    private lateinit var currencyText: TextView
-    private lateinit var amountEditText: EditText
-    private lateinit var titleEditText: EditText
-    private lateinit var notesEditText: EditText
-    private lateinit var tagLayout: ViewGroup
-    private lateinit var selectTagsText: TextView
-    private lateinit var chipGroup: ChipGroup
-    private lateinit var dateText: TextView
+    private lateinit var model: AddEditExpenseFragmentModel
 
-    private lateinit var model: NewExpenseFragmentModel
-
-    private val compositeDisposable = CompositeDisposable()
+    private val disposables = CompositeDisposable()
 
     // Lifecycle start
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_new_expense, container, false)
+        return inflater.inflate(R.layout.fragment_add_edit_expense, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindWidgets(view)
         setupActionBar()
         watchEditTexts()
         addListeners()
         setupModel()
         bindModel()
-    }
-
-    private fun bindWidgets(view: View) {
-        currencyText = view.findViewById(R.id.text_symbol)
-        amountEditText = view.findViewById(R.id.edit_text_amount)
-        titleEditText = view.findViewById(R.id.edit_text_title)
-        notesEditText = view.findViewById(R.id.edit_text_notes)
-        tagLayout = view.findViewById(R.id.layout_tag)
-        selectTagsText = view.findViewById(R.id.text_select_tags)
-        chipGroup = view.findViewById(R.id.chip_group)
-        dateText = view.findViewById(R.id.text_date)
     }
 
     private fun setupActionBar() {
@@ -77,15 +56,17 @@ class NewExpenseFragment : Fragment() {
     }
 
     private fun watchEditTexts() {
-        amountEditText.afterTextChanged { model.updateAmount(it.toString().toFloatOrNull() ?: 0f) }
-        titleEditText.afterTextChanged { model.updateTitle(it.toString()) }
-        notesEditText.afterTextChanged { model.updateNotes(it.toString()) }
+        edit_text_amount.afterTextChanged {
+            model.updateAmount(it.toString().toFloatOrNull() ?: 0f)
+        }
+        edit_text_title.afterTextChanged { model.updateTitle(it.toString()) }
+        edit_text_notes.afterTextChanged { model.updateNotes(it.toString()) }
     }
 
     private fun addListeners() {
-        currencyText.setOnClickListener { showCurrencySelection() }
-        tagLayout.setOnClickListener { showTagSelection() }
-        dateText.setOnClickListener { showDateSelection() }
+        text_symbol.setOnClickListener { showCurrencySelection() }
+        layout_tag.setOnClickListener { showTagSelection() }
+        text_date.setOnClickListener { showDateSelection() }
     }
 
     private fun showCurrencySelection() {
@@ -99,13 +80,15 @@ class NewExpenseFragment : Fragment() {
     }
 
     private fun showDateSelection() {
-        val dialogFragment = DateSelectionDialogFragment()
+        val dialogFragment =
+            DateSelectionDialogFragment()
         dialogFragment.dateSelected = { y, m, d -> showTimeSelection(y, m, d) }
         dialogFragment.show(requireFragmentManager(), "DateSelectionDialogFragment")
     }
 
     private fun showTimeSelection(year: Int, month: Int, day: Int) {
-        val dialogFragment = TimeSelectionDialogFragment()
+        val dialogFragment =
+            TimeSelectionDialogFragment()
         dialogFragment.timeSelected = { h, m -> selectDate(year, month, day, h, m) }
         dialogFragment.show(requireFragmentManager(), "TimeSelectionDialogFragment")
     }
@@ -115,29 +98,43 @@ class NewExpenseFragment : Fragment() {
     }
 
     private fun setupModel() {
-        val factory = NewExpenseFragmentModel.Factory(requireContext().application)
-        model = ViewModelProviders.of(this, factory).get(NewExpenseFragmentModel::class.java)
+        val expense = extractExpenseFromArguments()
+        val factory = AddEditExpenseFragmentModel.Factory(requireContext().application, expense)
+        model = ViewModelProviders.of(this, factory).get(AddEditExpenseFragmentModel::class.java)
+    }
+
+    private fun extractExpenseFromArguments(): Expense? {
+        val arguments = arguments
+        if (arguments == null) {
+            Log.d(TAG, "No arguments passed.")
+            return null
+        }
+
+        val args = AddEditExpenseFragmentArgs.fromBundle(arguments)
+        return args.expense
     }
 
     private fun bindModel() {
-        compositeDisposable += model.selectedCurrency
-                .toObservable()
-                .subscribe { updateCurrencyText(it) }
-        compositeDisposable += model.selectedDate.toObservable().subscribe { updateDateText(it) }
-        compositeDisposable += model.selectedTags.toObservable().subscribe { updateTagLayout(it) }
-        compositeDisposable += model.finish.toObservable().subscribe { finish() }
+        disposables += model.selectedCurrency
+            .toObservable()
+            .subscribe { updateCurrencyText(it) }
+        disposables += model.selectedDate.toObservable().subscribe { updateDateText(it) }
+        disposables += model.selectedTags.toObservable().subscribe { updateTagLayout(it) }
+        disposables += model.finish.toObservable().subscribe { finish() }
     }
 
     private fun updateCurrencyText(currency: Currency) {
         val context = requireContext()
-        val text = context.getString(R.string.currency_abbreviation,
-                currency.flag,
-                currency.code)
-        currencyText.text = text
+        val text = context.getString(
+            R.string.currency_abbreviation,
+            currency.flag,
+            currency.code
+        )
+        text_symbol.text = text
     }
 
     private fun updateDateText(date: Date) {
-        dateText.text = date.toReadableString()
+        text_date.text = date.toReadableString()
     }
 
     private fun updateTagLayout(tags: List<Tag>) {
@@ -146,12 +143,12 @@ class NewExpenseFragment : Fragment() {
     }
 
     private fun updateSelectTagsText(isVisible: Boolean) {
-        selectTagsText.visibility = if (isVisible) View.VISIBLE else View.GONE
+        text_select_tags.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
     private fun updateChipGroup(tags: List<Tag>) {
-        chipGroup.removeAllViews()
-        tags.forEach { chipGroup.addView(createChip(it.name)) }
+        chip_group.removeAllViews()
+        tags.forEach { chip_group.addView(createChip(it.name)) }
     }
 
     private fun createChip(text: String): Chip {
@@ -174,7 +171,7 @@ class NewExpenseFragment : Fragment() {
     }
 
     private fun unbindModel() {
-        compositeDisposable.clear()
+        disposables.clear()
     }
 
     // Options
@@ -198,7 +195,11 @@ class NewExpenseFragment : Fragment() {
     }
 
     private fun saveSelected(): Boolean {
-        model.createExpense()
+        model.saveExpense()
         return true
+    }
+
+    companion object {
+        private val TAG = AddEditExpenseFragment::class.java.simpleName
     }
 }
