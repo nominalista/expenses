@@ -5,6 +5,7 @@ import com.nominalista.expenses.data.ExpenseTagJoin
 import com.nominalista.expenses.data.Tag
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
 class DatabaseDataSource(private val database: ApplicationDatabase) {
@@ -62,15 +63,15 @@ class DatabaseDataSource(private val database: ApplicationDatabase) {
 
     // Tags
 
-    fun getTags(): Observable<List<Tag>> {
-        return Observable.defer { Observable.just(database.tagDao().getAll()) }
+    fun observeTags(): Observable<List<Tag>> {
+        return Observable.fromCallable { database.tagDao().getAll() }
     }
 
-    fun insertTag(tag: Tag): Observable<Long> {
-        return Observable.defer { Observable.just(database.tagDao().insert(tag)) }
+    fun insertTag(tag: Tag): Single<Long> {
+        return Single.fromCallable { database.tagDao().insert(tag) }
     }
 
     fun deleteTag(tag: Tag): Completable {
-        return Completable.defer { database.tagDao().delete(tag); Completable.complete() }
+        return Completable.fromAction { database.tagDao().delete(tag) }
     }
 }

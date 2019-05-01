@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.chip.Chip
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_add_edit_expense.*
 
 class AddEditExpenseFragment : Fragment() {
 
+    private lateinit var activityModel: AddEditExpenseActivityModel
     private lateinit var model: AddEditExpenseFragmentModel
 
     private val disposables = CompositeDisposable()
@@ -43,8 +45,8 @@ class AddEditExpenseFragment : Fragment() {
         setupActionBar()
         watchEditTexts()
         addListeners()
-        setupModel()
-        bindModel()
+        initializeModels()
+        bindModels()
     }
 
     private fun setupActionBar() {
@@ -97,7 +99,10 @@ class AddEditExpenseFragment : Fragment() {
         model.selectDate(year, month, day, hour, minute)
     }
 
-    private fun setupModel() {
+    private fun initializeModels() {
+        activityModel = ViewModelProviders.of(requireActivity())
+            .get(AddEditExpenseActivityModel::class.java)
+
         val expense = extractExpenseFromArguments()
         val factory = AddEditExpenseFragmentModel.Factory(requireContext().application, expense)
         model = ViewModelProviders.of(this, factory).get(AddEditExpenseFragmentModel::class.java)
@@ -114,7 +119,9 @@ class AddEditExpenseFragment : Fragment() {
         return args.expense
     }
 
-    private fun bindModel() {
+    private fun bindModels() {
+        activityModel.selectedTags.observe(this, Observer { model.selectTags(it) })
+
         disposables += model.selectedCurrency
             .toObservable()
             .subscribe { updateCurrencyText(it) }
@@ -166,11 +173,11 @@ class AddEditExpenseFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        unbindModel()
+        clearDisposables()
         hideKeyboard()
     }
 
-    private fun unbindModel() {
+    private fun clearDisposables() {
         disposables.clear()
     }
 

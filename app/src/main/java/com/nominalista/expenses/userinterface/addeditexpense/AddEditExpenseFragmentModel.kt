@@ -80,6 +80,10 @@ class AddEditExpenseFragmentModel(
         selectedCurrency.value = currency
     }
 
+    fun selectTags(tags: List<Tag>) {
+        selectedTags.value = tags
+    }
+
     fun selectDate(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
         val date = Date.from(year, month, day, hour, minute, 0)
         selectedDate.value = date

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nominalista.expenses.R
 import com.nominalista.expenses.infrastructure.extensions.application
 import com.nominalista.expenses.infrastructure.extensions.plusAssign
+import com.nominalista.expenses.userinterface.addeditexpense.AddEditExpenseActivityModel
 import io.reactivex.disposables.CompositeDisposable
 
 class TagSelectionFragment : Fragment() {
@@ -17,16 +18,17 @@ class TagSelectionFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: TagSelectionAdapter
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var activityModel: AddEditExpenseActivityModel
     private lateinit var model: TagSelectionFragmentModel
 
-    private val compositeDisposable = CompositeDisposable()
+    private val disposables = CompositeDisposable()
 
     // Lifecycle start
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.fragment_tag_selection, container, false)
     }
@@ -36,7 +38,7 @@ class TagSelectionFragment : Fragment() {
         bindWidgets(view)
         setupActionBar()
         setupRecyclerView()
-        setupModel()
+        setupModels()
         bindModel()
     }
 
@@ -53,31 +55,35 @@ class TagSelectionFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter =
-            TagSelectionAdapter()
+        adapter = TagSelectionAdapter()
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
     }
 
-    private fun setupModel() {
-        val factory =
-            TagSelectionFragmentModel.Factory(
-                requireContext().application
-            )
+    private fun setupModels() {
+        activityModel = ViewModelProviders.of(requireActivity())
+            .get(AddEditExpenseActivityModel::class.java)
+
+        val factory = TagSelectionFragmentModel.Factory(requireContext().application)
         model = ViewModelProviders.of(this, factory).get(TagSelectionFragmentModel::class.java)
     }
 
     private fun bindModel() {
-        compositeDisposable += model.itemModels.toObservable().subscribe(adapter::submitList)
-        compositeDisposable += model.showNewTagDialog
-                .toObservable()
-                .subscribe { showNewTagDialog() }
+        disposables += model.itemModels.toObservable().subscribe(adapter::submitList)
+        disposables += model.showNewTagDialog
+            .toObservable()
+            .subscribe { showNewTagDialog() }
+        disposables += model.delegateSelectedTags
+            .toObservable()
+            .subscribe { activityModel.selectTags(it) }
+        disposables += model.finish
+            .toObservable()
+            .subscribe { requireActivity().onBackPressed() }
     }
 
     private fun showNewTagDialog() {
-        val dialogFragment =
-            NewTagDialogFragment.newInstance()
+        val dialogFragment = NewTagDialogFragment.newInstance()
         dialogFragment.tagCreated = { model.createTag(it) }
         dialogFragment.show(requireFragmentManager(), "NewTagDialogFragment")
     }
@@ -86,11 +92,11 @@ class TagSelectionFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        unbindModel()
+        clearDisposables()
     }
 
-    private fun unbindModel() {
-        compositeDisposable.clear()
+    private fun clearDisposables() {
+        disposables.clear()
     }
 
     // Options
@@ -115,7 +121,6 @@ class TagSelectionFragment : Fragment() {
 
     private fun confirmSelected(): Boolean {
         model.confirm()
-        requireActivity().onBackPressed()
         return true
     }
 }

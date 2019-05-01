@@ -62,7 +62,7 @@ class HomeMapper(private val databaseDataSource: DatabaseDataSource) {
     }
 
     private fun loadTagsFromDatabase(): Observable<List<Tag>> {
-        return databaseDataSource.getTags()
+        return databaseDataSource.observeTags()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
