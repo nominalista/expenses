@@ -1,74 +1,80 @@
-package com.nominalista.expenses.settings.domain
+package com.nominalista.expenses.settings.work
 
 import android.content.Context
 import android.os.Environment.DIRECTORY_DOWNLOADS
 import android.os.Environment.getExternalStoragePublicDirectory
+import androidx.work.*
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Date
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.database.DatabaseDataSource
-import io.reactivex.Completable
+import com.nominalista.expenses.util.extensions.application
+import io.reactivex.Single
 import jxl.Workbook
 import jxl.write.Label
 import jxl.write.WritableSheet
 import jxl.write.WritableWorkbook
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
-class ExportExpensesUseCase(
-    private val databaseDataSource: DatabaseDataSource
-) {
+class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
+    RxWorker(context, workerParams) {
 
-    operator fun invoke(context: Context): Completable {
-        return databaseDataSource.getExpenses()
-            .map { sort(it) }
-            .map { export(context, it) }
-            .ignoreElements()
+    override fun createWork(): Single<Result> {
+        return prepareExpenses().map { export(it) }.map { Result.success() }
     }
 
-    private fun sort(expenses: List<Expense>) = expenses.sortedBy { it.date.utcTimestamp }
+    private fun prepareExpenses(): Single<List<Expense>> {
+        val database = applicationContext.application.database
+        val databaseDataSource = DatabaseDataSource(database)
 
-    private fun export(context: Context, expenses: List<Expense>): Boolean {
-        val file = createFile(context)
-        val workbook = Workbook.createWorkbook(file)
-        val sheet = createSheet(context, workbook)
-        addContent(context, sheet, expenses)
+        return databaseDataSource.getExpenses()
+            .map { expenses -> expenses.sortedBy { it.date.utcTimestamp } }
+    }
+
+    private fun export(expenses: List<Expense>) {
+        val workbook = Workbook.createWorkbook(createFile())
+        val sheet = createSheet(workbook)
+
+        addContent(sheet, expenses)
+
         workbook.write()
         workbook.close()
-        return true
     }
 
-    private fun createFile(context: Context): File {
+    private fun createFile(): File {
         val downloads = getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)
-        val appName = context.getString(R.string.app_name)
+        val appName = applicationContext.getString(R.string.app_name)
         val dateString = Date.now().toString(DATE_PATTERN)
         val fileName = "${appName}_$dateString"
         val extension = ".xls"
         return File(downloads, fileName + extension)
     }
 
-    private fun createSheet(context: Context, workbook: WritableWorkbook): WritableSheet {
-        val name = context.getString(R.string.expenses)
+    private fun createSheet(workbook: WritableWorkbook): WritableSheet {
+        val name = applicationContext.getString(R.string.expenses)
         return workbook.createSheet(name, 0)
     }
 
-    private fun addContent(context: Context, sheet: WritableSheet, expenses: List<Expense>) {
-        addColumnNames(context, sheet)
+    private fun addContent(sheet: WritableSheet, expenses: List<Expense>) {
+        addColumnNames(sheet)
         addExpenses(sheet, expenses)
     }
 
-    private fun addColumnNames(context: Context, sheet: WritableSheet) {
-        val columnNames = createColumnNames(context)
+    private fun addColumnNames(sheet: WritableSheet) {
+        val columnNames = createColumnNames()
         columnNames.forEachIndexed { column, columnName -> addCell(sheet, 0, column, columnName) }
     }
 
-    private fun createColumnNames(context: Context): List<String> {
+    private fun createColumnNames(): List<String> {
         val list = ArrayList<String>()
-        list.add(context.getString(R.string.column_amount))
-        list.add(context.getString(R.string.column_currency))
-        list.add(context.getString(R.string.column_title))
-        list.add(context.getString(R.string.column_date))
-        list.add(context.getString(R.string.column_notes))
-        list.add(context.getString(R.string.column_tags))
+        list.add(applicationContext.getString(R.string.column_amount))
+        list.add(applicationContext.getString(R.string.column_currency))
+        list.add(applicationContext.getString(R.string.column_title))
+        list.add(applicationContext.getString(R.string.column_date))
+        list.add(applicationContext.getString(R.string.column_notes))
+        list.add(applicationContext.getString(R.string.column_tags))
         return list
     }
 
@@ -98,6 +104,15 @@ class ExportExpensesUseCase(
     }
 
     companion object {
+
         private const val DATE_PATTERN = "yyyyMMdd_HHmmss"
+
+        fun enqueue(): UUID {
+            val request = OneTimeWorkRequest.Builder(ExpenseExportWorker::class.java).build()
+
+            WorkManager.getInstance().enqueue(request)
+
+            return request.id
+        }
     }
 }

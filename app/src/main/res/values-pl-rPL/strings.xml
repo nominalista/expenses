@@ -6,7 +6,6 @@
     <string name="add_tag">Dodaj tag</string>
     <string name="add_expense_button">Dodaj wydatek</string>
     <string name="amount">Kwota</string>
-    <string name="all_expenses_deleted">Wszystkie wydatki zostały usunięte.</string>
     <string name="all_time">Cały czas</string>
     <string name="cancel">Anuluj</string>
     <string name="column_amount">Kwota</string>
@@ -23,10 +22,12 @@
     <string name="delete_expense_message">Czy na pewno chcesz usunąć wydatek?</string>
     <string name="edit">Edytuj</string>
     <string name="expense_detail_title">Detale</string>
+    <string name="expense_deletion_failure_message">Nie można było usunąć wydatków. Spróbuj ponownie.</string>
+    <string name="expense_deletion_success_message">Pomyślnie usunięto wszystkie wydatki.</string>
     <string name="expense_export_failure_message">Nie można było wyeksportować wydatków. Spróbuj ponownie.</string>
     <string name="expense_export_success_message">Pomyślnie wyeksportowano wydatki do folderu Pobrane.</string>
     <string name="expenses">Wydatki</string>
-    <string name="export_to_excel">Eksportuj do Excela</string>
+    <string name="export_to_excel">Eksportuj do Excela (.xls)</string>
     <string name="filter">Filtruj</string>
     <string name="filter_tags">Filtruj tagi</string>
     <string name="general">Ogólne</string>

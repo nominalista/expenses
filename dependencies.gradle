@@ -45,7 +45,8 @@ ext {
             "rxAndroid"               : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
             "rxRelay"                 : "com.jakewharton.rxrelay2:rxrelay:${rxRelayVersion}",
             "threeTen"                : "com.jakewharton.threetenabp:threetenabp:${threeTeenVersion}",
-            "workRuntime"             : "androidx.work:work-runtime-ktx:${workVersion}"
+            "workRuntime"             : "androidx.work:work-runtime-ktx:${workVersion}",
+            "workRxJava"              : "androidx.work:work-rxjava2:${workVersion}"
     ]
 
     appTestDependencies = [

@@ -2,44 +2,43 @@ package com.nominalista.expenses.settings.presentation
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.WorkInfo
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Currency
-import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.data.preference.PreferenceDataSource
-import com.nominalista.expenses.util.extensions.plusAssign
+import com.nominalista.expenses.settings.work.ExpenseDeletionWorker
+import com.nominalista.expenses.settings.work.ExpenseExportWorker
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
 import com.nominalista.expenses.util.reactive.Variable
-import com.nominalista.expenses.settings.domain.DeleteAllExpensesUseCase
-import com.nominalista.expenses.settings.domain.ExportExpensesUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers.io
+import java.util.*
 
 class SettingsFragmentModel(
     application: Application,
-    private val preferenceDataSource: PreferenceDataSource,
-    private val exportExpensesUseCase: ExportExpensesUseCase,
-    private val deleteAllExpensesUseCase: DeleteAllExpensesUseCase
+    private val preferenceDataSource: PreferenceDataSource
 ) : AndroidViewModel(application) {
 
     val itemModels = Variable(emptyList<SettingItemModel>())
 
     val showCurrencySelectionDialog = Event()
     val showDeleteAllExpensesDialog = Event()
-    val showAllExpensesDeletedMessage = Event()
-    val showExpenseExportMessage = DataEvent<String>()
-    val showWebsite = DataEvent<Uri>()
-    val requestWriteExternalStoragePermission =
-        DataEvent<Int>()
 
-    private var isExporting = false
-    private var isDeleting = false
+    val showExpenseExportMessage = DataEvent<Int>()
+    val showExpensesDeletionMessage = DataEvent<Int>()
+
+    val showWebsite = DataEvent<Uri>()
+
+    val requestWriteExternalStoragePermission = DataEvent<Int>()
+
+    val observeWorkInfo = DataEvent<UUID>()
+
+    private var expenseExportId: UUID? = null
+    private var expenseDeletionId: UUID? = null
 
     private val disposables = CompositeDisposable()
 
@@ -152,66 +151,65 @@ class SettingsFragmentModel(
     }
 
     private fun exportExpenses() {
-        if (isExporting) return
+        if (expenseExportId != null) return
 
-        disposables += exportExpensesUseCase(getApplication<Application>())
-            .subscribeOn(io())
-            .observeOn(mainThread())
-            .doOnSubscribe { isExporting = true }
-            .doFinally { isExporting = false }
-            .subscribe({
-                showExpenseExportMessage(true)
-            }, {
-                showExpenseExportMessage(false)
-            })
-    }
-
-    private fun showExpenseExportMessage(isSuccessful: Boolean) {
-        val messageResId = if (isSuccessful) {
-            R.string.expense_export_success_message
-        } else {
-            R.string.expense_export_failure_message
-        }
-
-        showExpenseExportMessage.next(getApplication<Application>().getString(messageResId))
+        val id = ExpenseExportWorker.enqueue()
+        expenseExportId = id
+        observeWorkInfo.next(id)
     }
 
     fun deleteAllExpenses() {
-        disposables += deleteAllExpensesUseCase()
-            .subscribeOn(io())
-            .observeOn(mainThread())
-            .doOnSubscribe { isDeleting = true }
-            .doFinally { isDeleting = false }
-            .subscribe({
-                showAllExpensesDeletedMessage.next()
-            }, { e ->
-                Log.d(TAG, "Failed to delete all expenses. Cause: `${e.localizedMessage}`.")
-            })
+        if (expenseDeletionId != null) return
+
+        val id = ExpenseDeletionWorker.enqueue()
+        expenseDeletionId = id
+        observeWorkInfo.next(id)
+    }
+
+    fun handleWorkInfo(workInfo: WorkInfo) {
+        when (workInfo.id) {
+            expenseExportId -> handleExpenseExportWorkInfo(workInfo)
+            expenseDeletionId -> handleExpenseDeletionWorkInfo(workInfo)
+        }
+    }
+
+    private fun handleExpenseExportWorkInfo(workInfo: WorkInfo) {
+        expenseExportId = when (workInfo.state) {
+            WorkInfo.State.SUCCEEDED -> {
+                showExpenseExportMessage.next(R.string.expense_export_success_message)
+                null
+            }
+            WorkInfo.State.FAILED -> {
+                showExpenseExportMessage.next(R.string.expense_export_failure_message)
+                null
+            }
+            else -> return
+        }
+    }
+
+    private fun handleExpenseDeletionWorkInfo(workInfo: WorkInfo) {
+        expenseDeletionId = when (workInfo.state) {
+            WorkInfo.State.SUCCEEDED -> {
+                showExpensesDeletionMessage.next(R.string.expense_deletion_success_message)
+                null
+            }
+            WorkInfo.State.FAILED -> {
+                showExpensesDeletionMessage.next(R.string.expense_deletion_failure_message)
+                null
+            }
+            else -> return
+        }
     }
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val preferenceDataSource = PreferenceDataSource()
-
-            val databaseDataSource = DatabaseDataSource(application.database)
-
-            val exportExpensesUseCase = ExportExpensesUseCase(databaseDataSource)
-            val deleteAllExpensesUseCase = DeleteAllExpensesUseCase(databaseDataSource)
-
-            return SettingsFragmentModel(
-                application,
-                preferenceDataSource,
-                exportExpensesUseCase,
-                deleteAllExpensesUseCase
-            ) as T
+            return SettingsFragmentModel(application, PreferenceDataSource()) as T
         }
     }
 
     companion object {
-
-        private const val TAG = "SettingsFragmentModel"
 
         private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1
 

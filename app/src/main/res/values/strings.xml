@@ -5,7 +5,6 @@
     <string name="add_tag">Add tag</string>
     <string name="add_expense_button">Add expense</string>
     <string name="amount">Amount</string>
-    <string name="all_expenses_deleted">All expenses deleted.</string>
     <string name="all_time">All time</string>
     <string name="cancel">Cancel</string>
     <string name="column_amount">Amount</string>
@@ -24,10 +23,12 @@
     <string name="delete_expense_message">Are you sure you want to delete expense?</string>
     <string name="edit">Edit</string>
     <string name="expense_detail_title">Details</string>
+    <string name="expense_deletion_failure_message">Expenses could not be deleted. Try again.</string>
+    <string name="expense_deletion_success_message">All expenses deleted successfully.</string>
     <string name="expense_export_failure_message">Expenses could not be exported. Try again.</string>
     <string name="expense_export_success_message">Expenses exported successfully into Downloads folder.</string>
     <string name="expenses">Expenses</string>
-    <string name="export_to_excel">Export to Excel</string>
+    <string name="export_to_excel">Export to Excel (.xls)</string>
     <string name="filter">Filter</string>
     <string name="filter_tags">Filter tags</string>
     <string name="general">General</string>

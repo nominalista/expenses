@@ -20,10 +20,10 @@ class DatabaseDataSource(private val database: ApplicationDatabase) {
             .map { expenses -> expenses.map { addTagsToExpense(it) } }
     }
 
-    fun getExpenses(): Observable<List<Expense>> {
-        return Observable.defer { Observable.just(database.expenseDao().getAll()) }
-                .subscribeOn(io())
-                .map { it.map { expense -> addTagsToExpense(expense) } }
+    fun getExpenses(): Single<List<Expense>> {
+        return database.expenseDao()
+            .getAll()
+            .map { expenses -> expenses.map { addTagsToExpense(it) } }
     }
 
     fun observeExpense(expenseId: Long): Observable<Expense> {

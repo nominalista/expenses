@@ -20,8 +20,11 @@ import io.reactivex.disposables.CompositeDisposable
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import android.content.Intent
+import androidx.lifecycle.Observer
+import androidx.work.WorkManager
 import com.nominalista.expenses.util.isGranted
 import com.nominalista.expenses.util.isPermissionGranted
+import java.util.*
 
 class SettingsFragment : Fragment() {
 
@@ -37,8 +40,8 @@ class SettingsFragment : Fragment() {
     // Lifecycle start
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
@@ -79,26 +82,31 @@ class SettingsFragment : Fragment() {
 
     private fun bindModel() {
         compositeDisposable += model.itemModels
-                .toObservable()
-                .subscribe(adapter::submitList)
+            .toObservable()
+            .subscribe(adapter::submitList)
         compositeDisposable += model.showCurrencySelectionDialog
-                .toObservable()
-                .subscribe { showCurrencySelectionDialog() }
+            .toObservable()
+            .subscribe { showCurrencySelectionDialog() }
         compositeDisposable += model.showDeleteAllExpensesDialog
-                .toObservable()
-                .subscribe { showDeleteAllExpensesDialog() }
-        compositeDisposable += model.showAllExpensesDeletedMessage
-                .toObservable()
-                .subscribe { showAllExpensesDeletedMessage() }
+            .toObservable()
+            .subscribe { showDeleteAllExpensesDialog() }
         compositeDisposable += model.showExpenseExportMessage
-                .toObservable()
-                .subscribe { showExpenseExportMessage(it) }
+            .toObservable()
+            .subscribe { showExpenseExportMessage(it) }
+        compositeDisposable += model.showExpensesDeletionMessage
+            .toObservable()
+            .subscribe { showExpenseDeletionMessage(it) }
         compositeDisposable += model.showWebsite
-                .toObservable()
-                .subscribe { showWebsite(it) }
+            .toObservable()
+            .subscribe { showWebsite(it) }
+
         compositeDisposable += model.requestWriteExternalStoragePermission
-                .toObservable()
-                .subscribe { requestWriteExternalStoragePermission(it) }
+            .toObservable()
+            .subscribe { requestWriteExternalStoragePermission(it) }
+
+        compositeDisposable += model.observeWorkInfo
+            .toObservable()
+            .subscribe { observeWorkInfo(it) }
     }
 
     private fun showCurrencySelectionDialog() {
@@ -109,22 +117,19 @@ class SettingsFragment : Fragment() {
 
     private fun showDeleteAllExpensesDialog() {
         AlertDialog.Builder(requireActivity())
-                .setMessage(R.string.delete_all_expenses_message)
-                .setPositiveButton(R.string.yes) { _, _ -> model.deleteAllExpenses() }
-                .setNegativeButton(R.string.no) { _, _ -> }
-                .create()
-                .show()
+            .setMessage(R.string.delete_all_expenses_message)
+            .setPositiveButton(R.string.yes) { _, _ -> model.deleteAllExpenses() }
+            .setNegativeButton(R.string.no) { _, _ -> }
+            .create()
+            .show()
     }
 
-    private fun showAllExpensesDeletedMessage() {
-        val snackbar = Snackbar.make(containerLayout,
-                R.string.all_expenses_deleted,
-                Snackbar.LENGTH_SHORT)
-        snackbar.show()
+    private fun showExpenseExportMessage(messageId: Int) {
+        Snackbar.make(containerLayout, messageId, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun showExpenseExportMessage(message: String) {
-        Snackbar.make(containerLayout, message, Snackbar.LENGTH_LONG).show()
+    private fun showExpenseDeletionMessage(messageId: Int) {
+        Snackbar.make(containerLayout, messageId, Snackbar.LENGTH_LONG).show()
     }
 
     private fun showWebsite(uri: Uri) {
@@ -133,15 +138,17 @@ class SettingsFragment : Fragment() {
     }
 
     private fun requestWriteExternalStoragePermission(requestCode: Int) {
-        if (isPermissionGranted(
-                requireContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-        ) {
+        if (isPermissionGranted(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             model.permissionGranted(requestCode)
         } else {
             requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), requestCode)
         }
+    }
+
+    private fun observeWorkInfo(id: UUID) {
+        WorkManager.getInstance().getWorkInfoByIdLiveData(id).observe(this, Observer {
+            model.handleWorkInfo(it)
+        })
     }
 
     // Lifecycle end
@@ -172,9 +179,9 @@ class SettingsFragment : Fragment() {
     // Requests
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         if (isGranted(grantResults)) model.permissionGranted(requestCode)
     }

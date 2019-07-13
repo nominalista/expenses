@@ -59,6 +59,7 @@ dependencies {
     implementation dependencies.roomRuntime
     implementation dependencies.roomRxJava
     implementation dependencies.workRuntime
+    implementation dependencies.workRxJava
 
     kapt dependencies.roomCompiler
 

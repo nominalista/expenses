@@ -4,6 +4,7 @@ import androidx.room.*
 import com.nominalista.expenses.data.Expense
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 @Dao
 interface ExpenseDao {
@@ -12,7 +13,7 @@ interface ExpenseDao {
     fun observeAll(): Observable<List<Expense>>
 
     @Query("SELECT * FROM expenses")
-    fun getAll(): List<Expense>
+    fun getAll(): Single<List<Expense>>
 
     @Query("SELECT * from expenses WHERE id = :id")
     fun observeById(id: Long): Observable<Expense>
