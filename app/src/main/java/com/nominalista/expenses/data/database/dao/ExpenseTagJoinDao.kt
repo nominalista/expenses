@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.RoomWarnings
 import com.nominalista.expenses.data.ExpenseTagJoin
 import com.nominalista.expenses.data.Tag
+import io.reactivex.Observable
 
 @Dao
 interface ExpenseTagJoinDao {
@@ -17,6 +18,16 @@ interface ExpenseTagJoinDao {
         expense_tag_joins.expense_id = :expenseId
         """)
     fun getTagsWithExpenseId(expenseId: Long): List<Tag>
+
+    @Query(
+        """
+            SELECT * FROM tags 
+            INNER JOIN expense_tag_joins
+            ON tags.id = expense_tag_joins.tag_id
+            WHERE expense_tag_joins.expense_id = :expenseId
+        """
+    )
+    fun observeTagsByExpenseId(expenseId: Long): Observable<List<Tag>>
 
     @Insert
     fun insert(join: ExpenseTagJoin)

@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Expenses"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".userinterface.home.HomeActivity"
+        <activity android:name="com.nominalista.expenses.home.presentation.HomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,14 +23,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".userinterface.expensedetail.ExpenseDetailActivity"
+        <activity android:name=".expensedetail.presentation.ExpenseDetailActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".userinterface.addeditexpense.AddEditExpenseActivity"
+        <activity android:name=".addeditexpense.presentation.AddEditExpenseActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
 
-        <activity android:name=".userinterface.settings.SettingsActivity"
+        <activity android:name=".settings.presentation.SettingsActivity"
             android:screenOrientation="portrait"/>
 
     </application>

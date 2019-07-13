@@ -6,16 +6,33 @@ import com.nominalista.expenses.data.Tag
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.schedulers.Schedulers.io
 
 class DatabaseDataSource(private val database: ApplicationDatabase) {
 
     // Expenses
 
+    fun observeExpenses(): Observable<List<Expense>> {
+        return database.expenseDao()
+            .observeAll()
+            .map { expenses -> expenses.map { addTagsToExpense(it) } }
+    }
+
     fun getExpenses(): Observable<List<Expense>> {
         return Observable.defer { Observable.just(database.expenseDao().getAll()) }
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(io())
                 .map { it.map { expense -> addTagsToExpense(expense) } }
+    }
+
+    fun observeExpense(expenseId: Long): Observable<Expense> {
+        val expenseObservable = database.expenseDao().observeById(expenseId)
+        val tagsObservable = database.expenseTagJoinDao().observeTagsByExpenseId(expenseId)
+        return Observable.combineLatest(
+            expenseObservable,
+            tagsObservable,
+            BiFunction { expense, tags -> expense.also { it.tags = tags } })
     }
 
     private fun addTagsToExpense(expense: Expense): Expense {
@@ -54,7 +71,7 @@ class DatabaseDataSource(private val database: ApplicationDatabase) {
     }
 
     fun deleteExpense(expense: Expense): Completable {
-        return Completable.defer { database.expenseDao().delete(expense); Completable.complete() }
+        return database.expenseDao().delete(expense)
     }
 
     fun deleteAllExpenses(): Completable {
@@ -64,7 +81,7 @@ class DatabaseDataSource(private val database: ApplicationDatabase) {
     // Tags
 
     fun observeTags(): Observable<List<Tag>> {
-        return Observable.fromCallable { database.tagDao().getAll() }
+        return database.tagDao().observeAll()
     }
 
     fun insertTag(tag: Tag): Single<Long> {

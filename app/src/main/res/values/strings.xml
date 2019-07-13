@@ -21,6 +21,8 @@
     <string name="default_currency_summary" translatable="false">%1$s\u0020\u0020%2$s\u0020(%3$s)</string>
     <string name="delete_all">Delete all</string>
     <string name="delete_all_expenses_message">Are you sure you want to delete all expenses?</string>
+    <string name="delete_expense_message">Are you sure you want to delete expense?</string>
+    <string name="edit">Edit</string>
     <string name="expense_detail_title">Details</string>
     <string name="expense_export_failure_message">Expenses could not be exported. Try again.</string>
     <string name="expense_export_success_message">Expenses exported successfully into Downloads folder.</string>

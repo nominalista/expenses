@@ -20,6 +20,8 @@
     <string name="default_currency">Domyślna waluta</string>
     <string name="delete_all">Usuń wszystkie</string>
     <string name="delete_all_expenses_message">Czy na pewno chcesz usunąć wszystkie wydatki?</string>
+    <string name="delete_expense_message">Czy na pewno chcesz usunąć wydatek?</string>
+    <string name="edit">Edytuj</string>
     <string name="expense_detail_title">Detale</string>
     <string name="expense_export_failure_message">Nie można było wyeksportować wydatków. Spróbuj ponownie.</string>
     <string name="expense_export_success_message">Pomyślnie wyeksportowano wydatki do folderu Pobrane.</string>

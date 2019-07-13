@@ -1,41 +1,28 @@
 package com.nominalista.expenses.data.preference
 
 import android.content.Context
-import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import com.nominalista.expenses.R
-import com.nominalista.expenses.infrastructure.utils.CurrencyConverter
 import com.nominalista.expenses.data.Currency
-import io.reactivex.Completable
-import io.reactivex.Observable
 
 class PreferenceDataSource {
 
-    fun loadDefaultCurrency(context: Context): Observable<Currency> {
-        return Observable.defer {
-            val preferences = getPreferences(context)
-            val key = context.getString(R.string.key_default_currency)
-            val currencyIfNotSet = Currency.USD
-            val defaultCurrencyString = preferences.getString(key,
-                    CurrencyConverter.toString(currencyIfNotSet))
-            Observable.just(CurrencyConverter.toCurrency(defaultCurrencyString) ?: currencyIfNotSet)
-        }
+    fun getDefaultCurrency(context: Context): Currency {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val key = getDefaultCurrencyKey(context)
+
+        return preferences.getString(key, null)?.let { Currency.valueOf(it) } ?: Currency.USD
     }
 
-    fun setDefaultCurrency(context: Context, currency: Currency): Completable {
-        return Completable.defer {
-            val preferences = getPreferences(context)
-            val key = context.getString(R.string.key_default_currency)
-            val value = CurrencyConverter.toString(currency)
-            with(preferences.edit()) {
-                putString(key, value)
-                apply()
-            }
-            Completable.complete()
-        }
+    fun setDefaultCurrency(context: Context, defaultCurrency: Currency) {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val key = getDefaultCurrencyKey(context)
+
+        return preferences.edit().putString(key, defaultCurrency.name).apply()
     }
 
-    private fun getPreferences(context: Context): SharedPreferences {
-        val preferencesKey = context.getString(R.string.key_preferences)
-        return context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE)
-    }
+    private fun getDefaultCurrencyKey(context: Context) =
+        context.getString(R.string.key_default_currency)
 }

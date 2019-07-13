@@ -2,7 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/edit"
+        android:title="@string/edit"
+        android:icon="@drawable/ic_edit"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/delete"
+        android:icon="@drawable/ic_delete"
         android:title="@string/delete"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 </menu>

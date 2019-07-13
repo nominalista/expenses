@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/fragment_expense_detail">
+    tools:ignore="InvalidNavigation,UnusedNavigation">
 
     <fragment
         android:id="@+id/fragment_expense_detail"
-        android:name="com.nominalista.expenses.userinterface.expensedetail.ExpenseDetailFragment"
-        android:label="ExpenseDetailFragment"/>
+        android:name="com.nominalista.expenses.expensedetail.presentation.ExpenseDetailFragment"
+        android:label="ExpenseDetailFragment">
+
+        <argument
+            android:name="expense"
+            app:argType="com.nominalista.expenses.data.Expense" />
+
+    </fragment>
 
 </navigation>

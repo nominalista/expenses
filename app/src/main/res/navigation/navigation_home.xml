@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragment_home"
-        android:name="com.nominalista.expenses.userinterface.home.HomeFragment"
+        android:name="com.nominalista.expenses.home.presentation.HomeFragment"
         android:label="HomeFragment" />
 
 </navigation>

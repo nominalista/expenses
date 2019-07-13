@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_home"
-    app:startDestination="@id/fragment_add_edit_expense">
+    tools:ignore="InvalidNavigation,UnusedNavigation">
 
     <fragment
         android:id="@+id/fragment_add_edit_expense"
-        android:name="com.nominalista.expenses.userinterface.addeditexpense.AddEditExpenseFragment"
+        android:name="com.nominalista.expenses.addeditexpense.presentation.AddEditExpenseFragment"
         android:label="AddEditExpenseFragment">
 
         <argument
@@ -22,7 +23,7 @@
 
     <fragment
         android:id="@+id/fragment_tag_selection"
-        android:name="com.nominalista.expenses.userinterface.addeditexpense.tagselection.TagSelectionFragment"
+        android:name="com.nominalista.expenses.addeditexpense.presentation.tagselection.TagSelectionFragment"
         android:label="TagSelectionFragment" />
 
 </navigation>

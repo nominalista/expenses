@@ -5,9 +5,13 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.nominalista.expenses.data.Tag
+import io.reactivex.Observable
 
 @Dao
 interface TagDao {
+
+    @Query("SELECT * FROM tags")
+    fun observeAll(): Observable<List<Tag>>
 
     @Query("SELECT * FROM tags")
     fun getAll(): List<Tag>

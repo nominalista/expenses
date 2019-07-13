@@ -9,8 +9,8 @@ import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.data.database.dao.ExpenseDao
 import com.nominalista.expenses.data.database.dao.ExpenseTagJoinDao
 import com.nominalista.expenses.data.database.dao.TagDao
-import com.nominalista.expenses.infrastructure.utils.CurrencyConverter
-import com.nominalista.expenses.infrastructure.utils.DateConverter
+import com.nominalista.expenses.data.database.converter.CurrencyConverter
+import com.nominalista.expenses.data.database.converter.DateConverter
 
 @Database(
         entities = [

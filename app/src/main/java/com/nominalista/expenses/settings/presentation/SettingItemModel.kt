@@ -1,0 +1,3 @@
+package com.nominalista.expenses.settings.presentation
+
+interface SettingItemModel
