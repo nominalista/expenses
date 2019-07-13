@@ -58,6 +58,7 @@ dependencies {
     implementation dependencies.recyclerView
     implementation dependencies.roomRuntime
     implementation dependencies.roomRxJava
+    implementation dependencies.workRuntime
 
     kapt dependencies.roomCompiler
 

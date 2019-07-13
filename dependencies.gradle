@@ -1,7 +1,7 @@
 ext {
 
     // Kotlin
-    kotlinVersion = '1.2.51'
+    kotlinVersion = '1.3.41'
 
     // AndroidX
     appCompatVersion = '1.0.0'
@@ -13,6 +13,7 @@ ext {
     preferenceVersion = '1.0.0'
     recyclerViewVersion = '1.0.0'
     roomVersion = '2.1.0'
+    workVersion = '2.0.1'
 
     // Libraries
     jxlVersion = '2.6'
@@ -43,7 +44,8 @@ ext {
             "roomRxJava"              : "androidx.room:room-rxjava2:${roomVersion}",
             "rxAndroid"               : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
             "rxRelay"                 : "com.jakewharton.rxrelay2:rxrelay:${rxRelayVersion}",
-            "threeTen"                : "com.jakewharton.threetenabp:threetenabp:${threeTeenVersion}"
+            "threeTen"                : "com.jakewharton.threetenabp:threetenabp:${threeTeenVersion}",
+            "workRuntime"             : "androidx.work:work-runtime-ktx:${workVersion}"
     ]
 
     appTestDependencies = [
