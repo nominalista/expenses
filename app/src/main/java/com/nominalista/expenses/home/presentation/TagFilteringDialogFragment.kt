@@ -13,6 +13,7 @@ class TagFilteringDialogFragment : DialogFragment(), DialogInterface.OnMultiChoi
     var tagsFiltered: ((TagFilter) -> Unit)? = null
 
     private lateinit var tags: List<Tag>
+
     private val filter = TagFilter()
 
     @Suppress("UNCHECKED_CAST")
@@ -23,21 +24,34 @@ class TagFilteringDialogFragment : DialogFragment(), DialogInterface.OnMultiChoi
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireActivity())
-                .setTitle(R.string.filter_tags)
-                .setMultiChoiceItems(getItems(), getCheckedItems(), this)
-                .setPositiveButton(R.string.ok, { _, _ -> tagsFiltered?.invoke(filter) })
-                .setNegativeButton(R.string.cancel, { _, _ -> })
-                .create()
+            .setTitle(R.string.filter_tags)
+            .setMultiChoiceItems(getItems(), getCheckedItems(), this)
+            .setPositiveButton(R.string.ok) { _, _ -> tagsFiltered?.invoke(filter) }
+            .setNegativeButton(R.string.cancel) { _, _ -> }
+            .create()
+            .apply { setOnShowListener { enableOrDisablePositiveButton() } }
     }
 
-    private fun getItems() = Array(tags.size, { tags[it].name })
 
-    private fun getCheckedItems() = BooleanArray(tags.size, { false })
+
+    private fun getItems() = Array(tags.size) { tags[it].name }
+
+    private fun getCheckedItems() = BooleanArray(tags.size) { false }
+
+    private fun enableOrDisablePositiveButton() {
+        (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = !filter.isEmpty
+    }
 
     override fun onClick(dialog: DialogInterface?, which: Int, isChecked: Boolean) {
-        val tag = tags[which]
-        if (isChecked) filter.add(tag)
-        else filter.remove(tag)
+        tags[which].let {
+            if (isChecked) {
+                filter.add(it)
+            } else {
+                filter.remove(it)
+            }
+        }
+
+        enableOrDisablePositiveButton()
     }
 
     companion object {
@@ -45,12 +59,11 @@ class TagFilteringDialogFragment : DialogFragment(), DialogInterface.OnMultiChoi
         private const val ARGUMENT_TAGS = "com.nominalista.expenses.ARGUMENT_TAGS"
 
         fun newInstance(tags: List<Tag>): TagFilteringDialogFragment {
-            val arguments = Bundle()
-            arguments.putParcelableArrayList(ARGUMENT_TAGS, ArrayList(tags))
+            val arguments = Bundle().apply {
+                putParcelableArrayList(ARGUMENT_TAGS, ArrayList(tags))
+            }
 
-            val fragment = TagFilteringDialogFragment()
-            fragment.arguments = arguments
-            return fragment
+            return TagFilteringDialogFragment().apply { this.arguments = arguments }
         }
     }
 }
