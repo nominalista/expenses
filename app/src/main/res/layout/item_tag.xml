@@ -26,7 +26,7 @@
         android:textAppearance="@style/TextAppearance.Expenses.Subtitle1"
         android:textColor="@color/text_secondary_dark"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_delete"
+        app:layout_constraintEnd_toStartOf="@+id/button_more"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/check_box"
         app:layout_constraintTop_toTopOf="parent"
