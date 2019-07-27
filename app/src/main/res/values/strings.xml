@@ -7,6 +7,8 @@
     <string name="amount">Amount</string>
     <string name="all_time">All time</string>
     <string name="cancel">Cancel</string>
+    <string name="channel_name_default">Default channel</string>
+    <string name="channel_description_default">Channel for all types of notifications.</string>
     <string name="column_amount">Amount</string>
     <string name="column_currency">Currency</string>
     <string name="column_date">Date</string>

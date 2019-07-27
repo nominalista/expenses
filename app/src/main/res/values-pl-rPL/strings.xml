@@ -8,6 +8,8 @@
     <string name="amount">Kwota</string>
     <string name="all_time">Cały czas</string>
     <string name="cancel">Anuluj</string>
+    <string name="channel_name_default">Domyślny kanał</string>
+    <string name="channel_description_default">Kanał dla każdegu typu powiadomień.</string>
     <string name="column_amount">Kwota</string>
     <string name="column_currency">Waluta</string>
     <string name="column_date">Data</string>

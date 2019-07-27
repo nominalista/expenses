@@ -27,8 +27,8 @@ android {
     flavorDimensions "default"
     productFlavors {
         dev {
-            // versionNameSuffix "-dev"
-            // applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+            applicationIdSuffix ".dev"
             // Use only English resources to build faster.
             resConfigs "en", "xxhdpi"
         }
@@ -65,6 +65,7 @@ dependencies {
 
     // Firebase
     implementation dependencies.firebaseCore
+    implementation dependencies.firebaseMessaging
 
     // Libraries
     implementation dependencies.jxl

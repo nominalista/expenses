@@ -12,12 +12,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Expense
-import com.nominalista.expenses.util.extensions.application
-import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.addeditexpense.presentation.AddEditExpenseActivity
+import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.expensedetail.presentation.ExpenseDetailActivity
 import com.nominalista.expenses.settings.presentation.SettingsActivity
+import com.nominalista.expenses.util.extensions.application
+import com.nominalista.expenses.util.extensions.plusAssign
 import io.reactivex.disposables.CompositeDisposable
 
 class HomeFragment : Fragment() {
@@ -34,9 +34,9 @@ class HomeFragment : Fragment() {
     // Lifecycle start
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
@@ -84,14 +84,14 @@ class HomeFragment : Fragment() {
         compositeDisposable += model.itemModels.toObservable().subscribe(adapter::submitList)
         compositeDisposable += model.isLoading.toObservable().subscribe { configureProgressBar(it) }
         compositeDisposable += model.showExpenseDetail
-                .toObservable()
-                .subscribe { showExpenseDetail(it) }
+            .toObservable()
+            .subscribe { showExpenseDetail(it) }
         compositeDisposable += model.showTagFiltering
-                .toObservable()
-                .subscribe { showTagFiltering() }
+            .toObservable()
+            .subscribe { showTagFiltering() }
         compositeDisposable += model.showNoAddedTags
-                .toObservable()
-                .subscribe { showNoAddedTags() }
+            .toObservable()
+            .subscribe { showNoAddedTags() }
     }
 
     private fun configureProgressBar(isVisible: Boolean) {
@@ -110,10 +110,10 @@ class HomeFragment : Fragment() {
 
     private fun showNoAddedTags() {
         AlertDialog.Builder(requireActivity())
-                .setMessage(R.string.no_added_tags_message)
-                .setPositiveButton(R.string.ok) { _, _ -> }
-                .create()
-                .show()
+            .setMessage(R.string.no_added_tags_message)
+            .setPositiveButton(R.string.ok) { _, _ -> }
+            .create()
+            .show()
     }
 
     // Lifecycle end
