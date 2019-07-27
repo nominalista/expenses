@@ -15,6 +15,9 @@ ext {
     roomVersion = '2.1.0'
     workVersion = '2.0.1'
 
+    // Firebase
+    firebaseVersion = '17.0.0'
+
     // Libraries
     jxlVersion = '2.6'
     materialVersion = '1.0.0'
@@ -30,6 +33,7 @@ ext {
             "cardView"                : "androidx.cardview:cardview:${cardViewVersion}",
             "constraintLayout"        : "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}",
             "coreKtx"                 : "androidx.core:core-ktx:${coreKtxVersion}",
+            "firebaseCore"            : "com.google.firebase:firebase-core:${firebaseVersion}",
             "jxl"                     : "net.sourceforge.jexcelapi:jxl:${jxlVersion}",
             "kotlin"                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
             "material"                : "com.google.android.material:material:${materialVersion}",

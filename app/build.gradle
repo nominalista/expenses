@@ -27,8 +27,9 @@ android {
     flavorDimensions "default"
     productFlavors {
         dev {
-            versionNameSuffix "-dev"
-            applicationIdSuffix ".dev"
+            // versionNameSuffix "-dev"
+            // applicationIdSuffix ".dev"
+            // Use only English resources to build faster.
             resConfigs "en", "xxhdpi"
         }
 
@@ -60,8 +61,10 @@ dependencies {
     implementation dependencies.roomRxJava
     implementation dependencies.workRuntime
     implementation dependencies.workRxJava
-
     kapt dependencies.roomCompiler
+
+    // Firebase
+    implementation dependencies.firebaseCore
 
     // Libraries
     implementation dependencies.jxl
@@ -75,3 +78,5 @@ dependencies {
     // Testing
     testImplementation testDependencies.jUnit
 }
+
+apply plugin: 'com.google.gms.google-services'
