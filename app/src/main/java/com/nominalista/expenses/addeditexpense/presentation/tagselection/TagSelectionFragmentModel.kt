@@ -25,6 +25,8 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
 
     private val disposables = CompositeDisposable()
 
+    private val addTagSelection = listOf(createAddTagItemModel())
+
     // Lifecycle start
 
     init {
@@ -45,7 +47,7 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
     private fun updateItemModels(tags: List<Tag>) {
         itemModels.value = tags
             .sortedBy { it.name }
-            .let { createTagSection(it) + createAddTagSection() }
+            .let { addTagSelection + createTagSection(it) }
     }
 
     private fun createTagSection(tags: List<Tag>) = tags.map { createTagItemModel(it) }
@@ -81,12 +83,8 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
             })
     }
 
-    private fun createAddTagSection() = listOf(createAddTagItemModel())
-
-    private fun createAddTagItemModel(): AddTagItemModel {
-        val itemModel = AddTagItemModel()
-        itemModel.click = { showNewTagDialog.next() }
-        return itemModel
+    private fun createAddTagItemModel() = AddTagItemModel().apply {
+        click = { showNewTagDialog.next() }
     }
 
     // Lifecycle end
