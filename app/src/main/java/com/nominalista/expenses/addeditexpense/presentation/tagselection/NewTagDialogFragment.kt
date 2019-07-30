@@ -11,6 +11,8 @@ import androidx.fragment.app.DialogFragment
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.util.extensions.afterTextChanged
+import com.nominalista.expenses.util.extensions.hideKeyboard
+import com.nominalista.expenses.util.extensions.showKeyboard
 
 
 class NewTagDialogFragment : DialogFragment() {
@@ -29,6 +31,7 @@ class NewTagDialogFragment : DialogFragment() {
                 .setView(createView())
                 .setPositiveButton(R.string.add) { _, _ -> tagCreated?.invoke(Tag(0, text)) }
                 .setNegativeButton(R.string.cancel) { _, _ -> }
+                .setOnDismissListener { hideKeyboard() }
                 .create()
     }
 
@@ -46,6 +49,7 @@ class NewTagDialogFragment : DialogFragment() {
     }
 
     private fun watchEditText() {
+        showKeyboard(editText)
         editText.afterTextChanged {
             val dialog = dialog as AlertDialog
             val addButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)

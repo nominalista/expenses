@@ -12,13 +12,10 @@ import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Currency
 import com.nominalista.expenses.data.Date
 import com.nominalista.expenses.data.Tag
-import com.nominalista.expenses.util.extensions.afterTextChanged
-import com.nominalista.expenses.util.extensions.application
-import com.nominalista.expenses.util.extensions.hideKeyboard
-import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.addeditexpense.presentation.dateselection.DateSelectionDialogFragment
 import com.nominalista.expenses.addeditexpense.presentation.timeselection.TimeSelectionDialogFragment
 import com.nominalista.expenses.common.presentation.currencyselection.CurrencySelectionDialogFragment
+import com.nominalista.expenses.util.extensions.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_add_edit_expense.*
 
@@ -56,6 +53,7 @@ class AddEditExpenseFragment : Fragment() {
     }
 
     private fun watchEditTexts() {
+        showKeyboard(edit_text_amount, 200)
         edit_text_amount.afterTextChanged {
             model.updateAmount(it.toString().toFloatOrNull() ?: 0f)
         }
