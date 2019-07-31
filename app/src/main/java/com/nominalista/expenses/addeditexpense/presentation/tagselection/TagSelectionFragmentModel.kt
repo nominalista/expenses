@@ -15,8 +15,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSource) : ViewModel() {
 
-    val itemModels =
-        Variable(emptyList<TagSelectionItemModel>())
+    val itemModels = Variable(emptyList<TagSelectionItemModel>())
     val showNewTagDialog = Event()
     val delegateSelectedTags = DataEvent<List<Tag>>()
     val finish = Event()
@@ -24,8 +23,6 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
     private val checkedTags: MutableSet<Tag> = HashSet()
 
     private val disposables = CompositeDisposable()
-
-    private val addTagSelection = listOf(createAddTagItemModel())
 
     // Lifecycle start
 
@@ -47,7 +44,13 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
     private fun updateItemModels(tags: List<Tag>) {
         itemModels.value = tags
             .sortedBy { it.name }
-            .let { addTagSelection + createTagSection(it) }
+            .let { createAddTagSection() + createTagSection(it) }
+    }
+
+    private fun createAddTagSection() = listOf(createAddTagItemModel())
+
+    private fun createAddTagItemModel(): AddTagItemModel {
+        return AddTagItemModel().apply { click = { showNewTagDialog.next() } }
     }
 
     private fun createTagSection(tags: List<Tag>) = tags.map { createTagItemModel(it) }
@@ -81,10 +84,6 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
             }, { error ->
                 Log.d(TAG, "Tag #${tag.id} deletion failed (${error.message}..")
             })
-    }
-
-    private fun createAddTagItemModel() = AddTagItemModel().apply {
-        click = { showNewTagDialog.next() }
     }
 
     // Lifecycle end

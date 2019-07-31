@@ -2,6 +2,7 @@ package com.nominalista.expenses.addeditexpense.presentation.tagselection
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +12,11 @@ import androidx.fragment.app.DialogFragment
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.util.extensions.afterTextChanged
-import com.nominalista.expenses.util.extensions.hideKeyboard
 import com.nominalista.expenses.util.extensions.showKeyboard
+import com.nominalista.expenses.util.extensions.toggleKeyboard
 
 
 class NewTagDialogFragment : DialogFragment() {
-
-    companion object {
-        fun newInstance() = NewTagDialogFragment()
-    }
 
     var tagCreated: ((Tag) -> Unit)? = null
 
@@ -28,32 +25,43 @@ class NewTagDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireActivity())
-                .setView(createView())
-                .setPositiveButton(R.string.add) { _, _ -> tagCreated?.invoke(Tag(0, text)) }
-                .setNegativeButton(R.string.cancel) { _, _ -> }
-                .setOnDismissListener { hideKeyboard() }
-                .create()
+            .setView(createView())
+            .setPositiveButton(R.string.add) { _, _ -> tagCreated?.invoke(Tag(0, text)) }
+            .setNegativeButton(R.string.cancel) { _, _ -> }
+            .create()
+            .apply { setOnShowListener { enableOrDisableEditText() } }
     }
 
     @SuppressLint("InflateParams")
     private fun createView(): View {
         val inflater = LayoutInflater.from(requireContext())
         val view = inflater.inflate(R.layout.dialog_new_tag, null)
-        bindViews(view)
+        bindEditText(view)
         watchEditText()
+        showKeyboard(editText)
         return view
     }
 
-    private fun bindViews(view: View) {
+    private fun bindEditText(view: View) {
         editText = view.findViewById(R.id.edit_text)
     }
 
     private fun watchEditText() {
-        showKeyboard(editText)
-        editText.afterTextChanged {
-            val dialog = dialog as AlertDialog
-            val addButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            addButton.isEnabled = text.isNotEmpty()
-        }
+        editText.afterTextChanged { enableOrDisableEditText() }
+    }
+
+    private fun enableOrDisableEditText() {
+        val dialog = dialog as AlertDialog
+        val addButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        addButton.isEnabled = text.isNotEmpty()
+    }
+
+    override fun onDismiss(dialog: DialogInterface?) {
+        super.onDismiss(dialog)
+        toggleKeyboard()
+    }
+
+    companion object {
+        fun newInstance() = NewTagDialogFragment()
     }
 }

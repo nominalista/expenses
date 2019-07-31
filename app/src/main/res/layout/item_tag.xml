@@ -6,6 +6,15 @@
     android:layout_height="56dp"
     android:background="?selectableItemBackground">
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/divider"
+        android:layout_marginStart="72dp"
+        android:background="@color/divider_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <CheckBox
         android:id="@+id/check_box"
         android:layout_width="wrap_content"
@@ -44,14 +53,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="@dimen/divider"
-        android:layout_marginStart="72dp"
-        android:background="@color/divider_dark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

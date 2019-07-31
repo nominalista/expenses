@@ -7,6 +7,10 @@ fun Fragment.showKeyboard(view: View, delay: Long = 0) {
     requireActivity().showKeyboard(view, delay)
 }
 
-fun Fragment.hideKeyboard() {
-    requireActivity().hideKeyboard()
+fun Fragment.hideKeyboard(view: View? = null) {
+    requireActivity().hideKeyboard(view)
+}
+
+fun Fragment.toggleKeyboard() {
+    requireActivity().toggleKeyboard()
 }

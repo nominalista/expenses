@@ -42,6 +42,7 @@ class AddEditExpenseFragment : Fragment() {
         addListeners()
         initializeModels()
         bindModels()
+        showKeyboard()
     }
 
     private fun setupActionBar() {
@@ -53,7 +54,6 @@ class AddEditExpenseFragment : Fragment() {
     }
 
     private fun watchEditTexts() {
-        showKeyboard(edit_text_amount, 200)
         edit_text_amount.afterTextChanged {
             model.updateAmount(it.toString().toFloatOrNull() ?: 0f)
         }
@@ -165,6 +165,10 @@ class AddEditExpenseFragment : Fragment() {
         requireActivity().onBackPressed()
     }
 
+    private fun showKeyboard() {
+        showKeyboard(edit_text_amount, KEYBOARD_APPEARANCE_DELAY)
+    }
+
     // Lifecycle end
 
     override fun onDestroyView() {
@@ -200,5 +204,9 @@ class AddEditExpenseFragment : Fragment() {
     private fun saveSelected(): Boolean {
         model.saveExpense()
         return true
+    }
+
+    companion object {
+        private const val KEYBOARD_APPEARANCE_DELAY = 300L
     }
 }
