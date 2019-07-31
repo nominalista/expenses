@@ -16,6 +16,7 @@
     <string name="column_tags">Tags</string>
     <string name="column_title">Title</string>
     <string name="confirm">Confirm</string>
+    <string name="contact_me">Contact me</string>
     <string name="currency_abbreviation" translatable="false">%1$s\u0020\u0020%2$s</string>
     <string name="delete">Delete</string>
     <string name="default_currency">Default currency</string>
@@ -31,6 +32,7 @@
     <string name="expense_export_success_message">Expenses exported successfully into Downloads folder.</string>
     <string name="expenses">Expenses</string>
     <string name="export_to_excel">Export to Excel (.xls)</string>
+    <string name="feedback_is_welcome">Feedback is welcome!</string>
     <string name="filter">Filter</string>
     <string name="filter_tags">Filter tags</string>
     <string name="general">General</string>
@@ -42,10 +44,13 @@
     <string name="no_tags">No tags</string>
     <string name="notes_title">Notes</string>
     <string name="notes_hint">Notes (optional)</string>
+    <string name="rate_app">Rate the app (4.8 &#x1F31F;)</string>
     <string name="save">Save</string>
     <string name="select_currency">Select currency</string>
     <string name="select_tags">Select tags</string>
     <string name="settings">Settings</string>
+    <string name="share_app">Share app</string>
+    <string name="share_with">Share with</string>
     <string name="summary_title">You spent</string>
     <string name="ok">OK</string>
     <string name="this_month">This month</string>

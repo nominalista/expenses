@@ -22,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.work.WorkManager
+import com.nominalista.expenses.util.extensions.startActivitySafely
 import com.nominalista.expenses.util.isGranted
 import com.nominalista.expenses.util.isPermissionGranted
 import java.util.*
@@ -96,9 +97,12 @@ class SettingsFragment : Fragment() {
         compositeDisposable += model.showExpensesDeletionMessage
             .toObservable()
             .subscribe { showExpenseDeletionMessage(it) }
-        compositeDisposable += model.showWebsite
+        compositeDisposable += model.showActivity
             .toObservable()
-            .subscribe { showWebsite(it) }
+            .subscribe { showActivity(it) }
+        compositeDisposable += model.shareData
+            .toObservable()
+            .subscribe { shareData(it) }
 
         compositeDisposable += model.requestWriteExternalStoragePermission
             .toObservable()
@@ -132,9 +136,18 @@ class SettingsFragment : Fragment() {
         Snackbar.make(containerLayout, messageId, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun showWebsite(uri: Uri) {
-        val browserIntent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(browserIntent)
+    private fun showActivity(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        requireActivity().startActivitySafely(intent)
+    }
+
+    private fun shareData(text: String) {
+        val sharingIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, text)
+        }
+
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_with)))
     }
 
     private fun requestWriteExternalStoragePermission(requestCode: Int) {

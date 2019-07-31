@@ -2,6 +2,7 @@ package com.nominalista.expenses.util.extensions
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 
@@ -28,4 +29,11 @@ private fun Activity.getCurrentFocusOrPlaceholder() = currentFocus ?: View(this)
 fun Activity.toggleKeyboard() {
     val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.toggleSoftInput(0, 0)
+}
+
+/**
+ * Try to start activity if no sure that this activity exits.
+ */
+fun Activity.startActivitySafely(intent: Intent) {
+    if (intent.resolveActivity(packageManager) != null) startActivity(intent)
 }

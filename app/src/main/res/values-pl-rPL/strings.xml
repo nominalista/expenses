@@ -17,6 +17,7 @@
     <string name="column_tags">Tagi</string>
     <string name="column_title">Tytuł</string>
     <string name="confirm">Potwierdź</string>
+    <string name="contact_me">Skontaktuj się ze mną</string>
     <string name="delete">Usuń</string>
     <string name="default_currency">Domyślna waluta</string>
     <string name="delete_all">Usuń wszystkie</string>
@@ -30,6 +31,7 @@
     <string name="expense_export_success_message">Pomyślnie wyeksportowano wydatki do folderu Pobrane.</string>
     <string name="expenses">Wydatki</string>
     <string name="export_to_excel">Eksportuj do Excela (.xls)</string>
+    <string name="feedback_is_welcome">Opinia mile widziana!</string>
     <string name="filter">Filtruj</string>
     <string name="filter_tags">Filtruj tagi</string>
     <string name="general">Ogólne</string>
@@ -41,10 +43,13 @@
     <string name="no_tags">Brak tagów</string>
     <string name="notes_title">Notatki</string>
     <string name="notes_hint">Notatki (opcjonalnie)</string>
+    <string name="rate_app">Oceń aplikację (4.8 &#x1F31F;)</string>
     <string name="save">Zapisz</string>
     <string name="select_currency">Wybierz walutę</string>
     <string name="select_tags">Wybierz tagi</string>
     <string name="settings">Ustawienia</string>
+    <string name="share_app">Podziel się aplikacją</string>
+    <string name="share_with">Udostępnij przez</string>
     <string name="summary_title">Wydałaś/eś</string>
     <string name="ok">OK</string>
     <string name="this_month">Ten miesiąc</string>

@@ -31,7 +31,8 @@ class SettingsFragmentModel(
     val showExpenseExportMessage = DataEvent<Int>()
     val showExpensesDeletionMessage = DataEvent<Int>()
 
-    val showWebsite = DataEvent<Uri>()
+    val showActivity = DataEvent<Uri>()
+    val shareData = DataEvent<String>()
 
     val requestWriteExternalStoragePermission = DataEvent<Int>()
 
@@ -114,6 +115,9 @@ class SettingsFragmentModel(
 
         itemModels += createGeneralHeader(context)
         itemModels += createViewSourceCode(context)
+        itemModels += createShareApp(context)
+        itemModels += createRateApp(context)
+        itemModels += createContactMe(context)
 
         return itemModels
     }
@@ -125,7 +129,32 @@ class SettingsFragmentModel(
         val title = context.getString(R.string.view_source_code)
 
         return ActionSettingItemModel(title).apply {
-            click = { showWebsite.next(GITHUB_URI) }
+            click = { showActivity.next(GITHUB_URI) }
+        }
+    }
+
+    private fun createShareApp(context: Context): SettingItemModel {
+        val title = context.getString(R.string.share_app)
+
+        return ActionSettingItemModel(title).apply {
+            click = { shareData.next(GOOGLE_PLAY_URI.toString()) }
+        }
+    }
+
+    private fun createRateApp(context: Context): SettingItemModel {
+        val title = context.getString(R.string.rate_app)
+
+        return ActionSettingItemModel(title).apply {
+            click = { showActivity.next(GOOGLE_PLAY_URI) }
+        }
+    }
+
+    private fun createContactMe(context: Context): SettingItemModel {
+        val title = context.getString(R.string.contact_me)
+        val summary = context.getString(R.string.feedback_is_welcome)
+
+        return SummaryActionSettingItemModel(title, summary).apply {
+            click = { showActivity.next(EMAIL_URI) }
         }
     }
 
@@ -213,6 +242,13 @@ class SettingsFragmentModel(
 
         private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1
 
-        private val GITHUB_URI = Uri.parse("https://github.com/Nominalista/Expenses")
+        private val GITHUB_URI =
+            Uri.parse("https://github.com/Nominalista/Expenses")
+
+        private val GOOGLE_PLAY_URI =
+            Uri.parse("https://play.google.com/store/apps/details?id=com.nominalista.expenses")
+
+        private val EMAIL_URI =
+            Uri.parse("mailto:the.nominalista@gmail.com")
     }
 }
