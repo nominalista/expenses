@@ -10,6 +10,10 @@
 
 App is currently available on the [Google Play](https://play.google.com/store/apps/details?id=com.nominalista.expenses), but you can also download newest APK from [releases page](https://github.com/nominalista/expenses/releases).
 
+# Contact
+
+Expenses is developed and maintained by [nominalista](https://github.com/nominalista). Feel free to reach out to [the.nominalista@gmail.com](mailto://the.nominalista@gmail.com).
+
 # Copyright
 
     Copyright 2019 Nominalista. All rights reserved.
