@@ -2,11 +2,13 @@ package com.nominalista.expenses.settings.presentation
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.WorkInfo
 import com.nominalista.expenses.Application
+import com.nominalista.expenses.BuildConfig
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Currency
 import com.nominalista.expenses.data.preference.PreferenceDataSource
@@ -50,7 +52,8 @@ class SettingsFragmentModel(
     }
 
     private fun loadItemModels() {
-        itemModels.value = createExpenseSection() + createGeneralSection()
+        itemModels.value =
+            createExpenseSection() + createGeneralSection() + createInformationSection()
     }
 
     // Expense section
@@ -158,6 +161,38 @@ class SettingsFragmentModel(
         }
     }
 
+    // Information section
+
+    private fun createInformationSection(): List<SettingItemModel> {
+        val context = getApplication<Application>()
+
+        val itemModels = mutableListOf<SettingItemModel>()
+
+        itemModels += createInformationHeader(context)
+        itemModels += createPrivacyPolicy(context)
+        itemModels += createVersion(context)
+
+        return itemModels
+    }
+
+    private fun createInformationHeader(context: Context): SettingItemModel =
+        SettingsHeaderModel(context.getString(R.string.information))
+
+    private fun createPrivacyPolicy(context: Context): SettingItemModel {
+        val title = context.getString(R.string.privacy_policy)
+
+        return ActionSettingItemModel(title).apply {
+            click = { showActivity.next(PRIVACY_POLICY_URI) }
+        }
+    }
+
+    private fun createVersion(context: Context): SettingItemModel {
+        val title = context.getString(R.string.version)
+        val summary = BuildConfig.VERSION_NAME
+
+        return SummaryActionSettingItemModel(title, summary)
+    }
+
     // Lifecycle end
 
     override fun onCleared() {
@@ -250,5 +285,8 @@ class SettingsFragmentModel(
 
         private val EMAIL_URI =
             Uri.parse("mailto:the.nominalista@gmail.com")
+
+        private val PRIVACY_POLICY_URI =
+            Uri.parse("https://github.com/nominalista/expenses/blob/master/privacy_policy.md")
     }
 }
