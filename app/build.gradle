@@ -68,6 +68,8 @@ dependencies {
     implementation dependencies.firebaseMessaging
 
     // Libraries
+    implementation dependencies.coroutinesAndroid
+    implementation dependencies.coroutinesCore
     implementation dependencies.jxl
     implementation dependencies.material
     implementation dependencies.navigationFragment
