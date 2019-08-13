@@ -35,7 +35,7 @@ class HomeFragmentModel(
     var expenses = emptyList<Expense>()
     var tags = emptyList<Tag>()
 
-    private var dateRange: DateRange = DateRange.AllTime
+    private var dateRange: DateRange = DateRange.ALL_TIME
     private var tagFilter: TagFilter? = null
 
     private val disposables = CompositeDisposable()

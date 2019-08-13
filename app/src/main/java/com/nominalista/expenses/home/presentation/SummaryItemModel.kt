@@ -28,18 +28,18 @@ class SummaryItemModel(
 
     private fun createDateRangeText(context: Context, dateRange: DateRange): String {
         return when (dateRange) {
-            Today -> context.getString(R.string.today)
-            ThisWeek -> context.getString(R.string.this_week)
-            ThisMonth -> context.getString(R.string.this_month)
-            AllTime -> context.getString(R.string.all_time)
+            TODAY -> context.getString(R.string.today)
+            THIS_WEEK -> context.getString(R.string.this_week)
+            THIS_MONTH -> context.getString(R.string.this_month)
+            ALL_TIME -> context.getString(R.string.all_time)
         }
     }
 
-    fun onTodayClick() = dateRangeChange?.invoke(Today)
+    fun onTodayClick() = dateRangeChange?.invoke(TODAY)
 
-    fun onThisWeekClick() = dateRangeChange?.invoke(DateRange.ThisWeek)
+    fun onThisWeekClick() = dateRangeChange?.invoke(DateRange.THIS_WEEK)
 
-    fun onThisMonthClick() = dateRangeChange?.invoke(DateRange.ThisMonth)
+    fun onThisMonthClick() = dateRangeChange?.invoke(DateRange.THIS_MONTH)
 
-    fun onAllTimeClick() = dateRangeChange?.invoke(DateRange.AllTime)
+    fun onAllTimeClick() = dateRangeChange?.invoke(DateRange.ALL_TIME)
 }

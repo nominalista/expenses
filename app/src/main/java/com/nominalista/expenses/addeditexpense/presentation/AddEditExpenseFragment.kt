@@ -9,15 +9,15 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.chip.Chip
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Currency
-import com.nominalista.expenses.data.Date
-import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.addeditexpense.presentation.dateselection.DateSelectionDialogFragment
-import com.nominalista.expenses.addeditexpense.presentation.timeselection.TimeSelectionDialogFragment
 import com.nominalista.expenses.common.presentation.currencyselection.CurrencySelectionDialogFragment
+import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.util.READABLE_DATE_FORMAT
 import com.nominalista.expenses.util.extensions.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_add_edit_expense.*
+import org.threeten.bp.LocalDate
 
 class AddEditExpenseFragment : Fragment() {
 
@@ -78,19 +78,9 @@ class AddEditExpenseFragment : Fragment() {
     }
 
     private fun showDateSelection() {
-        val dialogFragment = DateSelectionDialogFragment()
-        dialogFragment.dateSelected = { y, m, d -> showTimeSelection(y, m, d) }
-        dialogFragment.show(requireFragmentManager(), "DateSelectionDialogFragment")
-    }
-
-    private fun showTimeSelection(year: Int, month: Int, day: Int) {
-        val dialogFragment = TimeSelectionDialogFragment()
-        dialogFragment.timeSelected = { h, m -> selectDate(year, month, day, h, m) }
-        dialogFragment.show(requireFragmentManager(), "TimeSelectionDialogFragment")
-    }
-
-    private fun selectDate(year: Int, month: Int, day: Int, hour: Int, minute: Int) {
-        model.selectDate(year, month, day, hour, minute)
+        DateSelectionDialogFragment.newInstance().apply {
+            dateSelected = { y, m, d -> model.selectDate(y, m, d) }
+        }.show(requireFragmentManager(), DateSelectionDialogFragment.TAG)
     }
 
     private fun initializeModels() {
@@ -136,8 +126,8 @@ class AddEditExpenseFragment : Fragment() {
         text_symbol.text = text
     }
 
-    private fun updateDateText(date: Date) {
-        text_date.text = date.toReadableString()
+    private fun updateDateText(date: LocalDate) {
+        text_date.text = date.toString(READABLE_DATE_FORMAT)
     }
 
     private fun updateTagLayout(tags: List<Tag>) {

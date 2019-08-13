@@ -24,4 +24,11 @@ class DateSelectionDialogFragment : DialogFragment(), DatePickerDialog.OnDateSet
         // https://developer.android.com/reference/android/app/DatePickerDialog.OnDateSetListener
         dateSelected?.invoke(year, month + 1, dayOfMonth)
     }
+
+    companion object {
+
+        const val TAG = "DateSelectionDialogFragment"
+
+        fun newInstance() = DateSelectionDialogFragment()
+    }
 }

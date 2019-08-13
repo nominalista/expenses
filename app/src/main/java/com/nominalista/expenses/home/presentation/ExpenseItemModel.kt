@@ -1,6 +1,7 @@
 package com.nominalista.expenses.home.presentation
 
 import com.nominalista.expenses.data.Expense
+import com.nominalista.expenses.util.extensions.toString
 
 class ExpenseItemModel(val expense: Expense) : HomeItemModel {
 
@@ -18,7 +19,7 @@ class ExpenseItemModel(val expense: Expense) : HomeItemModel {
     }
 
     private fun createDay(): String {
-        val day = expense.date.day
+        val day = expense.date.dayOfMonth
         return day.toString()
     }
 

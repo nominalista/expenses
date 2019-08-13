@@ -1,39 +1,37 @@
 package com.nominalista.expenses.home.presentation
 
-import com.nominalista.expenses.data.Date
+import com.nominalista.expenses.util.extensions.*
+import org.threeten.bp.LocalDate
 
 enum class DateRange {
 
-    Today {
-        override fun contains(date: Date): Boolean {
-            val now = Date.now()
-            val start = now.withTruncatedTime()
-            val end = now.tomorrow().withTruncatedTime()
-            return date.utcTimestamp in start.utcTimestamp until end.utcTimestamp
+    TODAY {
+        override fun contains(date: LocalDate): Boolean {
+            return LocalDate.now().isEqual(date)
         }
     },
 
-    ThisWeek {
-        override fun contains(date: Date): Boolean {
-            val now = Date.now()
-            val start = now.firstDayOfWeek().withTruncatedTime()
-            val end = now.lastDayOfWeek().tomorrow().withTruncatedTime()
-            return date.utcTimestamp in start.utcTimestamp until end.utcTimestamp
+    THIS_WEEK {
+        override fun contains(date: LocalDate): Boolean {
+            val now = LocalDate.now()
+            val dayBeforeFirstDayOfWeek = now.firstDayOfWeek().yesterday()
+            val dayAfterLastDayOfWeek = now.lastDayOfWeek().tomorrow()
+            return date.isAfter(dayBeforeFirstDayOfWeek) && date.isBefore(dayAfterLastDayOfWeek)
         }
     },
 
-    ThisMonth {
-        override fun contains(date: Date): Boolean {
-            val now = Date.now()
-            val start = now.firstDayOfMonth().withTruncatedTime()
-            val end = now.lastDayOfMonth().tomorrow().withTruncatedTime()
-            return date.utcTimestamp in start.utcTimestamp until end.utcTimestamp
+    THIS_MONTH {
+        override fun contains(date: LocalDate): Boolean {
+            val now = LocalDate.now()
+            val dayBeforeFirstDayOfMonth = now.firstDayOfMonth().yesterday()
+            val dayAfterLastDayOfMonth = now.lastDayOfMonth().tomorrow()
+            return date.isAfter(dayBeforeFirstDayOfMonth) && date.isBefore(dayAfterLastDayOfMonth)
         }
     },
 
-    AllTime {
-        override fun contains(date: Date) = true
+    ALL_TIME {
+        override fun contains(date: LocalDate) = true
     };
 
-    abstract fun contains(date: Date): Boolean
+    abstract fun contains(date: LocalDate): Boolean
 }

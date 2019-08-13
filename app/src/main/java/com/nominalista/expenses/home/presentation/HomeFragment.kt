@@ -101,9 +101,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showExpenseDetail(expense: Expense) {
-        val zonedDateTime = ZonedDateTime.now()
-        Log.d("Test", "Test")
-        // ExpenseDetailActivity.start(requireContext(), expense)
+        ExpenseDetailActivity.start(requireContext(), expense)
     }
 
     private fun showTagFiltering() {

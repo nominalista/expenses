@@ -3,17 +3,24 @@ package com.nominalista.expenses.settings.work
 import android.content.Context
 import android.os.Environment.DIRECTORY_DOWNLOADS
 import android.os.Environment.getExternalStoragePublicDirectory
-import androidx.work.*
+import androidx.work.OneTimeWorkRequest
+import androidx.work.RxWorker
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Date
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.database.DatabaseDataSource
+import com.nominalista.expenses.util.READABLE_DATE_FORMAT
 import com.nominalista.expenses.util.extensions.application
+import com.nominalista.expenses.util.extensions.toEpochMillis
+import com.nominalista.expenses.util.extensions.toString
 import io.reactivex.Single
 import jxl.Workbook
 import jxl.write.Label
 import jxl.write.WritableSheet
 import jxl.write.WritableWorkbook
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -30,7 +37,7 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
         val databaseDataSource = DatabaseDataSource(database)
 
         return databaseDataSource.getExpenses()
-            .map { expenses -> expenses.sortedBy { it.date.utcTimestamp } }
+            .map { expenses -> expenses.sortedBy { it.date.toEpochMillis() } }
     }
 
     private fun export(expenses: List<Expense>) {
@@ -46,7 +53,7 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
     private fun createFile(): File {
         val downloads = getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)
         val appName = applicationContext.getString(R.string.app_name)
-        val dateString = Date.now().toString(DATE_PATTERN)
+        val dateString = DateTimeFormatter.ofPattern(DATE_PATTERN).format(LocalDateTime.now())
         val fileName = "${appName}_$dateString"
         val extension = ".xls"
         return File(downloads, fileName + extension)
@@ -92,7 +99,7 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
         list.add("%.2f".format(expense.amount))
         list.add(expense.currency.code)
         list.add(expense.title)
-        list.add(expense.date.toReadableString())
+        list.add(expense.date.toString(READABLE_DATE_FORMAT))
         list.add(expense.notes)
         list.add(expense.tags.joinToString { it.name })
         return list

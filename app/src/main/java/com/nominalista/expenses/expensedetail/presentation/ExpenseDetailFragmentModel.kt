@@ -10,7 +10,9 @@ import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.expensedetail.domain.DeleteExpenseUseCase
 import com.nominalista.expenses.expensedetail.domain.ObserveExpenseUseCase
+import com.nominalista.expenses.util.READABLE_DATE_FORMAT
 import com.nominalista.expenses.util.extensions.plusAssign
+import com.nominalista.expenses.util.extensions.toString
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
 import com.nominalista.expenses.util.reactive.Variable
@@ -55,7 +57,7 @@ class ExpenseDetailFragmentModel(
         currency.value = "(${expense.currency.title} • ${expense.currency.code})"
         title.value = expense.title
         tags.value = expense.tags
-        date.value = expense.date.toReadableString()
+        date.value = expense.date.toString(READABLE_DATE_FORMAT)
         notes.value = makeNotes(expense)
     }
 

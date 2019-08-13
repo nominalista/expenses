@@ -19,6 +19,7 @@ interface ExpenseTagJoinDao {
         """)
     fun getTagsWithExpenseId(expenseId: Long): List<Tag>
 
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
         """
             SELECT * FROM tags 
