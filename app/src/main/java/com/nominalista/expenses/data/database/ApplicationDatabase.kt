@@ -13,18 +13,19 @@ import com.nominalista.expenses.data.database.converter.CurrencyConverter
 import com.nominalista.expenses.data.database.converter.DateConverter
 
 @Database(
-        entities = [
-            Expense::class,
-            Tag::class,
-            ExpenseTagJoin::class
-        ],
-        version = 1,
-        exportSchema = false)
+    entities = [
+        Expense::class,
+        Tag::class,
+        ExpenseTagJoin::class
+    ],
+    version = 1,
+    exportSchema = true
+)
 @TypeConverters(
-        value = [
-            CurrencyConverter::class,
-            DateConverter::class
-        ]
+    value = [
+        CurrencyConverter::class,
+        DateConverter::class
+    ]
 )
 abstract class ApplicationDatabase : RoomDatabase() {
 

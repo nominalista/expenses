@@ -1,6 +1,7 @@
 package com.nominalista.expenses.home.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ProgressBar
@@ -19,6 +20,7 @@ import com.nominalista.expenses.settings.presentation.SettingsActivity
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import io.reactivex.disposables.CompositeDisposable
+import org.threeten.bp.ZonedDateTime
 
 class HomeFragment : Fragment() {
 
@@ -99,7 +101,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun showExpenseDetail(expense: Expense) {
-        ExpenseDetailActivity.start(requireContext(), expense)
+        val zonedDateTime = ZonedDateTime.now()
+        Log.d("Test", "Test")
+        // ExpenseDetailActivity.start(requireContext(), expense)
     }
 
     private fun showTagFiltering() {

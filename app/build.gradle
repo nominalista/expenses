@@ -13,6 +13,13 @@ android {
         versionName "0.2.2"
         minSdkVersion 21
         targetSdkVersion 28
+
+        // This indicates to Room where it should export schema of database.
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         debug {
