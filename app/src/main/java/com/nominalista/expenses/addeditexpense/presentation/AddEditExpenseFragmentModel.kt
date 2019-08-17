@@ -11,6 +11,7 @@ import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.util.extensions.plusAssign
+import com.nominalista.expenses.util.getCurrentTimestamp
 import com.nominalista.expenses.util.reactive.Event
 import com.nominalista.expenses.util.reactive.Variable
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -125,8 +126,9 @@ class AddEditExpenseFragmentModel(
         val amount = amount ?: 0f
         val currency = selectedCurrency.value
         val date = selectedDate.value
+        val createdAt = getCurrentTimestamp()
         val tags = selectedTags.value
-        return Expense(0, amount, currency, title, date, notes, tags)
+        return Expense(0, amount, currency, title, date, notes, createdAt, 0, tags)
     }
 
     private fun updateExpense(expense: Expense) {
@@ -146,6 +148,7 @@ class AddEditExpenseFragmentModel(
         val amount = amount ?: 0f
         val currency = selectedCurrency.value
         val date = selectedDate.value
+        val modifiedAt = getCurrentTimestamp()
         val tags = selectedTags.value
         return expense.copy(
             amount = amount,
@@ -153,6 +156,7 @@ class AddEditExpenseFragmentModel(
             title = title,
             date = date,
             notes = notes,
+            modifiedAt = modifiedAt,
             tags = tags
         )
     }

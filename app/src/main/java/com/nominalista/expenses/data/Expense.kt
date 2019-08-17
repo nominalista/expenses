@@ -17,16 +17,22 @@ data class Expense(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "date") val date: LocalDate,
     @ColumnInfo(name = "notes") val notes: String,
+    @ColumnInfo(name = "created_at") val createdAt: Long,
+    @ColumnInfo(name = "modified_at") val modifiedAt: Long,
     @Ignore var tags: List<Tag>
 ) : Parcelable {
 
-    // Convenient constructor for Room.
+    /**
+     * Convenient constructor for Room.
+     */
     constructor(
         id: Long,
         amount: Float,
         currency: Currency,
         title: String,
         date: LocalDate,
-        notes: String
-    ) : this(id, amount, currency, title, date, notes, emptyList())
+        notes: String,
+        createdAt: Long,
+        modifiedAt: Long
+    ) : this(id, amount, currency, title, date, notes, createdAt, modifiedAt, emptyList())
 }

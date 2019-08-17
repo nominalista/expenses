@@ -3,6 +3,7 @@ package com.nominalista.expenses.data.database
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.ExpenseTagJoin
 import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.util.getCurrentTimestamp
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
