@@ -29,6 +29,9 @@ ext {
 
     // Testing
     jUnitVersion = '4.12'
+    testCoreVersion = '1.0.0'
+    testRunnerVersion = '1.1.0'
+    testRulesVersion = '1.1.0'
 
     appDependencies = [
             "appCompat"               : "androidx.appcompat:appcompat:${appCompatVersion}",
@@ -59,6 +62,10 @@ ext {
     ]
 
     appTestDependencies = [
-            "jUnit": "junit:junit:${jUnitVersion}"
+            "jUnit"                   : "junit:junit:${jUnitVersion}",
+            "core"                    : "androidx.test:core:${testCoreVersion}",
+            "runner"                  : "androidx.test:runner:${testRunnerVersion}",
+            "rules"                   : "androidx.test:rules:${testRulesVersion}",
+            "roomTesting"             : "androidx.room:room-testing:${roomVersion}"
     ]
 }

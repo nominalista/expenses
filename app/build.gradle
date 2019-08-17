@@ -20,7 +20,16 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+
+        // Enables AndroidJUnit4 runner in tests.
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    sourceSets {
+        // Helps Room to find schema files for testing migrations.
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+
     buildTypes {
         debug {
             debuggable true
@@ -86,7 +95,11 @@ dependencies {
     implementation dependencies.threeTen
 
     // Testing
-    testImplementation testDependencies.jUnit
+    androidTestImplementation testDependencies.jUnit
+    androidTestImplementation testDependencies.core
+    androidTestImplementation testDependencies.rules
+    androidTestImplementation testDependencies.runner
+    androidTestImplementation testDependencies.roomTesting
 }
 
 apply plugin: 'com.google.gms.google-services'

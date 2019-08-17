@@ -41,19 +41,23 @@ abstract class ApplicationDatabase : RoomDatabase() {
 
     companion object {
 
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "ALTER TABLE expenses ADD COLUMN created_at INTEGER NOT NULL DEFAULT 0"
+                )
+                database.execSQL(
+                    "ALTER TABLE expenses ADD COLUMN modified_at INTEGER NOT NULL DEFAULT 0"
+                )
+            }
+        }
+
+        private const val DATABASE_NAME = "database"
+
         fun build(context: Context) =
             Room.databaseBuilder(context, ApplicationDatabase::class.java, DATABASE_NAME)
                 .addMigrations(MIGRATION_1_2)
                 .fallbackToDestructiveMigration()
                 .build()
-
-        private const val DATABASE_NAME = "database"
-
-        private val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE expenses ADD COLUMN created_at INTEGER")
-                database.execSQL("ALTER TABLE expenses ADD COLUMN modified_at INTEGER")
-            }
-        }
     }
 }
