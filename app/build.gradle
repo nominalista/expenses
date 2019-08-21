@@ -95,6 +95,7 @@ dependencies {
     implementation dependencies.threeTen
 
     // Testing
+    testImplementation testDependencies.jUnit
     androidTestImplementation testDependencies.jUnit
     androidTestImplementation testDependencies.core
     androidTestImplementation testDependencies.rules

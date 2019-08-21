@@ -1,10 +1,13 @@
 package com.nominalista.expenses.util.extensions
 
+import android.annotation.SuppressLint
 import org.threeten.bp.LocalDate
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.TemporalAdjusters
 import org.threeten.bp.temporal.WeekFields
+import java.text.SimpleDateFormat
+import java.util.*
 
 // Formatting
 
@@ -27,3 +30,7 @@ fun LocalDate.lastDayOfWeek(): LocalDate = with(WeekFields.ISO.dayOfWeek(), 7)
 fun LocalDate.firstDayOfMonth(): LocalDate = with(TemporalAdjusters.firstDayOfMonth())
 
 fun LocalDate.lastDayOfMonth(): LocalDate = with(TemporalAdjusters.lastDayOfMonth())
+
+// Support for old format
+
+fun LocalDate.toDate(): Date = GregorianCalendar(year, monthValue - 1, dayOfMonth).time

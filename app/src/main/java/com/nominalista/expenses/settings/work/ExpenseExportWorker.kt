@@ -10,15 +10,13 @@ import androidx.work.WorkerParameters
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.database.DatabaseDataSource
-import com.nominalista.expenses.util.READABLE_DATE_FORMAT
 import com.nominalista.expenses.util.extensions.application
+import com.nominalista.expenses.util.extensions.toDate
 import com.nominalista.expenses.util.extensions.toEpochMillis
-import com.nominalista.expenses.util.extensions.toString
 import io.reactivex.Single
 import jxl.Workbook
-import jxl.write.Label
-import jxl.write.WritableSheet
-import jxl.write.WritableWorkbook
+import jxl.write.*
+import jxl.write.Number
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.io.File
@@ -53,7 +51,7 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
     private fun createFile(): File {
         val downloads = getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)
         val appName = applicationContext.getString(R.string.app_name)
-        val dateString = DateTimeFormatter.ofPattern(DATE_PATTERN).format(LocalDateTime.now())
+        val dateString = DateTimeFormatter.ofPattern(TIMESTAMP_PATTERN).format(LocalDateTime.now())
         val fileName = "${appName}_$dateString"
         val extension = ".xls"
         return File(downloads, fileName + extension)
@@ -71,7 +69,9 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
 
     private fun addColumnNames(sheet: WritableSheet) {
         val columnNames = createColumnNames()
-        columnNames.forEachIndexed { column, columnName -> addCell(sheet, 0, column, columnName) }
+        columnNames.forEachIndexed { column, columnName ->
+            sheet.addCell(Label(column, 0, columnName))
+        }
     }
 
     private fun createColumnNames(): List<String> {
@@ -87,32 +87,28 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
 
     private fun addExpenses(sheet: WritableSheet, expenses: List<Expense>) {
         expenses.forEachIndexed { index, expense ->
-            val expenseColumns = createExpenseColumns(expense)
-            expenseColumns.forEachIndexed { column, expenseColumn ->
-                addCell(sheet, index + 1, column, expenseColumn)
-            }
+            val row = index + 1
+            sheet.addCell(Number(COLUMN_AMOUNT, row, expense.amount.toDouble()))
+            sheet.addCell(Label(COLUMN_CURRENCY, row, expense.currency.code))
+            sheet.addCell(Label(COLUMN_TITLE, row, expense.title))
+            sheet.addCell(DateTime(COLUMN_DATE, row, expense.date.toDate(), DATE_CELL_FORMAT))
+            sheet.addCell(Label(COLUMN_NOTES, row, expense.notes))
+            sheet.addCell(Label(COLUMN_TAGS, row, expense.tags.joinToString { it.name }))
         }
-    }
-
-    private fun createExpenseColumns(expense: Expense): List<String> {
-        val list = ArrayList<String>()
-        list.add("%.2f".format(expense.amount))
-        list.add(expense.currency.code)
-        list.add(expense.title)
-        list.add(expense.date.toString(READABLE_DATE_FORMAT))
-        list.add(expense.notes)
-        list.add(expense.tags.joinToString { it.name })
-        return list
-    }
-
-    private fun addCell(sheet: WritableSheet, row: Int, column: Int, string: String) {
-        val label = Label(column, row, string)
-        sheet.addCell(label)
     }
 
     companion object {
 
-        private const val DATE_PATTERN = "yyyyMMdd_HHmmss"
+        private const val TIMESTAMP_PATTERN = "yyyyMMdd_HHmmss"
+
+        private val DATE_CELL_FORMAT = WritableCellFormat(DateFormat("yyyy-MM-dd"))
+
+        private const val COLUMN_AMOUNT = 0
+        private const val COLUMN_CURRENCY = 1
+        private const val COLUMN_TITLE = 2
+        private const val COLUMN_DATE = 3
+        private const val COLUMN_NOTES = 4
+        private const val COLUMN_TAGS = 5
 
         fun enqueue(): UUID {
             val request = OneTimeWorkRequest.Builder(ExpenseExportWorker::class.java).build()
