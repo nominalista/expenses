@@ -29,6 +29,8 @@
     <string name="expense_deletion_success_message">Pomyślnie usunięto wszystkie wydatki.</string>
     <string name="expense_export_failure_message">Nie można było wyeksportować wydatków. Spróbuj ponownie.</string>
     <string name="expense_export_success_message">Pomyślnie wyeksportowano wydatki do folderu Pobrane.</string>
+    <string name="expense_import_failure_message">Nie można było zaimportować wydatków. Sprawdź format danych w pliku.</string>
+    <string name="expense_import_success_message">Pomyślnie zaimportowano wydatki z pliku.</string>
     <string name="expenses">Wydatki</string>
     <string name="export_to_excel">Eksportuj do Excela (.xls)</string>
     <string name="feedback_is_welcome">Opinia mile widziana!</string>
@@ -36,6 +38,7 @@
     <string name="filter_tags">Filtruj tagi</string>
     <string name="general">Ogólne</string>
     <string name="information">Informacje</string>
+    <string name="import_from_excel">Importuj z Excela (.xls)</string>
     <string name="name">Nazwa</string>
     <string name="no">Nie</string>
     <string name="no_added_tags_message">Brak dodanych tagów. Możesz zarządzać swoimi tagami w ekranie dodawania nowego wydatku.</string>

@@ -1,6 +1,7 @@
 package com.nominalista.expenses.settings.presentation
 
 import android.Manifest
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -91,12 +92,9 @@ class SettingsFragment : Fragment() {
         compositeDisposable += model.showDeleteAllExpensesDialog
             .toObservable()
             .subscribe { showDeleteAllExpensesDialog() }
-        compositeDisposable += model.showExpenseExportMessage
+        compositeDisposable += model.showMessage
             .toObservable()
-            .subscribe { showExpenseExportMessage(it) }
-        compositeDisposable += model.showExpensesDeletionMessage
-            .toObservable()
-            .subscribe { showExpenseDeletionMessage(it) }
+            .subscribe { showMessage(it) }
         compositeDisposable += model.showActivity
             .toObservable()
             .subscribe { showActivity(it) }
@@ -104,6 +102,9 @@ class SettingsFragment : Fragment() {
             .toObservable()
             .subscribe { shareData(it) }
 
+        compositeDisposable += model.selectFile
+            .toObservable()
+            .subscribe { showFileSelectionPicker(it) }
         compositeDisposable += model.requestWriteExternalStoragePermission
             .toObservable()
             .subscribe { requestWriteExternalStoragePermission(it) }
@@ -128,11 +129,7 @@ class SettingsFragment : Fragment() {
             .show()
     }
 
-    private fun showExpenseExportMessage(messageId: Int) {
-        Snackbar.make(containerLayout, messageId, Snackbar.LENGTH_LONG).show()
-    }
-
-    private fun showExpenseDeletionMessage(messageId: Int) {
+    private fun showMessage(messageId: Int) {
         Snackbar.make(containerLayout, messageId, Snackbar.LENGTH_LONG).show()
     }
 
@@ -148,6 +145,14 @@ class SettingsFragment : Fragment() {
         }
 
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_with)))
+    }
+
+    private fun showFileSelectionPicker(requestCode: Int) {
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(XLS_MIME_TYPE))
+            type = "*/*"
+        }
+        startActivityForResult(intent, requestCode)
     }
 
     private fun requestWriteExternalStoragePermission(requestCode: Int) {
@@ -189,7 +194,19 @@ class SettingsFragment : Fragment() {
         return true
     }
 
-    // Requests
+    // File selection
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val uriToSelectedFile = data?.data
+
+        if (resultCode == Activity.RESULT_OK && uriToSelectedFile != null) {
+            model.fileForImportSelected(requestCode, uriToSelectedFile)
+        }
+    }
+
+    // Permissions
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -197,5 +214,9 @@ class SettingsFragment : Fragment() {
         grantResults: IntArray
     ) {
         if (isGranted(grantResults)) model.permissionGranted(requestCode)
+    }
+
+    companion object {
+        private const val XLS_MIME_TYPE = "application/vnd.ms-excel"
     }
 }

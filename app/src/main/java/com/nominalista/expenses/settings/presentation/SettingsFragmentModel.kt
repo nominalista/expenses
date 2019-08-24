@@ -2,7 +2,6 @@ package com.nominalista.expenses.settings.presentation
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +13,7 @@ import com.nominalista.expenses.data.Currency
 import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.settings.work.ExpenseDeletionWorker
 import com.nominalista.expenses.settings.work.ExpenseExportWorker
+import com.nominalista.expenses.settings.work.ExpenseImportWorker
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
 import com.nominalista.expenses.util.reactive.Variable
@@ -27,19 +27,22 @@ class SettingsFragmentModel(
 
     val itemModels = Variable(emptyList<SettingItemModel>())
 
+    // Events
     val showCurrencySelectionDialog = Event()
     val showDeleteAllExpensesDialog = Event()
 
-    val showExpenseExportMessage = DataEvent<Int>()
-    val showExpensesDeletionMessage = DataEvent<Int>()
-
+    // Common data events
+    val showMessage = DataEvent<Int>()
     val showActivity = DataEvent<Uri>()
     val shareData = DataEvent<String>()
 
-    val requestWriteExternalStoragePermission = DataEvent<Int>()
-
     val observeWorkInfo = DataEvent<UUID>()
 
+    // Specific data events
+    val selectFile = DataEvent<Int>()
+    val requestWriteExternalStoragePermission = DataEvent<Int>()
+
+    private var expenseImportId: UUID? = null
     private var expenseExportId: UUID? = null
     private var expenseDeletionId: UUID? = null
 
@@ -65,6 +68,7 @@ class SettingsFragmentModel(
 
         itemModels += createExpenseHeader(context)
         itemModels += createDefaultCurrency(context)
+        itemModels += createImportExpenses(context)
         itemModels += createExportExpenses(context)
         itemModels += createDeleteAllExpenses(context)
 
@@ -78,7 +82,6 @@ class SettingsFragmentModel(
         val defaultCurrency = preferenceDataSource.getDefaultCurrency(context)
 
         val title = context.getString(R.string.default_currency)
-
         val summary = context.getString(
             R.string.default_currency_summary,
             defaultCurrency.flag,
@@ -88,6 +91,14 @@ class SettingsFragmentModel(
 
         return SummaryActionSettingItemModel(title, summary).apply {
             click = { showCurrencySelectionDialog.next() }
+        }
+    }
+
+    private fun createImportExpenses(context: Context): SettingItemModel {
+        val title = context.getString(R.string.import_from_excel)
+
+        return ActionSettingItemModel(title).apply {
+            click = { selectFile.next(REQUEST_CODE_SELECT_FILE) }
         }
     }
 
@@ -210,6 +221,18 @@ class SettingsFragmentModel(
         loadItemModels()
     }
 
+    fun fileForImportSelected(requestCode: Int, fileUri: Uri) {
+        if (requestCode == REQUEST_CODE_SELECT_FILE) importExpenses(fileUri)
+    }
+
+    private fun importExpenses(fileUri: Uri) {
+        if (expenseImportId != null) return
+
+        val id = ExpenseImportWorker.enqueue(fileUri)
+        expenseImportId = id
+        observeWorkInfo.next(id)
+    }
+
     fun permissionGranted(requestCode: Int) {
         if (requestCode == REQUEST_CODE_WRITE_EXTERNAL_STORAGE) exportExpenses()
     }
@@ -232,19 +255,34 @@ class SettingsFragmentModel(
 
     fun handleWorkInfo(workInfo: WorkInfo) {
         when (workInfo.id) {
+            expenseImportId -> handleExpenseImportWorkInfo(workInfo)
             expenseExportId -> handleExpenseExportWorkInfo(workInfo)
             expenseDeletionId -> handleExpenseDeletionWorkInfo(workInfo)
+        }
+    }
+
+    private fun handleExpenseImportWorkInfo(workInfo: WorkInfo) {
+        expenseImportId = when (workInfo.state) {
+            WorkInfo.State.SUCCEEDED -> {
+                showMessage.next(R.string.expense_import_success_message)
+                null
+            }
+            WorkInfo.State.FAILED -> {
+                showMessage.next(R.string.expense_import_failure_message)
+                null
+            }
+            else -> return
         }
     }
 
     private fun handleExpenseExportWorkInfo(workInfo: WorkInfo) {
         expenseExportId = when (workInfo.state) {
             WorkInfo.State.SUCCEEDED -> {
-                showExpenseExportMessage.next(R.string.expense_export_success_message)
+                showMessage.next(R.string.expense_export_success_message)
                 null
             }
             WorkInfo.State.FAILED -> {
-                showExpenseExportMessage.next(R.string.expense_export_failure_message)
+                showMessage.next(R.string.expense_export_failure_message)
                 null
             }
             else -> return
@@ -254,11 +292,11 @@ class SettingsFragmentModel(
     private fun handleExpenseDeletionWorkInfo(workInfo: WorkInfo) {
         expenseDeletionId = when (workInfo.state) {
             WorkInfo.State.SUCCEEDED -> {
-                showExpensesDeletionMessage.next(R.string.expense_deletion_success_message)
+                showMessage.next(R.string.expense_deletion_success_message)
                 null
             }
             WorkInfo.State.FAILED -> {
-                showExpensesDeletionMessage.next(R.string.expense_deletion_failure_message)
+                showMessage.next(R.string.expense_deletion_failure_message)
                 null
             }
             else -> return
@@ -275,7 +313,8 @@ class SettingsFragmentModel(
 
     companion object {
 
-        private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1
+        private const val REQUEST_CODE_SELECT_FILE = 1
+        private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 2
 
         private val GITHUB_URI =
             Uri.parse("https://github.com/Nominalista/Expenses")

@@ -1,12 +1,10 @@
 package com.nominalista.expenses.util.extensions
 
-import android.annotation.SuppressLint
 import org.threeten.bp.LocalDate
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.TemporalAdjusters
 import org.threeten.bp.temporal.WeekFields
-import java.text.SimpleDateFormat
 import java.util.*
 
 // Formatting
