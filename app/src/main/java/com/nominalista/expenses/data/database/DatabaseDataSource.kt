@@ -85,8 +85,23 @@ class DatabaseDataSource(private val database: ApplicationDatabase) {
         return database.tagDao().observeAll()
     }
 
-    fun insertTag(tag: Tag): Single<Long> {
-        return Single.fromCallable { database.tagDao().insert(tag) }
+    /**
+     * Insert tag to database provided that it contains unique name. Otherwise, return ID of the
+     * first tag with same name.
+     *
+     * This method, unfortunately, doesn't pass information whether tag was inserted or not.
+     * In further versions of database, tag ID should be replaced with just the name.
+     */
+    fun insertTagOrReturnIdOfTagWithSameName(tag: Tag): Single<Long> {
+        return Single.fromCallable {
+            val tagsWithSameName = database.tagDao().getByName(tag.name)
+
+            if (tagsWithSameName.isEmpty()) {
+                database.tagDao().insert(tag)
+            } else {
+                tagsWithSameName.first().id
+            }
+        }
     }
 
     fun deleteTag(tag: Tag): Completable {

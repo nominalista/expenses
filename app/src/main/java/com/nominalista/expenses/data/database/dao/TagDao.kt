@@ -16,6 +16,9 @@ interface TagDao {
     @Query("SELECT * FROM tags")
     fun getAll(): List<Tag>
 
+    @Query("SELECT * FROM tags WHERE name = :name")
+    fun getByName(name: String): List<Tag>
+
     @Insert
     fun insert(tag: Tag): Long
 

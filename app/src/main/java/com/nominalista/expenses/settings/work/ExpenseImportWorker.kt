@@ -66,7 +66,8 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
         }
 
         return tagsForInsertions.map { tagForInsertion ->
-            val id = databaseDataSource.insertTag(tagForInsertion).blockingGet()
+            val id = databaseDataSource.insertTagOrReturnIdOfTagWithSameName(tagForInsertion)
+                .blockingGet()
             tagForInsertion.copy(id = id)
         }.toSet()
     }

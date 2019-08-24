@@ -100,7 +100,7 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
     // Public
 
     fun createTag(tag: Tag) {
-        disposables += databaseDataSource.insertTag(tag)
+        disposables += databaseDataSource.insertTagOrReturnIdOfTagWithSameName(tag)
             .compose(SchedulerTransformer())
             .subscribe({ id ->
                 Log.d(TAG, "Tag insertion succeeded. Id: $id.")
