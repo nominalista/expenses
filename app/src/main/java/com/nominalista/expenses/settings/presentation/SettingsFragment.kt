@@ -98,9 +98,6 @@ class SettingsFragment : Fragment() {
         compositeDisposable += model.showActivity
             .toObservable()
             .subscribe { showActivity(it) }
-        compositeDisposable += model.shareData
-            .toObservable()
-            .subscribe { shareData(it) }
 
         compositeDisposable += model.selectFile
             .toObservable()
@@ -136,15 +133,6 @@ class SettingsFragment : Fragment() {
     private fun showActivity(uri: Uri) {
         val intent = Intent(Intent.ACTION_VIEW, uri)
         requireActivity().startActivitySafely(intent)
-    }
-
-    private fun shareData(text: String) {
-        val sharingIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, text)
-        }
-
-        startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_with)))
     }
 
     private fun showFileSelectionPicker(requestCode: Int) {

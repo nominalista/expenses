@@ -7,6 +7,7 @@
     <string name="add_expense_button">Dodaj wydatek</string>
     <string name="amount">Kwota</string>
     <string name="all_time">Cały czas</string>
+    <string name="application">Aplikacja</string>
     <string name="cancel">Anuluj</string>
     <string name="channel_name_default">Domyślny kanał</string>
     <string name="channel_description_default">Kanał dla każdegu typu powiadomień.</string>
@@ -18,6 +19,7 @@
     <string name="column_title">Tytuł</string>
     <string name="confirm">Potwierdź</string>
     <string name="contact_me">Skontaktuj się ze mną</string>
+    <string name="contact_me_summary">Opinia mile widziana!</string>
     <string name="delete">Usuń</string>
     <string name="default_currency">Domyślna waluta</string>
     <string name="delete_all">Usuń wszystkie</string>
@@ -33,11 +35,8 @@
     <string name="expense_import_success_message">Pomyślnie zaimportowano wydatki z pliku.</string>
     <string name="expenses">Wydatki</string>
     <string name="export_to_excel">Eksportuj do Excela (.xls)</string>
-    <string name="feedback_is_welcome">Opinia mile widziana!</string>
     <string name="filter">Filtruj</string>
     <string name="filter_tags">Filtruj tagi</string>
-    <string name="general">Ogólne</string>
-    <string name="information">Informacje</string>
     <string name="import_from_excel">Importuj z Excela (.xls)</string>
     <string name="name">Nazwa</string>
     <string name="no">Nie</string>
@@ -48,20 +47,19 @@
     <string name="notes_title">Notatki</string>
     <string name="notes_hint">Notatki (opcjonalnie)</string>
     <string name="privacy_policy">Polityka Prywatności</string>
-    <string name="rate_app">Oceń aplikację (4.9 &#x1F31F;)</string>
+    <string name="rate_app">Oceń aplikację</string>
+    <string name="rate_app_summary">4.9 &#x1F31F; w Sklepie Play</string>
     <string name="save">Zapisz</string>
     <string name="select_currency">Wybierz walutę</string>
     <string name="select_tags">Wybierz tagi</string>
     <string name="settings">Ustawienia</string>
-    <string name="share_app">Podziel się aplikacją</string>
-    <string name="share_with">Udostępnij przez</string>
+    <string name="source_code">Kod źródłowy</string>
     <string name="summary_title">Wydałaś/eś</string>
     <string name="ok">OK</string>
     <string name="this_month">Ten miesiąc</string>
     <string name="this_week">Ten tydzień</string>
     <string name="title_hint">Tytuł</string>
     <string name="today">Dzisiaj</string>
-    <string name="view_source_code">Wyświetl kod źródłowy</string>
     <string name="version">Wersja</string>
     <string name="yes">Tak</string>
 </resources>

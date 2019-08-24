@@ -34,7 +34,6 @@ class SettingsFragmentModel(
     // Common data events
     val showMessage = DataEvent<Int>()
     val showActivity = DataEvent<Uri>()
-    val shareData = DataEvent<String>()
 
     val observeWorkInfo = DataEvent<UUID>()
 
@@ -55,17 +54,15 @@ class SettingsFragmentModel(
     }
 
     private fun loadItemModels() {
-        itemModels.value =
-            createExpenseSection() + createGeneralSection() + createInformationSection()
+        itemModels.value = createExpensesSection() + createApplicationSection()
     }
 
-    // Expense section
+    // Expenses section
 
-    private fun createExpenseSection(): List<SettingItemModel> {
+    private fun createExpensesSection(): List<SettingItemModel> {
         val context = getApplication<Application>()
 
         val itemModels = mutableListOf<SettingItemModel>()
-
         itemModels += createExpenseHeader(context)
         itemModels += createDefaultCurrency(context)
         itemModels += createImportExpenses(context)
@@ -120,74 +117,50 @@ class SettingsFragmentModel(
         }
     }
 
-    // General section
+    // About section
 
-    private fun createGeneralSection(): List<SettingItemModel> {
+    private fun createApplicationSection(): List<SettingItemModel> {
         val context = getApplication<Application>()
 
         val itemModels = mutableListOf<SettingItemModel>()
-
-        itemModels += createGeneralHeader(context)
-        itemModels += createViewSourceCode(context)
-        itemModels += createShareApp(context)
+        itemModels += createApplicationHeader(context)
         itemModels += createRateApp(context)
         itemModels += createContactMe(context)
-
-        return itemModels
-    }
-
-    private fun createGeneralHeader(context: Context): SettingItemModel =
-        SettingsHeaderModel(context.getString(R.string.general))
-
-    private fun createViewSourceCode(context: Context): SettingItemModel {
-        val title = context.getString(R.string.view_source_code)
-
-        return ActionSettingItemModel(title).apply {
-            click = { showActivity.next(GITHUB_URI) }
-        }
-    }
-
-    private fun createShareApp(context: Context): SettingItemModel {
-        val title = context.getString(R.string.share_app)
-
-        return ActionSettingItemModel(title).apply {
-            click = { shareData.next(GOOGLE_PLAY_URI.toString()) }
-        }
-    }
-
-    private fun createRateApp(context: Context): SettingItemModel {
-        val title = context.getString(R.string.rate_app)
-
-        return ActionSettingItemModel(title).apply {
-            click = { showActivity.next(GOOGLE_PLAY_URI) }
-        }
-    }
-
-    private fun createContactMe(context: Context): SettingItemModel {
-        val title = context.getString(R.string.contact_me)
-        val summary = context.getString(R.string.feedback_is_welcome)
-
-        return SummaryActionSettingItemModel(title, summary).apply {
-            click = { showActivity.next(EMAIL_URI) }
-        }
-    }
-
-    // Information section
-
-    private fun createInformationSection(): List<SettingItemModel> {
-        val context = getApplication<Application>()
-
-        val itemModels = mutableListOf<SettingItemModel>()
-
-        itemModels += createInformationHeader(context)
+        itemModels += createSourceCode(context)
         itemModels += createPrivacyPolicy(context)
         itemModels += createVersion(context)
 
         return itemModels
     }
 
-    private fun createInformationHeader(context: Context): SettingItemModel =
-        SettingsHeaderModel(context.getString(R.string.information))
+    private fun createApplicationHeader(context: Context): SettingItemModel =
+        SettingsHeaderModel(context.getString(R.string.application))
+
+    private fun createRateApp(context: Context): SettingItemModel {
+        val title = context.getString(R.string.rate_app)
+        val summary = context.getString(R.string.rate_app_summary)
+
+        return SummaryActionSettingItemModel(title, summary).apply {
+            click = { showActivity.next(GOOGLE_PLAY_URI) }
+        }
+    }
+
+    private fun createContactMe(context: Context): SettingItemModel {
+        val title = context.getString(R.string.contact_me)
+        val summary = context.getString(R.string.contact_me_summary)
+
+        return SummaryActionSettingItemModel(title, summary).apply {
+            click = { showActivity.next(EMAIL_URI) }
+        }
+    }
+
+    private fun createSourceCode(context: Context): SettingItemModel {
+        val title = context.getString(R.string.source_code)
+
+        return ActionSettingItemModel(title).apply {
+            click = { showActivity.next(GITHUB_URI) }
+        }
+    }
 
     private fun createPrivacyPolicy(context: Context): SettingItemModel {
         val title = context.getString(R.string.privacy_policy)
