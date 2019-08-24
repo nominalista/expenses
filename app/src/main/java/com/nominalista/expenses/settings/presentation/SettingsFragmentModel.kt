@@ -300,6 +300,6 @@ class SettingsFragmentModel(
             Uri.parse("mailto:the.nominalista@gmail.com")
 
         private val PRIVACY_POLICY_URI =
-            Uri.parse("https://github.com/nominalista/expenses/blob/master/privacy_policy.md")
+            Uri.parse("https://github.com/nominalista/expenses/blob/master/resources/privacy_policy.md")
     }
 }
