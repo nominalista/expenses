@@ -124,9 +124,9 @@ class SettingsFragmentModel(
 
         val itemModels = mutableListOf<SettingItemModel>()
         itemModels += createApplicationHeader(context)
-        itemModels += createRateApp(context)
         itemModels += createContactMe(context)
-        itemModels += createSourceCode(context)
+        itemModels += createRateApp(context)
+        itemModels += createViewSourceCode(context)
         itemModels += createPrivacyPolicy(context)
         itemModels += createVersion(context)
 
@@ -135,15 +135,6 @@ class SettingsFragmentModel(
 
     private fun createApplicationHeader(context: Context): SettingItemModel =
         SettingsHeaderModel(context.getString(R.string.application))
-
-    private fun createRateApp(context: Context): SettingItemModel {
-        val title = context.getString(R.string.rate_app)
-        val summary = context.getString(R.string.rate_app_summary)
-
-        return SummaryActionSettingItemModel(title, summary).apply {
-            click = { showActivity.next(GOOGLE_PLAY_URI) }
-        }
-    }
 
     private fun createContactMe(context: Context): SettingItemModel {
         val title = context.getString(R.string.contact_me)
@@ -154,10 +145,20 @@ class SettingsFragmentModel(
         }
     }
 
-    private fun createSourceCode(context: Context): SettingItemModel {
-        val title = context.getString(R.string.source_code)
+    private fun createRateApp(context: Context): SettingItemModel {
+        val title = context.getString(R.string.rate_app)
+        val summary = context.getString(R.string.rate_app_summary)
 
-        return ActionSettingItemModel(title).apply {
+        return SummaryActionSettingItemModel(title, summary).apply {
+            click = { showActivity.next(GOOGLE_PLAY_URI) }
+        }
+    }
+
+    private fun createViewSourceCode(context: Context): SettingItemModel {
+        val title = context.getString(R.string.view_source_code)
+        val summary = context.getString(R.string.view_source_code_summary)
+
+        return SummaryActionSettingItemModel(title, summary).apply {
             click = { showActivity.next(GITHUB_URI) }
         }
     }
