@@ -88,7 +88,9 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
     private fun addExpenses(sheet: WritableSheet, expenses: List<Expense>) {
         expenses.forEachIndexed { index, expense ->
             val row = index + 1
-            sheet.addCell(Number(COLUMN_AMOUNT, row, expense.amount.toDouble()))
+            // Casting Float to String is a crucial part here. Otherwise some of the values could
+            // have to big precision. See: https://bit.ly/2ZlbaqR.
+            sheet.addCell(Number(COLUMN_AMOUNT, row, expense.amount.toString().toDouble()))
             sheet.addCell(Label(COLUMN_CURRENCY, row, expense.currency.code))
             sheet.addCell(Label(COLUMN_TITLE, row, expense.title))
             sheet.addCell(DateTime(COLUMN_DATE, row, expense.date.toDate(), DATE_CELL_FORMAT))
