@@ -27,17 +27,15 @@ class SettingsFragmentModel(
 
     val itemModels = Variable(emptyList<SettingItemModel>())
 
-    // Events
     val showCurrencySelectionDialog = Event()
     val showDeleteAllExpensesDialog = Event()
+    val showExpenseImportFailureDialog = Event()
+    val showExpenseExportFailureDialog = Event()
 
-    // Common data events
     val showMessage = DataEvent<Int>()
     val showActivity = DataEvent<Uri>()
 
     val observeWorkInfo = DataEvent<UUID>()
-
-    // Specific data events
     val selectFile = DataEvent<Int>()
     val requestWriteExternalStoragePermission = DataEvent<Int>()
 
@@ -242,7 +240,7 @@ class SettingsFragmentModel(
                 null
             }
             WorkInfo.State.FAILED -> {
-                showMessage.next(R.string.expense_import_failure_message)
+                showExpenseImportFailureDialog.next()
                 null
             }
             else -> return
@@ -256,7 +254,7 @@ class SettingsFragmentModel(
                 null
             }
             WorkInfo.State.FAILED -> {
-                showMessage.next(R.string.expense_export_failure_message)
+                showExpenseExportFailureDialog.next()
                 null
             }
             else -> return
@@ -277,6 +275,10 @@ class SettingsFragmentModel(
         }
     }
 
+    fun downloadTemplate() {
+        showActivity.next(TEMPLATE_XLS_URI)
+    }
+
     @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
@@ -290,16 +292,19 @@ class SettingsFragmentModel(
         private const val REQUEST_CODE_SELECT_FILE = 1
         private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 2
 
-        private val GITHUB_URI =
-            Uri.parse("https://github.com/Nominalista/Expenses")
-
-        private val GOOGLE_PLAY_URI =
-            Uri.parse("https://play.google.com/store/apps/details?id=com.nominalista.expenses")
+        private val TEMPLATE_XLS_URI =
+            Uri.parse("https://raw.githubusercontent.com/nominalista/expenses/master/resources/template.xls")
 
         private val EMAIL_URI =
             Uri.parse("mailto:the.nominalista@gmail.com")
 
+        private val GOOGLE_PLAY_URI =
+            Uri.parse("https://play.google.com/store/apps/details?id=com.nominalista.expenses")
+
+        private val GITHUB_URI =
+            Uri.parse("https://github.com/Nominalista/Expenses")
+
         private val PRIVACY_POLICY_URI =
-            Uri.parse("https://github.com/nominalista/expenses/blob/master/resources/privacy_policy.md")
+            Uri.parse("https://raw.githubusercontent.com/nominalista/expenses/master/resources/privacy_policy.md")
     }
 }

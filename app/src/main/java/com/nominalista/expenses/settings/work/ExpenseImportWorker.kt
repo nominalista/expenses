@@ -139,8 +139,8 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
     }
 
     private fun getDateOrNull(sheet: Sheet, column: Int, row: Int): LocalDate? {
-        val cell = sheet.getCell(column, row) as? DateCell ?: return null
-        return cell.date.toLocalDate()
+        val cell = sheet.getCell(column, row) as? LabelCell ?: return null
+        return cell.contents.toLocalDate(DATE_PATTERN)
     }
 
     private fun getNotesOrNull(sheet: Sheet, column: Int, row: Int): String? {
@@ -162,6 +162,8 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
         private const val KEY_FILE_URI = "fileUri"
 
         private const val INVALID_COLUMN = -1
+
+        private const val DATE_PATTERN = "yyyy-MM-dd"
 
         fun enqueue(fileUri: Uri): UUID {
             val data = workDataOf(KEY_FILE_URI to fileUri.toString())

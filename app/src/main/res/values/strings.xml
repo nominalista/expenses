@@ -26,13 +26,14 @@
     <string name="delete_all">Delete all</string>
     <string name="delete_all_expenses_message">Are you sure you want to delete all expenses?</string>
     <string name="delete_expense_message">Are you sure you want to delete expense?</string>
+    <string name="download_template">Download template</string>
     <string name="edit">Edit</string>
     <string name="expense_detail_title">Details</string>
     <string name="expense_deletion_failure_message">Expenses could not be deleted. Try again.</string>
     <string name="expense_deletion_success_message">All expenses deleted successfully.</string>
     <string name="expense_export_failure_message">Expenses could not be exported. Try again.</string>
     <string name="expense_export_success_message">Expenses exported successfully into Downloads folder.</string>
-    <string name="expense_import_failure_message">Expenses could not be imported. Check format of data in file.</string>
+    <string name="expense_import_failure_message">Expenses could not be imported. Compare file with template.</string>
     <string name="expense_import_success_message">Expenses imported successfully from file.</string>
     <string name="expenses">Expenses</string>
     <string name="export_to_excel">Export to Excel (.xls)</string>

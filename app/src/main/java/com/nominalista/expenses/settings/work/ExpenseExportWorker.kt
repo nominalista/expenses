@@ -11,8 +11,8 @@ import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.util.extensions.application
-import com.nominalista.expenses.util.extensions.toDate
 import com.nominalista.expenses.util.extensions.toEpochMillis
+import com.nominalista.expenses.util.extensions.toString
 import io.reactivex.Single
 import jxl.Workbook
 import jxl.write.*
@@ -93,7 +93,7 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
             sheet.addCell(Number(COLUMN_AMOUNT, row, expense.amount.toString().toDouble()))
             sheet.addCell(Label(COLUMN_CURRENCY, row, expense.currency.code))
             sheet.addCell(Label(COLUMN_TITLE, row, expense.title))
-            sheet.addCell(DateTime(COLUMN_DATE, row, expense.date.toDate(), DATE_CELL_FORMAT))
+            sheet.addCell(Label(COLUMN_DATE, row, expense.date.toString(DATE_FORMAT)))
             sheet.addCell(Label(COLUMN_NOTES, row, expense.notes))
             sheet.addCell(Label(COLUMN_TAGS, row, expense.tags.joinToString { it.name }))
         }
@@ -103,7 +103,7 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
 
         private const val TIMESTAMP_PATTERN = "yyyyMMdd_HHmmss"
 
-        private val DATE_CELL_FORMAT = WritableCellFormat(DateFormat("yyyy-MM-dd"))
+        private const val DATE_FORMAT = "yyyy-MM-dd"
 
         private const val COLUMN_AMOUNT = 0
         private const val COLUMN_CURRENCY = 1

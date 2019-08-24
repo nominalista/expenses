@@ -92,6 +92,12 @@ class SettingsFragment : Fragment() {
         compositeDisposable += model.showDeleteAllExpensesDialog
             .toObservable()
             .subscribe { showDeleteAllExpensesDialog() }
+        compositeDisposable += model.showExpenseImportFailureDialog
+            .toObservable()
+            .subscribe { showExpenseImportFailureDialog() }
+        compositeDisposable += model.showExpenseExportFailureDialog
+            .toObservable()
+            .subscribe { showExpenseExportFailureDialog() }
         compositeDisposable += model.showMessage
             .toObservable()
             .subscribe { showMessage(it) }
@@ -122,6 +128,23 @@ class SettingsFragment : Fragment() {
             .setMessage(R.string.delete_all_expenses_message)
             .setPositiveButton(R.string.yes) { _, _ -> model.deleteAllExpenses() }
             .setNegativeButton(R.string.no) { _, _ -> }
+            .create()
+            .show()
+    }
+
+    private fun showExpenseImportFailureDialog() {
+        AlertDialog.Builder(requireActivity())
+            .setMessage(R.string.expense_import_failure_message)
+            .setPositiveButton(R.string.download_template) { _, _ -> model.downloadTemplate() }
+            .setNegativeButton(R.string.cancel) { _, _ -> }
+            .create()
+            .show()
+    }
+
+    private fun showExpenseExportFailureDialog() {
+        AlertDialog.Builder(requireActivity())
+            .setMessage(R.string.expense_export_failure_message)
+            .setPositiveButton(R.string.ok) { _, _ -> }
             .create()
             .show()
     }
