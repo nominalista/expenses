@@ -4,7 +4,7 @@
 <img src="https://cdn.jsdelivr.net/gh/steverichey/google-play-badge-svg/img/en_get.svg" width="30%">
 </a>
 
-![Screens](Resources/Screens.png)
+![Screens](resources/screens.png)
 
 # Download
 
