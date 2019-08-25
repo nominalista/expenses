@@ -11,8 +11,8 @@ import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.util.extensions.application
+import com.nominalista.expenses.util.extensions.toDate
 import com.nominalista.expenses.util.extensions.toEpochMillis
-import com.nominalista.expenses.util.extensions.toString
 import io.reactivex.Single
 import jxl.Workbook
 import jxl.write.*
@@ -88,22 +88,53 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
     private fun addExpenses(sheet: WritableSheet, expenses: List<Expense>) {
         expenses.forEachIndexed { index, expense ->
             val row = index + 1
-            // Casting Float to String is a crucial part here. Otherwise some of the values could
-            // have to big precision. See: https://bit.ly/2ZlbaqR.
-            sheet.addCell(Number(COLUMN_AMOUNT, row, expense.amount.toString().toDouble()))
-            sheet.addCell(Label(COLUMN_CURRENCY, row, expense.currency.code))
-            sheet.addCell(Label(COLUMN_TITLE, row, expense.title))
-            sheet.addCell(Label(COLUMN_DATE, row, expense.date.toString(DATE_FORMAT)))
-            sheet.addCell(Label(COLUMN_NOTES, row, expense.notes))
-            sheet.addCell(Label(COLUMN_TAGS, row, expense.tags.joinToString { it.name }))
+            addAmount(sheet, row, expense)
+            addCurrency(sheet, row, expense)
+            addTitle(sheet, row, expense)
+            addDate(sheet, row, expense)
+            addNotes(sheet, row, expense)
+            addTags(sheet, row, expense)
         }
+    }
+
+    private fun addAmount(sheet: WritableSheet, row: Int, expense: Expense) {
+        // Casting Float to String is a crucial part here. Otherwise some of the values could
+        // have to big precision. See: https://bit.ly/2ZlbaqR.
+        val amount = expense.amount.toString().toDouble()
+        sheet.addCell(Number(COLUMN_AMOUNT, row, amount))
+    }
+
+    private fun addCurrency(sheet: WritableSheet, row: Int, expense: Expense) {
+        val currency = expense.currency.code
+        sheet.addCell(Label(COLUMN_CURRENCY, row, currency))
+    }
+
+    private fun addTitle(sheet: WritableSheet, row: Int, expense: Expense) {
+        val title = expense.title
+        sheet.addCell(Label(COLUMN_TITLE, row, title))
+    }
+
+    private fun addDate(sheet: WritableSheet, row: Int, expense: Expense) {
+        val date = expense.date.toDate()
+        val cellFormat = WritableCellFormat(DateFormat(DATE_PATTERN))
+        sheet.addCell(DateTime(COLUMN_DATE, row, date, cellFormat))
+    }
+
+    private fun addNotes(sheet: WritableSheet, row: Int, expense: Expense) {
+        val notes = expense.notes
+        sheet.addCell(Label(COLUMN_NOTES, row, notes))
+    }
+
+    private fun addTags(sheet: WritableSheet, row: Int, expense: Expense) {
+        val tags = expense.tags.joinToString { it.name }
+        sheet.addCell(Label(COLUMN_TAGS, row, tags))
     }
 
     companion object {
 
         private const val TIMESTAMP_PATTERN = "yyyyMMdd_HHmmss"
 
-        private const val DATE_FORMAT = "yyyy-MM-dd"
+        private const val DATE_PATTERN = "yyyy-MM-dd"
 
         private const val COLUMN_AMOUNT = 0
         private const val COLUMN_CURRENCY = 1

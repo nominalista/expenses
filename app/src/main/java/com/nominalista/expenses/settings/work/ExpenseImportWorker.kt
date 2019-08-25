@@ -11,7 +11,10 @@ import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.util.extensions.toLocalDate
-import jxl.*
+import jxl.DateCell
+import jxl.NumberCell
+import jxl.Sheet
+import jxl.Workbook
 import kotlinx.coroutines.coroutineScope
 import org.threeten.bp.LocalDate
 import java.util.*
@@ -92,18 +95,12 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
         val startingRow = 1
 
         for (row in startingRow until sheet.rows) {
-            val amount =
-                getAmountOrNull(sheet, columnOfAmount, row) ?: continue
-            val currency =
-                getCurrencyOrNull(sheet, columnOfCurrency, row) ?: continue
-            val title =
-                getTitleOrNull(sheet, columnOfTitle, row) ?: continue
-            val date =
-                getDateOrNull(sheet, columnOfDate, row) ?: continue
-            val notes =
-                getNotesOrNull(sheet, columnOfNotes, row) ?: continue
-            val tags =
-                getTagsOrNull(sheet, columnOfTags, row, allTags) ?: continue
+            val amount = getAmount(sheet, columnOfAmount, row)
+            val currency = getCurrency(sheet, columnOfCurrency, row)
+            val title = getTitle(sheet, columnOfTitle, row)
+            val date = getDate(sheet, columnOfDate, row)
+            val notes = getNotes(sheet, columnOfNotes, row)
+            val tags = getTags(sheet, columnOfTags, row, allTags)
 
             expensesForInsertion.add(Expense(0, amount, currency, title, date, notes, 0, 0, tags))
         }
@@ -124,34 +121,43 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
         return INVALID_COLUMN
     }
 
-    private fun getAmountOrNull(sheet: Sheet, column: Int, row: Int): Float? {
-        val cell = sheet.getCell(column, row) as? NumberCell ?: return null
-        return cell.value.toFloat()
+    private fun getAmount(sheet: Sheet, column: Int, row: Int): Float {
+        val cell = sheet.getCell(column, row)
+
+        return if (cell is NumberCell) {
+            cell.value.toString().toFloat()
+        } else {
+            cell.contents.toFloat()
+        }
     }
 
-    private fun getCurrencyOrNull(sheet: Sheet, column: Int, row: Int): Currency? {
-        val cell = sheet.getCell(column, row) as? LabelCell ?: return null
-        return Currency.fromCode(cell.contents)
+    private fun getCurrency(sheet: Sheet, column: Int, row: Int): Currency {
+        val cell = sheet.getCell(column, row)
+        return Currency.fromCode(cell.contents) ?: error("Invalid currency code.")
     }
 
-    private fun getTitleOrNull(sheet: Sheet, column: Int, row: Int): String? {
-        val cell = sheet.getCell(column, row) as? LabelCell ?: return null
-        return cell.contents
+    private fun getTitle(sheet: Sheet, column: Int, row: Int): String {
+        return sheet.getCell(column, row).contents
     }
 
-    private fun getDateOrNull(sheet: Sheet, column: Int, row: Int): LocalDate? {
-        val cell = sheet.getCell(column, row) as? LabelCell ?: return null
-        return cell.contents.toLocalDate(DATE_PATTERN)
+    private fun getDate(sheet: Sheet, column: Int, row: Int): LocalDate {
+        val cell = sheet.getCell(column, row)
+
+        return if (cell is DateCell) {
+            cell.date.toLocalDate()
+        } else {
+            cell.contents.toLocalDate(DATE_PATTERN)
+        }
     }
 
-    private fun getNotesOrNull(sheet: Sheet, column: Int, row: Int): String? {
-        val cell = sheet.getCell(column, row) as? LabelCell ?: return null
-        return cell.contents
+    private fun getNotes(sheet: Sheet, column: Int, row: Int): String {
+        return sheet.getCell(column, row).contents
     }
 
-    private fun getTagsOrNull(sheet: Sheet, column: Int, row: Int, allTags: Set<Tag>): List<Tag>? {
-        val cell = sheet.getCell(column, row) as? LabelCell ?: return null
-        return cell.contents.split(", ")
+    private fun getTags(sheet: Sheet, column: Int, row: Int, allTags: Set<Tag>): List<Tag> {
+        return sheet.getCell(column, row)
+            .contents
+            .split(", ")
             .filter { it.isNotEmpty() }
             .map { name -> allTags.first { it.name == name } }
     }
