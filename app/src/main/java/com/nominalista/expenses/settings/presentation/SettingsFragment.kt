@@ -135,8 +135,8 @@ class SettingsFragment : Fragment() {
     private fun showExpenseImportFailureDialog() {
         AlertDialog.Builder(requireActivity())
             .setMessage(R.string.expense_import_failure_message)
-            .setPositiveButton(R.string.download_template) { _, _ -> model.downloadTemplate() }
-            .setNegativeButton(R.string.cancel) { _, _ -> }
+            .setPositiveButton(R.string.ok) { _, _ -> }
+            .setNeutralButton(R.string.download_template) { _, _ -> model.downloadTemplate() }
             .create()
             .show()
     }
