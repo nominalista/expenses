@@ -126,8 +126,8 @@ class SettingsFragment : Fragment() {
     private fun showDeleteAllExpensesDialog() {
         MaterialAlertDialogBuilder(requireActivity())
             .setMessage(R.string.delete_all_expenses_message)
-            .setPositiveButton(R.string.yes) { _, _ -> model.deleteAllExpenses() }
-            .setNegativeButton(R.string.no) { _, _ -> }
+            .setPositiveButton(R.string.delete) { _, _ -> model.deleteAllExpenses() }
+            .setNegativeButton(R.string.cancel) { _, _ -> }
             .create()
             .show()
     }
