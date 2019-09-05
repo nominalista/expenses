@@ -1,9 +1,11 @@
 package com.nominalista.expenses.data
 
-enum class Currency(val code: String,
-                    val title: String,
-                    val symbol: String,
-                    val flag: String) {
+enum class Currency(
+    val code: String,
+    val title: String,
+    val symbol: String,
+    val flag: String
+) {
 
     AED("AED", "Emirati Dirham", "د.إ", "\uD83C\uDDE6\uD83C\uDDEA"),
     AFN("AFN", "Afghanistan Afghani", "؋", "\uD83C\uDDE6\uD83C\uDDEB"),
@@ -41,7 +43,7 @@ enum class Currency(val code: String,
     HUF("HUF", "Hungary Forint", "Ft", "\uD83C\uDDED\uD83C\uDDFA"),
     IDR("IDR", "Indonesia Rupiah","Rp", "\uD83C\uDDEE\uD83C\uDDE9"),
     ILS("ILS", "Israel Shekel", "₪", "\uD83C\uDDEE\uD83C\uDDF1"),
-    INR("INR", "India Rupee","0", "\uD83C\uDDEE\uD83C\uDDF3"),
+    INR("INR", "India Rupee","₹", "\uD83C\uDDEE\uD83C\uDDF3"),
     ISK("ISK", "Iceland Krona", "kr", "\uD83C\uDDEE\uD83C\uDDF8"),
     JMD("JMD", "Jamaica Dollar", "J$", "\uD83C\uDDEF\uD83C\uDDF2"),
     JPY("JPY", "Japanese Yen", "¥", "\uD83C\uDDEF\uD83C\uDDF5"),
@@ -102,7 +104,7 @@ enum class Currency(val code: String,
     companion object {
 
         fun fromCode(code: String): Currency? {
-            return Currency.values().firstOrNull { currency -> currency.code == code }
+            return values().firstOrNull { currency -> currency.code == code }
         }
     }
 
