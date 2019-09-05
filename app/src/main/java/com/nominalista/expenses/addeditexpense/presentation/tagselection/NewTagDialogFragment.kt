@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.util.extensions.afterTextChanged
@@ -24,7 +25,7 @@ class NewTagDialogFragment : DialogFragment() {
     private val text get() = editText.text.toString()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(requireActivity())
+        return MaterialAlertDialogBuilder(requireActivity())
             .setView(createView())
             .setPositiveButton(R.string.add) { _, _ -> tagCreated?.invoke(Tag(0, text)) }
             .setNegativeButton(R.string.cancel) { _, _ -> }
@@ -56,7 +57,7 @@ class NewTagDialogFragment : DialogFragment() {
         addButton.isEnabled = text.isNotEmpty()
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         toggleKeyboard()
     }

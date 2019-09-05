@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nominalista.expenses.R
 import com.nominalista.expenses.addeditexpense.presentation.AddEditExpenseActivity
 import com.nominalista.expenses.data.Expense
@@ -111,7 +112,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showNoAddedTags() {
-        AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder(requireActivity())
             .setMessage(R.string.no_added_tags_message)
             .setPositiveButton(R.string.ok) { _, _ -> }
             .create()
@@ -131,13 +132,13 @@ class HomeFragment : Fragment() {
 
     // Options
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_home, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_home, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.item_settings -> settingsSelected()
             R.id.item_filter -> filterSelected()
             else -> super.onOptionsItemSelected(item)

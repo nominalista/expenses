@@ -26,10 +26,10 @@ class ExpenseDeletionWorker(context: Context, workerParams: WorkerParameters) :
 
     companion object {
 
-        fun enqueue(): UUID {
+        fun enqueue(context: Context): UUID {
             val request = OneTimeWorkRequest.Builder(ExpenseDeletionWorker::class.java).build()
 
-            WorkManager.getInstance().enqueue(request)
+            WorkManager.getInstance(context).enqueue(request)
 
             return request.id
         }

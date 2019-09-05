@@ -7,6 +7,7 @@ apply plugin: 'androidx.navigation.safeargs'
 android {
 
     compileSdkVersion 28
+
     defaultConfig {
         applicationId "com.nominalista.expenses"
         versionCode 8
@@ -25,6 +26,15 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     sourceSets {
         // Helps Room to find schema files for testing migrations.
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
@@ -40,7 +50,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     flavorDimensions "default"
+
     productFlavors {
         dev {
             versionNameSuffix "-dev"
@@ -51,6 +63,7 @@ android {
 
         prod {}
     }
+
     androidExtensions {
         experimental = true
     }
@@ -66,7 +79,6 @@ dependencies {
 
     // AndroidX
     implementation dependencies.appCompat
-    implementation dependencies.cardView
     implementation dependencies.constraintLayout
     implementation dependencies.coreKtx
     implementation dependencies.lifecycleExtensions

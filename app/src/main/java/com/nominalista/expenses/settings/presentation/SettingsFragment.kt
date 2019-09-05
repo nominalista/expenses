@@ -2,6 +2,7 @@ package com.nominalista.expenses.settings.presentation
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,22 +11,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.WorkManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.nominalista.expenses.R
+import com.nominalista.expenses.common.presentation.currencyselection.CurrencySelectionDialogFragment
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
-import com.nominalista.expenses.common.presentation.currencyselection.CurrencySelectionDialogFragment
-import io.reactivex.disposables.CompositeDisposable
-import androidx.appcompat.app.AlertDialog
-import com.google.android.material.snackbar.Snackbar
-import android.content.Intent
-import androidx.lifecycle.Observer
-import androidx.work.WorkManager
 import com.nominalista.expenses.util.extensions.startActivitySafely
 import com.nominalista.expenses.util.isGranted
 import com.nominalista.expenses.util.isPermissionGranted
+import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 
 class SettingsFragment : Fragment() {
@@ -124,7 +124,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showDeleteAllExpensesDialog() {
-        AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder(requireActivity())
             .setMessage(R.string.delete_all_expenses_message)
             .setPositiveButton(R.string.yes) { _, _ -> model.deleteAllExpenses() }
             .setNegativeButton(R.string.no) { _, _ -> }
@@ -133,7 +133,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showExpenseImportFailureDialog() {
-        AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder(requireActivity())
             .setMessage(R.string.expense_import_failure_message)
             .setPositiveButton(R.string.ok) { _, _ -> }
             .setNeutralButton(R.string.download_template) { _, _ -> model.downloadTemplate() }
@@ -142,7 +142,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showExpenseExportFailureDialog() {
-        AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder(requireActivity())
             .setMessage(R.string.expense_export_failure_message)
             .setPositiveButton(R.string.ok) { _, _ -> }
             .create()
@@ -193,8 +193,8 @@ class SettingsFragment : Fragment() {
 
     // Options
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             android.R.id.home -> backSelected()
             else -> super.onOptionsItemSelected(item)
         }

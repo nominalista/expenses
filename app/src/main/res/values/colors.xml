@@ -7,6 +7,7 @@
     <color name="background_dark">#F5F5F5</color>
 
     <color name="divider">#14000000</color>
+    <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
 
     <!-- Text -->

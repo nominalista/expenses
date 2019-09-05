@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.util.extensions.application
@@ -125,13 +126,13 @@ class ExpenseDetailFragment : Fragment() {
 
     // Options
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_expense_detail, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_expense_detail, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             android.R.id.home -> backSelected()
             R.id.edit -> editSelected()
             R.id.delete -> deleteSelected()
@@ -150,7 +151,7 @@ class ExpenseDetailFragment : Fragment() {
     }
 
     private fun deleteSelected(): Boolean {
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setMessage(R.string.delete_expense_message)
             .setPositiveButton(R.string.yes) { _, _ -> model.delete() }
             .setNegativeButton(R.string.no) { _, _ -> }

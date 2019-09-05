@@ -54,17 +54,17 @@ class AddEditExpenseFragment : Fragment() {
     }
 
     private fun watchEditTexts() {
-        edit_text_amount.afterTextChanged {
+        editTextAmount.afterTextChanged {
             model.updateAmount(it.toString().toFloatOrNull() ?: 0f)
         }
-        edit_text_title.afterTextChanged { model.updateTitle(it.toString()) }
-        edit_text_notes.afterTextChanged { model.updateNotes(it.toString()) }
+        editTextTitle.afterTextChanged { model.updateTitle(it.toString()) }
+        editTextNotes.afterTextChanged { model.updateNotes(it.toString()) }
     }
 
     private fun addListeners() {
-        text_symbol.setOnClickListener { showCurrencySelection() }
-        layout_tag.setOnClickListener { showTagSelection() }
-        text_date.setOnClickListener { showDateSelection() }
+        textSymbol.setOnClickListener { showCurrencySelection() }
+        containerTags.setOnClickListener { showTagSelection() }
+        textDate.setOnClickListener { showDateSelection() }
     }
 
     private fun showCurrencySelection() {
@@ -103,9 +103,9 @@ class AddEditExpenseFragment : Fragment() {
         disposables += model.selectedTags.toObservable().subscribe { updateTagLayout(it) }
         disposables += model.finish.toObservable().subscribe { finish() }
 
-        edit_text_amount.setText(makeEasilyEditableAmount(model.amount))
-        edit_text_title.setText(model.title)
-        edit_text_notes.setText(model.notes)
+        editTextAmount.setText(makeEasilyEditableAmount(model.amount))
+        editTextTitle.setText(model.title)
+        editTextNotes.setText(model.notes)
     }
 
     private fun makeEasilyEditableAmount(amount: Float?): String {
@@ -123,11 +123,11 @@ class AddEditExpenseFragment : Fragment() {
             currency.flag,
             currency.code
         )
-        text_symbol.text = text
+        textSymbol.text = text
     }
 
     private fun updateDateText(date: LocalDate) {
-        text_date.text = date.toString(READABLE_DATE_FORMAT)
+        textDate.text = date.toString(READABLE_DATE_FORMAT)
     }
 
     private fun updateTagLayout(tags: List<Tag>) {
@@ -156,7 +156,7 @@ class AddEditExpenseFragment : Fragment() {
     }
 
     private fun showKeyboard() {
-        showKeyboard(edit_text_amount, KEYBOARD_APPEARANCE_DELAY)
+        showKeyboard(editTextAmount, KEYBOARD_APPEARANCE_DELAY)
     }
 
     // Lifecycle end
@@ -173,13 +173,13 @@ class AddEditExpenseFragment : Fragment() {
 
     // Options
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_new_expense, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_new_expense, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             android.R.id.home -> backSelected()
             R.id.save -> saveSelected()
             else -> super.onOptionsItemSelected(item)

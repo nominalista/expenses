@@ -143,10 +143,10 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
         private const val COLUMN_NOTES = 4
         private const val COLUMN_TAGS = 5
 
-        fun enqueue(): UUID {
+        fun enqueue(context: Context): UUID {
             val request = OneTimeWorkRequest.Builder(ExpenseExportWorker::class.java).build()
 
-            WorkManager.getInstance().enqueue(request)
+            WorkManager.getInstance(context).enqueue(request)
 
             return request.id
         }

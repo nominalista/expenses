@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.Currency
 
@@ -15,7 +16,7 @@ class CurrencySelectionDialogFragment : DialogFragment(), DialogInterface.OnClic
     private val currencies = Currency.values()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(requireActivity())
+        return MaterialAlertDialogBuilder(requireActivity())
             .setTitle(R.string.select_currency)
             .setItems(createItems(), this)
             .setNegativeButton(R.string.cancel) { _, _ -> }

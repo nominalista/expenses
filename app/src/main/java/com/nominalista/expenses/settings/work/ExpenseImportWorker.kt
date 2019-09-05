@@ -172,14 +172,14 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
 
         private const val DATE_PATTERN = "yyyy-MM-dd"
 
-        fun enqueue(fileUri: Uri): UUID {
+        fun enqueue(context: Context, fileUri: Uri): UUID {
             val data = workDataOf(KEY_FILE_URI to fileUri.toString())
 
             val request = OneTimeWorkRequestBuilder<ExpenseImportWorker>()
                 .setInputData(data)
                 .build()
 
-            WorkManager.getInstance().enqueue(request)
+            WorkManager.getInstance(context).enqueue(request)
 
             return request.id
         }

@@ -200,7 +200,7 @@ class SettingsFragmentModel(
     private fun importExpenses(fileUri: Uri) {
         if (expenseImportId != null) return
 
-        val id = ExpenseImportWorker.enqueue(fileUri)
+        val id = ExpenseImportWorker.enqueue(getApplication<Application>(), fileUri)
         expenseImportId = id
         observeWorkInfo.next(id)
     }
@@ -212,7 +212,7 @@ class SettingsFragmentModel(
     private fun exportExpenses() {
         if (expenseExportId != null) return
 
-        val id = ExpenseExportWorker.enqueue()
+        val id = ExpenseExportWorker.enqueue(getApplication<Application>())
         expenseExportId = id
         observeWorkInfo.next(id)
     }
@@ -220,7 +220,7 @@ class SettingsFragmentModel(
     fun deleteAllExpenses() {
         if (expenseDeletionId != null) return
 
-        val id = ExpenseDeletionWorker.enqueue()
+        val id = ExpenseDeletionWorker.enqueue(getApplication<Application>())
         expenseDeletionId = id
         observeWorkInfo.next(id)
     }

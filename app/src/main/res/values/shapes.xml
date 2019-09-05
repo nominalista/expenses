@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Shape Appearance for small components like chips, buttons, text fields and FABs-->
+    <style name="ShapeAppearance.Expenses.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent"/>
+
+    <!--Shape Appearance for medium components like cards, alert dialogs-->
+    <style name="ShapeAppearance.Expenses.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent"/>
+
+    <!--Shape Appearance for large components like side and bottom navigation drawers-->
+    <style name="ShapeAppearance.Expenses.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent"/>
+
+    <!-- Dialogs -->
+
+    <style name="ShapeAppearance.Expenses.AlertDialog"  parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Expenses.AlertDialog.DatePicker"  parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+</resources>
