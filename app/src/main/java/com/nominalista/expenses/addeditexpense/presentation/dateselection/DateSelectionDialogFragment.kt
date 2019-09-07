@@ -6,7 +6,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
-import com.google.android.material.picker.MaterialStyledDatePickerDialog
+import com.google.android.material.datepicker.MaterialStyledDatePickerDialog
 import java.util.*
 
 class DateSelectionDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
