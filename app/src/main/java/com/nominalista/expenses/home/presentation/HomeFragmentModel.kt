@@ -8,6 +8,7 @@ import com.nominalista.expenses.data.Currency
 import com.nominalista.expenses.data.Expense
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.data.database.DatabaseDataSource
+import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.home.domain.FilterExpensesUseCase
 import com.nominalista.expenses.home.domain.SortExpensesUseCase
 import com.nominalista.expenses.home.domain.SortTagsUseCase
@@ -23,7 +24,8 @@ import io.reactivex.schedulers.Schedulers.io
 
 class HomeFragmentModel(
     application: Application,
-    private val databaseDataSource: DatabaseDataSource
+    private val databaseDataSource: DatabaseDataSource,
+    private val preferenceDataSource: PreferenceDataSource
 ) : AndroidViewModel(application) {
 
     val itemModels = Variable(emptyList<HomeItemModel>())
@@ -43,9 +45,16 @@ class HomeFragmentModel(
     // Lifecycle start
 
     init {
+        setDateRange()
         observeExpenses()
         observeTags()
         updateItemModels()
+    }
+
+    private fun setDateRange() {
+        getApplication<Application>().let {
+            dateRange = preferenceDataSource.getDateRange(it)
+        }
     }
 
     private fun observeExpenses() {
@@ -94,6 +103,16 @@ class HomeFragmentModel(
         return summaryItemModel
     }
 
+    private fun dateRangeSelected(dateRange: DateRange) {
+        this.dateRange = dateRange
+
+        getApplication<Application>().let {
+            preferenceDataSource.setDateRange(it, dateRange)
+        }
+
+        updateItemModels()
+    }
+
     private fun createCurrencySummaries(expenses: List<Expense>): List<Pair<Currency, Float>> {
         return expenses
             .groupBy({ it.currency }, { it.amount })
@@ -120,11 +139,6 @@ class HomeFragmentModel(
 
     // Public
 
-    fun dateRangeSelected(dateRange: DateRange) {
-        this.dateRange = dateRange
-        updateItemModels()
-    }
-
     fun filterSelected() {
         if (tags.isEmpty()) showNoAddedTags.next()
         else showTagFiltering.next()
@@ -141,8 +155,11 @@ class HomeFragmentModel(
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val databaseDataSource = DatabaseDataSource(application.database)
-            return HomeFragmentModel(application, databaseDataSource) as T
+            return HomeFragmentModel(
+                application,
+                DatabaseDataSource(application.database),
+                PreferenceDataSource()
+            ) as T
         }
     }
 }

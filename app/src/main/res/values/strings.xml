@@ -69,5 +69,6 @@
     <!-- Shared Preferences -->
     <string name="key_preferences" translatable="false">preferences</string>
     <string name="key_default_currency" translatable="false">default_currency</string>
+    <string name="key_date_range" translatable="false">date_range</string>
 
 </resources>
