@@ -49,7 +49,7 @@
     <string name="notes_hint">Notatki (opcjonalnie)</string>
     <string name="privacy_policy">Polityka Prywatności</string>
     <string name="rate_app">Oceń aplikację</string>
-    <string name="rate_app_summary">4.9 &#x1F31F; w Sklepie Play</string>
+    <string name="rate_app_summary">4.8 &#x1F31F; w Sklepie Play</string>
     <string name="save">Zapisz</string>
     <string name="search_currency">Szukaj waluty</string>
     <string name="select_tags">Wybierz tagi</string>
@@ -62,6 +62,6 @@
     <string name="today">Dzisiaj</string>
     <string name="version">Wersja</string>
     <string name="view_source_code">Kod źródłowy</string>
-    <string name="view_source_code_summary">152 ★ na Githubie</string>
+    <string name="view_source_code_summary">161 ★ na Githubie</string>
     <string name="yes">Tak</string>
 </resources>
