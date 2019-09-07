@@ -27,7 +27,9 @@ class SettingsFragmentModel(
 
     val itemModels = Variable(emptyList<SettingItemModel>())
 
-    val showCurrencySelectionDialog = Event()
+    val selectDefaultCurrency = Event()
+    val selectFileForImport = Event()
+    val requestWriteExternalStorageForExport = Event()
     val showDeleteAllExpensesDialog = Event()
     val showExpenseImportFailureDialog = Event()
     val showExpenseExportFailureDialog = Event()
@@ -36,8 +38,6 @@ class SettingsFragmentModel(
     val showActivity = DataEvent<Uri>()
 
     val observeWorkInfo = DataEvent<UUID>()
-    val selectFile = DataEvent<Int>()
-    val requestWriteExternalStoragePermission = DataEvent<Int>()
 
     private var expenseImportId: UUID? = null
     private var expenseExportId: UUID? = null
@@ -85,7 +85,7 @@ class SettingsFragmentModel(
         )
 
         return SummaryActionSettingItemModel(title, summary).apply {
-            click = { showCurrencySelectionDialog.next() }
+            click = { selectDefaultCurrency.next() }
         }
     }
 
@@ -93,7 +93,7 @@ class SettingsFragmentModel(
         val title = context.getString(R.string.import_from_excel)
 
         return ActionSettingItemModel(title).apply {
-            click = { selectFile.next(REQUEST_CODE_SELECT_FILE) }
+            click = { selectFileForImport.next() }
         }
     }
 
@@ -101,9 +101,7 @@ class SettingsFragmentModel(
         val title = context.getString(R.string.export_to_excel)
 
         return ActionSettingItemModel(title).apply {
-            click = {
-                requestWriteExternalStoragePermission.next(REQUEST_CODE_WRITE_EXTERNAL_STORAGE)
-            }
+            click = { requestWriteExternalStorageForExport.next() }
         }
     }
 
@@ -185,7 +183,7 @@ class SettingsFragmentModel(
 
     // Public
 
-    fun updateDefaultCurrency(defaultCurrency: Currency) {
+    fun defaultCurrencySelect(defaultCurrency: Currency) {
         getApplication<Application>().let {
             preferenceDataSource.setDefaultCurrency(it, defaultCurrency)
         }
@@ -193,8 +191,8 @@ class SettingsFragmentModel(
         loadItemModels()
     }
 
-    fun fileForImportSelected(requestCode: Int, fileUri: Uri) {
-        if (requestCode == REQUEST_CODE_SELECT_FILE) importExpenses(fileUri)
+    fun fileForImportSelected(fileUri: Uri) {
+        importExpenses(fileUri)
     }
 
     private fun importExpenses(fileUri: Uri) {
@@ -205,8 +203,8 @@ class SettingsFragmentModel(
         observeWorkInfo.next(id)
     }
 
-    fun permissionGranted(requestCode: Int) {
-        if (requestCode == REQUEST_CODE_WRITE_EXTERNAL_STORAGE) exportExpenses()
+    fun permissionGranted() {
+        exportExpenses()
     }
 
     private fun exportExpenses() {
@@ -288,9 +286,6 @@ class SettingsFragmentModel(
     }
 
     companion object {
-
-        private const val REQUEST_CODE_SELECT_FILE = 1
-        private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 2
 
         private val TEMPLATE_XLS_URI =
             Uri.parse("https://raw.githubusercontent.com/nominalista/expenses/master/resources/template.xls")

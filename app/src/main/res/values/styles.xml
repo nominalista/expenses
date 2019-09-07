@@ -12,6 +12,10 @@
         <item name="android:textColor">@color/text_primary_dark</item>
     </style>
 
+    <style name="Widget.Expenses.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Expenses.Dialog.BottomSheet</item>
+    </style>
+
     <!-- Buttons -->
 
     <style name="Widget.Expenses.Button.Accent.Normal" parent="Widget.MaterialComponents.Button">

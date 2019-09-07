@@ -12,14 +12,22 @@
 
     <!-- Dialogs -->
 
-    <style name="ShapeAppearance.Expenses.AlertDialog"  parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="ShapeAppearance.Expenses.Dialog"  parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
 
-    <style name="ShapeAppearance.Expenses.AlertDialog.DatePicker"  parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="ShapeAppearance.Expenses.Dialog.DatePicker"  parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Expenses.Dialog.BottomSheet"  parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">8dp</item>
+        <item name="cornerSizeTopRight">8dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
     </style>
 
 </resources>

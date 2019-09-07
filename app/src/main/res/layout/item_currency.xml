@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:padding="@dimen/spacing_large">
+
+    <TextView
+        android:id="@+id/textFlag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Expenses.Headline6"
+        android:textColor="@color/text_primary_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="🇺🇸" />
+
+    <TextView
+        android:id="@+id/textCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:textAppearance="@style/TextAppearance.Expenses.Body1"
+        android:textColor="@color/text_primary_dark"
+        app:layout_constraintStart_toEndOf="@id/textFlag"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="USD" />
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:textAppearance="@style/TextAppearance.Expenses.Body2"
+        android:textColor="@color/text_secondary_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/textFlag"
+        app:layout_constraintTop_toBottomOf="@id/textCode"
+        tools:text="United States Dollar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

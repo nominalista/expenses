@@ -9,20 +9,26 @@
         <!-- Dialogs -->
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.Expenses.Dialog</item>
         <item name="android:datePickerDialogTheme">@style/ThemeOverlay.Expenses.Dialog.DatePicker</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Expenses.Dialog.BottomSheet</item>
     </style>
 
     <!-- Dialogs -->
 
     <style name="ThemeOverlay.Expenses.Dialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorPrimary">@color/accent</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Expenses.AlertDialog</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Expenses.Dialog</item>
         <item name="materialAlertDialogTitleTextStyle">@style/Dialog.Expenses.Title.Text</item>
         <item name="materialAlertDialogBodyTextStyle">@style/Dialog.Expenses.Body.Text</item>
     </style>
 
     <style name="ThemeOverlay.Expenses.Dialog.DatePicker" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date">
         <item name="colorPrimary">@color/accent</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Expenses.AlertDialog.DatePicker</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Expenses.Dialog.DatePicker</item>
+    </style>
+
+    <style name="ThemeOverlay.Expenses.Dialog.BottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="bottomSheetStyle">@style/Widget.Expenses.BottomSheet.Modal</item>
     </style>
 
     <!-- Edit texts - Theme Overlay -->

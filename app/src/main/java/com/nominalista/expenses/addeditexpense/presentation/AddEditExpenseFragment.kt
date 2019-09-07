@@ -1,5 +1,7 @@
 package com.nominalista.expenses.addeditexpense.presentation
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.chip.Chip
 import com.nominalista.expenses.R
 import com.nominalista.expenses.addeditexpense.presentation.dateselection.DateSelectionDialogFragment
-import com.nominalista.expenses.common.presentation.currencyselection.CurrencySelectionDialogFragment
+import com.nominalista.expenses.currencyselection.CurrencySelectionActivity
 import com.nominalista.expenses.data.Currency
 import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.util.READABLE_DATE_FORMAT
@@ -68,9 +70,7 @@ class AddEditExpenseFragment : Fragment() {
     }
 
     private fun showCurrencySelection() {
-        val dialogFragment = CurrencySelectionDialogFragment.newInstance()
-        dialogFragment.onCurrencySelected = { currency -> model.selectCurrency(currency) }
-        dialogFragment.show(requireFragmentManager(), "CurrencySelectionDialogFragment")
+        CurrencySelectionActivity.start(this, REQUEST_CODE_SELECT_CURRENCY)
     }
 
     private fun showTagSelection() {
@@ -196,7 +196,26 @@ class AddEditExpenseFragment : Fragment() {
         return true
     }
 
+    // Results
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != Activity.RESULT_OK) return
+
+        when(requestCode) {
+            REQUEST_CODE_SELECT_CURRENCY -> {
+                val currency: Currency? =
+                    data?.getParcelableExtra(CurrencySelectionActivity.EXTRA_CURRENCY)
+                currency?.let { model.selectCurrency(it) }
+            }
+        }
+    }
+
     companion object {
+
+        private const val REQUEST_CODE_SELECT_CURRENCY = 1
+
         private const val KEYBOARD_APPEARANCE_DELAY = 300L
     }
 }

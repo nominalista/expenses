@@ -1,11 +1,15 @@
 package com.nominalista.expenses.data
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 enum class Currency(
     val code: String,
     val title: String,
     val symbol: String,
     val flag: String
-) {
+) : Parcelable {
 
     AED("AED", "Emirati Dirham", "د.إ", "\uD83C\uDDE6\uD83C\uDDEA"),
     AFN("AFN", "Afghanistan Afghani", "؋", "\uD83C\uDDE6\uD83C\uDDEB"),

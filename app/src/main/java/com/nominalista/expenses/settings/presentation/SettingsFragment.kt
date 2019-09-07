@@ -19,7 +19,8 @@ import androidx.work.WorkManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.nominalista.expenses.R
-import com.nominalista.expenses.common.presentation.currencyselection.CurrencySelectionDialogFragment
+import com.nominalista.expenses.currencyselection.CurrencySelectionActivity
+import com.nominalista.expenses.data.Currency
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.util.extensions.startActivitySafely
@@ -86,12 +87,18 @@ class SettingsFragment : Fragment() {
         compositeDisposable += model.itemModels
             .toObservable()
             .subscribe(adapter::submitList)
-        compositeDisposable += model.showCurrencySelectionDialog
+        compositeDisposable += model.selectDefaultCurrency
             .toObservable()
-            .subscribe { showCurrencySelectionDialog() }
+            .subscribe { selectDefaultCurrency() }
+        compositeDisposable += model.selectFileForImport
+            .toObservable()
+            .subscribe { selectFileForImport() }
         compositeDisposable += model.showDeleteAllExpensesDialog
             .toObservable()
             .subscribe { showDeleteAllExpensesDialog() }
+        compositeDisposable += model.requestWriteExternalStorageForExport
+            .toObservable()
+            .subscribe { requestWriteExternalStorageForExport() }
         compositeDisposable += model.showExpenseImportFailureDialog
             .toObservable()
             .subscribe { showExpenseImportFailureDialog() }
@@ -105,22 +112,32 @@ class SettingsFragment : Fragment() {
             .toObservable()
             .subscribe { showActivity(it) }
 
-        compositeDisposable += model.selectFile
-            .toObservable()
-            .subscribe { showFileSelectionPicker(it) }
-        compositeDisposable += model.requestWriteExternalStoragePermission
-            .toObservable()
-            .subscribe { requestWriteExternalStoragePermission(it) }
-
         compositeDisposable += model.observeWorkInfo
             .toObservable()
             .subscribe { observeWorkInfo(it) }
     }
 
-    private fun showCurrencySelectionDialog() {
-        val dialogFragment = CurrencySelectionDialogFragment.newInstance()
-        dialogFragment.onCurrencySelected = { currency -> model.updateDefaultCurrency(currency) }
-        dialogFragment.show(requireFragmentManager(), "CurrencySelectionDialogFragment")
+    private fun selectDefaultCurrency() {
+        CurrencySelectionActivity.start(this, REQUEST_CODE_SELECT_DEFAULT_CURRENCY)
+    }
+
+    private fun selectFileForImport() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(XLS_MIME_TYPE))
+            type = "*/*"
+        }
+        startActivityForResult(intent, REQUEST_CODE_SELECT_FILE_FOR_IMPORT)
+    }
+
+    private fun requestWriteExternalStorageForExport() {
+        if (isPermissionGranted(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            model.permissionGranted()
+        } else {
+            requestPermissions(
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                REQUEST_CODE_WRITE_EXTERNAL_STORAGE_FOR_EXPORT
+            )
+        }
     }
 
     private fun showDeleteAllExpensesDialog() {
@@ -158,26 +175,10 @@ class SettingsFragment : Fragment() {
         requireActivity().startActivitySafely(intent)
     }
 
-    private fun showFileSelectionPicker(requestCode: Int) {
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(XLS_MIME_TYPE))
-            type = "*/*"
-        }
-        startActivityForResult(intent, requestCode)
-    }
-
-    private fun requestWriteExternalStoragePermission(requestCode: Int) {
-        if (isPermissionGranted(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            model.permissionGranted(requestCode)
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), requestCode)
-        }
-    }
-
     private fun observeWorkInfo(id: UUID) {
-        WorkManager.getInstance().getWorkInfoByIdLiveData(id).observe(this, Observer {
-            model.handleWorkInfo(it)
-        })
+        WorkManager.getInstance(requireContext())
+            .getWorkInfoByIdLiveData(id)
+            .observe(this, Observer { model.handleWorkInfo(it) })
     }
 
     // Lifecycle end
@@ -205,15 +206,23 @@ class SettingsFragment : Fragment() {
         return true
     }
 
-    // File selection
+    // Results
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        val uriToSelectedFile = data?.data
+        if (resultCode != Activity.RESULT_OK) return
 
-        if (resultCode == Activity.RESULT_OK && uriToSelectedFile != null) {
-            model.fileForImportSelected(requestCode, uriToSelectedFile)
+        when (requestCode) {
+            REQUEST_CODE_SELECT_DEFAULT_CURRENCY -> {
+                val currency: Currency? =
+                    data?.getParcelableExtra(CurrencySelectionActivity.EXTRA_CURRENCY)
+                currency?.let { model.defaultCurrencySelect(it) }
+            }
+            REQUEST_CODE_SELECT_FILE_FOR_IMPORT -> {
+                val uriToSelectedFile = data?.data
+                uriToSelectedFile?.let { model.fileForImportSelected(it) }
+            }
         }
     }
 
@@ -224,10 +233,15 @@ class SettingsFragment : Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (isGranted(grantResults)) model.permissionGranted(requestCode)
+        if (isGranted(grantResults)) model.permissionGranted()
     }
 
     companion object {
+
+        private const val REQUEST_CODE_SELECT_DEFAULT_CURRENCY = 1
+        private const val REQUEST_CODE_SELECT_FILE_FOR_IMPORT = 2
+        private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE_FOR_EXPORT = 3
+
         private const val XLS_MIME_TYPE = "application/vnd.ms-excel"
     }
 }
