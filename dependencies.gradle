@@ -16,6 +16,7 @@ ext {
 
     // Firebase
     firebaseCoreVersion = '17.2.0'
+    firebaseFirestoreVersion = '21.1.1'
     firebaseMessagingVersion = '20.0.0'
 
     // Libraries
@@ -39,6 +40,7 @@ ext {
             "coroutinesAndroid"       : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesVersion}",
             "coroutinesCore"          : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}",
             "firebaseCore"            : "com.google.firebase:firebase-core:${firebaseCoreVersion}",
+            "firebaseFirestore"       : "com.google.firebase:firebase-firestore:${firebaseFirestoreVersion}",
             "firebaseMessaging"       : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
             "jxl"                     : "net.sourceforge.jexcelapi:jxl:${jxlVersion}",
             "kotlin"                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",

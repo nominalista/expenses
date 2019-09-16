@@ -93,6 +93,7 @@ dependencies {
 
     // Firebase
     implementation dependencies.firebaseCore
+    implementation dependencies.firebaseFirestore
     implementation dependencies.firebaseMessaging
 
     // Libraries
