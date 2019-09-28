@@ -7,9 +7,9 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.nominalista.expenses.data.Expense
-import com.nominalista.expenses.data.ExpenseTagJoin
-import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.data.model.old.Expense
+import com.nominalista.expenses.data.model.old.ExpenseTagJoin
+import com.nominalista.expenses.data.model.old.Tag
 import com.nominalista.expenses.data.database.converter.CurrencyConverter
 import com.nominalista.expenses.data.database.converter.LocalDateConverter
 import com.nominalista.expenses.data.database.dao.ExpenseDao

@@ -4,10 +4,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
-import com.nominalista.expenses.data.Currency
-import com.nominalista.expenses.data.Expense
-import com.nominalista.expenses.data.Tag
 import com.nominalista.expenses.data.database.DatabaseDataSource
+import com.nominalista.expenses.data.firebase.FirestoreDataSource
+import com.nominalista.expenses.data.model.Currency
+import com.nominalista.expenses.data.model.Expense
+import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.home.domain.FilterExpensesUseCase
 import com.nominalista.expenses.home.domain.SortExpensesUseCase
@@ -25,6 +26,7 @@ import io.reactivex.schedulers.Schedulers.io
 class HomeFragmentModel(
     application: Application,
     private val databaseDataSource: DatabaseDataSource,
+    private val firestoreDataSource: FirestoreDataSource,
     private val preferenceDataSource: PreferenceDataSource
 ) : AndroidViewModel(application) {
 
@@ -58,7 +60,7 @@ class HomeFragmentModel(
     }
 
     private fun observeExpenses() {
-        disposables += databaseDataSource.observeExpenses()
+        disposables += firestoreDataSource.observeExpenses()
             .map { SortExpensesUseCase().invoke(it) }
             .subscribeOn(io())
             .observeOn(mainThread())
@@ -66,7 +68,7 @@ class HomeFragmentModel(
     }
 
     private fun observeTags() {
-        disposables += databaseDataSource.observeTags()
+        disposables += firestoreDataSource.observeTags()
             .map { SortTagsUseCase().invoke(it) }
             .subscribeOn(io())
             .observeOn(mainThread())
@@ -158,6 +160,7 @@ class HomeFragmentModel(
             return HomeFragmentModel(
                 application,
                 DatabaseDataSource(application.database),
+                FirestoreDataSource(application.firestore),
                 PreferenceDataSource()
             ) as T
         }

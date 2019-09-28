@@ -1,7 +1,7 @@
 package com.nominalista.expenses.home.presentation
 
 import android.os.Parcelable
-import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.data.model.Tag
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

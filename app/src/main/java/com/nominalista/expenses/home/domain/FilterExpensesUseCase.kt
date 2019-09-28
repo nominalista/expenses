@@ -1,6 +1,6 @@
 package com.nominalista.expenses.home.domain
 
-import com.nominalista.expenses.data.Expense
+import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.home.presentation.DateRange
 import com.nominalista.expenses.home.presentation.TagFilter
 

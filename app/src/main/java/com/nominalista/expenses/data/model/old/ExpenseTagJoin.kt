@@ -1,4 +1,4 @@
-package com.nominalista.expenses.data
+package com.nominalista.expenses.data.model.old
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

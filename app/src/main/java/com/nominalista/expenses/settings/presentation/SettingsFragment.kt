@@ -20,7 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.nominalista.expenses.R
 import com.nominalista.expenses.currencyselection.CurrencySelectionActivity
-import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.util.extensions.startActivitySafely

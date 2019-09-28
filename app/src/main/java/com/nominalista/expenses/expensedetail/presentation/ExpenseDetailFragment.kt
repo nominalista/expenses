@@ -3,7 +3,6 @@ package com.nominalista.expenses.expensedetail.presentation
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -12,7 +11,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.addeditexpense.presentation.AddEditExpenseActivity

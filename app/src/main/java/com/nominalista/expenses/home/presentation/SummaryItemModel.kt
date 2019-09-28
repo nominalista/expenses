@@ -2,13 +2,13 @@ package com.nominalista.expenses.home.presentation
 
 import android.content.Context
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.home.presentation.DateRange.*
 
 class SummaryItemModel(
-        context: Context,
-        val currencySummaries: List<Pair<Currency, Float>>,
-        val dateRange: DateRange
+    context: Context,
+    val currencySummaries: List<Pair<Currency, Float>>,
+    val dateRange: DateRange
 ) : HomeItemModel {
 
     var itemModels: List<CurrencySummaryItemModel>

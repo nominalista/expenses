@@ -6,9 +6,9 @@ import android.util.Log
 import androidx.work.*
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Currency
-import com.nominalista.expenses.data.Expense
-import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.data.model.Currency
+import com.nominalista.expenses.data.model.old.Expense
+import com.nominalista.expenses.data.model.old.Tag
 import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.util.extensions.toLocalDate
 import jxl.DateCell
@@ -102,7 +102,19 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
             val notes = getNotes(sheet, columnOfNotes, row)
             val tags = getTags(sheet, columnOfTags, row, allTags)
 
-            expensesForInsertion.add(Expense(0, amount, currency, title, date, notes, 0, 0, tags))
+            expensesForInsertion.add(
+                Expense(
+                    0,
+                    amount,
+                    currency,
+                    title,
+                    date,
+                    notes,
+                    0,
+                    0,
+                    tags
+                )
+            )
         }
 
         return expensesForInsertion.map { expenseForInsertion ->

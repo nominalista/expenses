@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.util.extensions.afterTextChanged
 import com.nominalista.expenses.util.extensions.hideKeyboard
 import com.nominalista.expenses.util.extensions.showKeyboard

@@ -1,13 +1,15 @@
 package com.nominalista.expenses.expensedetail.presentation
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Expense
-import com.nominalista.expenses.data.Tag
-import com.nominalista.expenses.data.database.DatabaseDataSource
+import com.nominalista.expenses.data.firebase.FirestoreDataSource
+import com.nominalista.expenses.data.model.Expense
+import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.expensedetail.domain.DeleteExpenseUseCase
 import com.nominalista.expenses.expensedetail.domain.ObserveExpenseUseCase
 import com.nominalista.expenses.util.READABLE_DATE_FORMAT
@@ -20,6 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers.io
 
+@SuppressLint("LongLogTag")
 class ExpenseDetailFragmentModel(
     application: Application,
     private val observeExpenseUseCase: ObserveExpenseUseCase,
@@ -49,7 +52,11 @@ class ExpenseDetailFragmentModel(
         disposables += observeExpenseUseCase(expense.id)
             .subscribeOn(io())
             .observeOn(mainThread())
-            .subscribe { expense = it; populateExpenseValues() }
+            .subscribe({
+                expense = it; populateExpenseValues()
+            }, { error ->
+                Log.w(TAG, "Failed to observe expense: ($error).")
+            })
     }
 
     private fun populateExpenseValues() {
@@ -84,7 +91,11 @@ class ExpenseDetailFragmentModel(
         disposables += deleteExpenseUseCase(expense)
             .subscribeOn(io())
             .observeOn(mainThread())
-            .subscribe { finish.next() }
+            .subscribe({
+                finish.next()
+            }, { error ->
+                Log.w(TAG, "Failed to delete expense: ($error).")
+            })
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -92,10 +103,10 @@ class ExpenseDetailFragmentModel(
         ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val databaseDataSource = DatabaseDataSource(application.database)
+            val firestoreDataSource = FirestoreDataSource(application.firestore)
 
-            val observeExpenseUseCase = ObserveExpenseUseCase(databaseDataSource)
-            val deleteExpenseUseCase = DeleteExpenseUseCase(databaseDataSource)
+            val observeExpenseUseCase = ObserveExpenseUseCase(firestoreDataSource)
+            val deleteExpenseUseCase = DeleteExpenseUseCase(firestoreDataSource)
 
             return ExpenseDetailFragmentModel(
                 application,
@@ -104,5 +115,9 @@ class ExpenseDetailFragmentModel(
                 expense
             ) as T
         }
+    }
+
+    companion object {
+        private const val TAG = "ExpenseDetailFragmentModel"
     }
 }

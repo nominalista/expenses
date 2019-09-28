@@ -5,10 +5,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
-import com.nominalista.expenses.data.Currency
-import com.nominalista.expenses.data.Expense
-import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.data.model.Currency
+import com.nominalista.expenses.data.model.Expense
+import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.data.database.DatabaseDataSource
+import com.nominalista.expenses.data.firebase.FirestoreDataSource
 import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.util.getCurrentTimestamp
@@ -22,6 +23,7 @@ import org.threeten.bp.LocalDate
 class AddEditExpenseFragmentModel(
     application: Application,
     private val databaseDataSource: DatabaseDataSource,
+    private val firestoreDataSource: FirestoreDataSource,
     private val preferenceDataSource: PreferenceDataSource,
     private val expense: Expense?
 ) : AndroidViewModel(application) {
@@ -111,29 +113,35 @@ class AddEditExpenseFragmentModel(
 
     private fun createExpense() {
         val expenseForInsertion = prepareExpenseForInsertion()
-        disposables += databaseDataSource.insertExpense(expenseForInsertion)
+
+        disposables += firestoreDataSource.insertExpense(expenseForInsertion)
             .subscribeOn(io())
             .observeOn(mainThread())
             .doOnTerminate { finish.next() }
-            .subscribe({ id ->
-                Log.d(TAG, "Expense insertion succeeded, id: $id.")
+            .subscribe({
+                Log.d(TAG, "Expense insertion succeeded.")
             }, { error ->
                 Log.e(TAG, "Expense insertion failed (${error.message}).")
             })
     }
 
     private fun prepareExpenseForInsertion(): Expense {
-        val amount = amount ?: 0f
-        val currency = selectedCurrency.value
-        val date = selectedDate.value
-        val createdAt = getCurrentTimestamp()
-        val tags = selectedTags.value
-        return Expense(0, amount, currency, title, date, notes, createdAt, 0, tags)
+        return Expense(
+            "",
+            amount ?: 0f,
+            selectedCurrency.value,
+            title,
+            selectedTags.value,
+            selectedDate.value,
+            notes,
+            null
+        )
     }
 
     private fun updateExpense(expense: Expense) {
         val expenseForUpdate = prepareExpenseForUpdate(expense)
-        disposables += databaseDataSource.updateExpense(expenseForUpdate)
+
+        disposables += firestoreDataSource.updateExpense(expenseForUpdate)
             .subscribeOn(io())
             .observeOn(mainThread())
             .doOnTerminate { finish.next() }
@@ -145,19 +153,13 @@ class AddEditExpenseFragmentModel(
     }
 
     private fun prepareExpenseForUpdate(expense: Expense): Expense {
-        val amount = amount ?: 0f
-        val currency = selectedCurrency.value
-        val date = selectedDate.value
-        val modifiedAt = getCurrentTimestamp()
-        val tags = selectedTags.value
         return expense.copy(
-            amount = amount,
-            currency = currency,
+            amount = amount ?: 0f,
+            currency = selectedCurrency.value,
             title = title,
-            date = date,
-            notes = notes,
-            modifiedAt = modifiedAt,
-            tags = tags
+            tags = selectedTags.value,
+            date = selectedDate.value,
+            notes = notes
         )
     }
 
@@ -169,11 +171,13 @@ class AddEditExpenseFragmentModel(
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             val databaseDataSource = DatabaseDataSource(application.database)
+            val firestoreDataSource = FirestoreDataSource(application.firestore)
             val preferenceDataSource = PreferenceDataSource()
 
             return AddEditExpenseFragmentModel(
                 application,
                 databaseDataSource,
+                firestoreDataSource,
                 preferenceDataSource,
                 expense
             ) as T

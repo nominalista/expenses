@@ -1,7 +1,7 @@
 package com.nominalista.expenses.data.database.converter
 
 import androidx.room.TypeConverter
-import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.data.model.Currency
 
 class CurrencyConverter {
 

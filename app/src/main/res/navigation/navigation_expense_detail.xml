@@ -11,7 +11,7 @@
 
         <argument
             android:name="expense"
-            app:argType="com.nominalista.expenses.data.Expense" />
+            app:argType="com.nominalista.expenses.data.model.Expense" />
 
     </fragment>
 

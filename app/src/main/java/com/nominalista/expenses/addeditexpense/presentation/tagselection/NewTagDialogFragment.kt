@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.util.extensions.afterTextChanged
 import com.nominalista.expenses.util.extensions.showKeyboard
 import com.nominalista.expenses.util.extensions.toggleKeyboard
@@ -27,7 +27,7 @@ class NewTagDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return MaterialAlertDialogBuilder(requireActivity())
             .setView(createView())
-            .setPositiveButton(R.string.add) { _, _ -> tagCreated?.invoke(Tag(0, text)) }
+            .setPositiveButton(R.string.add) { _, _ -> tagCreated?.invoke(Tag("", text)) }
             .setNegativeButton(R.string.cancel) { _, _ -> }
             .create()
             .apply { setOnShowListener { enableOrDisableEditText() } }

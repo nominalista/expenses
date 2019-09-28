@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
-import com.nominalista.expenses.data.Tag
-import com.nominalista.expenses.data.database.DatabaseDataSource
+import com.nominalista.expenses.data.firebase.FirestoreDataSource
+import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
@@ -13,7 +13,9 @@ import com.nominalista.expenses.util.reactive.SchedulerTransformer
 import com.nominalista.expenses.util.reactive.Variable
 import io.reactivex.disposables.CompositeDisposable
 
-class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSource) : ViewModel() {
+class TagSelectionFragmentModel(
+    private val firestoreDataSource: FirestoreDataSource
+) : ViewModel() {
 
     val itemModels = Variable(emptyList<TagSelectionItemModel>())
     val showNewTagDialog = Event()
@@ -31,7 +33,7 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
     }
 
     private fun observeTags() {
-        disposables += databaseDataSource.observeTags()
+        disposables += firestoreDataSource.observeTags()
             .compose(SchedulerTransformer())
             .subscribe({ tags ->
                 Log.d(TAG, "Tag observation updated.")
@@ -77,7 +79,7 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
 
         checkedTags.remove(tag)
 
-        disposables += databaseDataSource.deleteTag(tag)
+        disposables += firestoreDataSource.deleteTag(tag)
             .compose(SchedulerTransformer<Any>())
             .subscribe({
                 Log.d(TAG, "Tag #${tag.id} deletion succeeded.")
@@ -100,10 +102,10 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
     // Public
 
     fun createTag(tag: Tag) {
-        disposables += databaseDataSource.insertTagOrReturnIdOfTagWithSameName(tag)
-            .compose(SchedulerTransformer())
-            .subscribe({ id ->
-                Log.d(TAG, "Tag insertion succeeded. Id: $id.")
+        disposables += firestoreDataSource.insertTag(tag)
+            .compose(SchedulerTransformer<Any>())
+            .subscribe({
+                Log.d(TAG, "Tag insertion succeeded.")
             }, { error ->
                 Log.d(TAG, "Tag insertion failed (${error.localizedMessage}).")
             })
@@ -118,8 +120,8 @@ class TagSelectionFragmentModel(private val databaseDataSource: DatabaseDataSour
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val databaseDataSource = DatabaseDataSource(application.database)
-            return TagSelectionFragmentModel(databaseDataSource) as T
+            val firestoreDataSource = FirestoreDataSource(application.firestore)
+            return TagSelectionFragmentModel(firestoreDataSource) as T
         }
     }
 

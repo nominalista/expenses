@@ -13,8 +13,8 @@ import com.google.android.material.chip.Chip
 import com.nominalista.expenses.R
 import com.nominalista.expenses.addeditexpense.presentation.dateselection.DateSelectionDialogFragment
 import com.nominalista.expenses.currencyselection.CurrencySelectionActivity
-import com.nominalista.expenses.data.Currency
-import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.data.model.Currency
+import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.util.READABLE_DATE_FORMAT
 import com.nominalista.expenses.util.extensions.*
 import io.reactivex.disposables.CompositeDisposable

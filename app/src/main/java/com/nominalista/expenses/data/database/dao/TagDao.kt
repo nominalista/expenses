@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.data.model.old.Tag
 import io.reactivex.Observable
 
 @Dao

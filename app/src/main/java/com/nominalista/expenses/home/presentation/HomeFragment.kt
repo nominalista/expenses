@@ -1,11 +1,9 @@
 package com.nominalista.expenses.home.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ProgressBar
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -15,13 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nominalista.expenses.R
 import com.nominalista.expenses.addeditexpense.presentation.AddEditExpenseActivity
-import com.nominalista.expenses.data.Expense
+import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.expensedetail.presentation.ExpenseDetailActivity
 import com.nominalista.expenses.settings.presentation.SettingsActivity
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import io.reactivex.disposables.CompositeDisposable
-import org.threeten.bp.ZonedDateTime
 
 class HomeFragment : Fragment() {
 

@@ -1,6 +1,6 @@
 package com.nominalista.expenses.addeditexpense.presentation.tagselection
 
-import com.nominalista.expenses.data.Tag
+import com.nominalista.expenses.data.model.Tag
 
 class TagItemModel(val tag: Tag):
     TagSelectionItemModel {

@@ -8,7 +8,7 @@ import androidx.work.RxWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Expense
+import com.nominalista.expenses.data.model.old.Expense
 import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.toDate

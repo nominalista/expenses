@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Expense
+import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.common.presentation.BaseActivity
 import kotlinx.android.synthetic.main.activity_expense_detail.*
 

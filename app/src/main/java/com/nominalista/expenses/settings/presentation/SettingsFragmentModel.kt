@@ -9,7 +9,7 @@ import androidx.work.WorkInfo
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.BuildConfig
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.settings.work.ExpenseDeletionWorker
 import com.nominalista.expenses.settings.work.ExpenseExportWorker

@@ -1,10 +1,11 @@
-package com.nominalista.expenses.data
+package com.nominalista.expenses.data.model.old
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.nominalista.expenses.data.model.Currency
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.LocalDate
 

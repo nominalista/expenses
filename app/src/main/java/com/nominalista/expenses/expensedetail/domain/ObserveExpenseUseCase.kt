@@ -1,11 +1,11 @@
 package com.nominalista.expenses.expensedetail.domain
 
-import com.nominalista.expenses.data.Expense
-import com.nominalista.expenses.data.database.DatabaseDataSource
+import com.nominalista.expenses.data.firebase.FirestoreDataSource
+import com.nominalista.expenses.data.model.Expense
 import io.reactivex.Observable
 
-class ObserveExpenseUseCase(private val databaseDataSource: DatabaseDataSource) {
-    operator fun invoke(expenseId: Long): Observable<Expense> {
-        return databaseDataSource.observeExpense(expenseId)
+class ObserveExpenseUseCase(private val firestoreDataSource: FirestoreDataSource) {
+    operator fun invoke(expenseId: String): Observable<Expense> {
+        return firestoreDataSource.observeExpense(expenseId)
     }
 }

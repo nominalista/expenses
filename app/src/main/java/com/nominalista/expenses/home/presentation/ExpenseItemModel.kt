@@ -1,6 +1,6 @@
 package com.nominalista.expenses.home.presentation
 
-import com.nominalista.expenses.data.Expense
+import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.util.extensions.toString
 
 class ExpenseItemModel(val expense: Expense) : HomeItemModel {

@@ -3,7 +3,7 @@ package com.nominalista.expenses.data.preference
 import android.content.Context
 import androidx.preference.PreferenceManager
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.Currency
+import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.home.presentation.DateRange
 
 class PreferenceDataSource {
