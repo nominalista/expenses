@@ -20,14 +20,15 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_new_expense"
-        style="@style/Widget.Expenses.Button.Accent.Large"
+        style="@style/Widget.Expenses.Button.Large"
         android:layout_width="wrap_content"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/accent"
         android:text="@string/add_expense_button"
+        android:textAppearance="@style/TextAppearance.Expenses.Button"
         app:icon="@drawable/ic_add_active_light_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textAppearance="@style/TextAppearance.Expenses.Button"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar

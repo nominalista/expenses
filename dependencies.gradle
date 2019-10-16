@@ -15,9 +15,14 @@ ext {
     workVersion = '2.2.0'
 
     // Firebase
+    firebaseAuthVersion = '19.1.0'
     firebaseCoreVersion = '17.2.0'
     firebaseFirestoreVersion = '21.1.1'
     firebaseMessagingVersion = '20.0.0'
+    firebaseUiVersion = '4.3.1'
+
+    // Google Play Services
+    googlePlayServicesVersion = '17.0.0'
 
     // Libraries
     coroutinesVersion = '1.3.0'
@@ -39,9 +44,12 @@ ext {
             "coreKtx"                 : "androidx.core:core-ktx:${coreKtxVersion}",
             "coroutinesAndroid"       : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesVersion}",
             "coroutinesCore"          : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}",
+            "firebaseAuth"            : "com.google.firebase:firebase-auth:${firebaseAuthVersion}",
             "firebaseCore"            : "com.google.firebase:firebase-core:${firebaseCoreVersion}",
             "firebaseFirestore"       : "com.google.firebase:firebase-firestore:${firebaseFirestoreVersion}",
             "firebaseMessaging"       : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
+            "firebaseUiAuth"          : "com.firebaseui:firebase-ui-auth:${firebaseUiVersion}",
+            "googlePlayServicesAuth"  : "com.google.android.gms:play-services-auth:${googlePlayServicesVersion}",
             "jxl"                     : "net.sourceforge.jexcelapi:jxl:${jxlVersion}",
             "kotlin"                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
             "material"                : "com.google.android.material:material:${materialVersion}",

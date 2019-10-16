@@ -9,6 +9,7 @@ import androidx.work.WorkInfo
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.BuildConfig
 import com.nominalista.expenses.R
+import com.nominalista.expenses.authentication.AuthenticationManager
 import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.settings.work.ExpenseDeletionWorker
@@ -22,7 +23,8 @@ import java.util.*
 
 class SettingsFragmentModel(
     application: Application,
-    private val preferenceDataSource: PreferenceDataSource
+    private val preferenceDataSource: PreferenceDataSource,
+    private val authenticationManager: AuthenticationManager
 ) : AndroidViewModel(application) {
 
     val itemModels = Variable(emptyList<SettingItemModel>())
@@ -33,6 +35,7 @@ class SettingsFragmentModel(
     val showDeleteAllExpensesDialog = Event()
     val showExpenseImportFailureDialog = Event()
     val showExpenseExportFailureDialog = Event()
+    val navigateToOnboarding = Event()
 
     val showMessage = DataEvent<Int>()
     val showActivity = DataEvent<Uri>()
@@ -52,7 +55,32 @@ class SettingsFragmentModel(
     }
 
     private fun loadItemModels() {
-        itemModels.value = createExpensesSection() + createApplicationSection()
+        itemModels.value =
+            createAccountSection() + createExpensesSection() + createApplicationSection()
+    }
+
+    // Account section
+
+    private fun createAccountSection(): List<SettingItemModel> {
+        val context = getApplication<Application>()
+
+        val itemModels = mutableListOf<SettingItemModel>()
+        itemModels += createAccountHeader(context)
+        itemModels += createSignOut(context)
+
+        return itemModels
+    }
+
+    private fun createAccountHeader(context: Context): SettingItemModel =
+        SettingsHeaderModel(context.getString(R.string.account))
+
+    private fun createSignOut(context: Context): SettingItemModel {
+        val title = context.getString(R.string.sign_out)
+        val summary = authenticationManager.getCurrentUserEmail() ?: ""
+
+        return SummaryActionSettingItemModel(title, summary).apply {
+            click = { authenticationManager.signOut(); navigateToOnboarding.next() }
+        }
     }
 
     // Expenses section
@@ -281,7 +309,13 @@ class SettingsFragmentModel(
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return SettingsFragmentModel(application, PreferenceDataSource()) as T
+            val preferenceDataSource = PreferenceDataSource()
+            val authenticationManager = AuthenticationManager.getInstance(application)
+            return SettingsFragmentModel(
+                application,
+                preferenceDataSource,
+                authenticationManager
+            ) as T
         }
     }
 

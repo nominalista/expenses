@@ -92,9 +92,14 @@ dependencies {
     kapt dependencies.roomCompiler
 
     // Firebase
+    implementation dependencies.firebaseAuth
     implementation dependencies.firebaseCore
     implementation dependencies.firebaseFirestore
     implementation dependencies.firebaseMessaging
+    implementation dependencies.firebaseUiAuth
+
+    // Google Play Services
+    implementation dependencies.googlePlayServicesAuth
 
     // Libraries
     implementation dependencies.coroutinesAndroid

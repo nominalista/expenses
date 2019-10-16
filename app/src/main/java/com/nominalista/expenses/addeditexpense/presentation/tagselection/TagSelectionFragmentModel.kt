@@ -120,7 +120,8 @@ class TagSelectionFragmentModel(
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val firestoreDataSource = FirestoreDataSource(application.firestore)
+            val firestoreDataSource =
+                FirestoreDataSource(application.firebaseAuth, application.firestore)
             return TagSelectionFragmentModel(firestoreDataSource) as T
         }
     }

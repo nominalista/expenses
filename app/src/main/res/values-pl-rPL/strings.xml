@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Wydatki</string>
 
+    <string name="account">Konto</string>
     <string name="add">Dodaj</string>
     <string name="add_tag">Dodaj tag</string>
     <string name="add_expense_button">Dodaj wydatek</string>
@@ -20,6 +21,7 @@
     <string name="confirm">Potwierdź</string>
     <string name="contact_me">Skontaktuj się ze mną</string>
     <string name="contact_me_summary">Opinia mile widziana!</string>
+    <string name="continue_with_google">Kontynuuj z Google</string>
     <string name="delete">Usuń</string>
     <string name="default_currency">Domyślna waluta</string>
     <string name="delete_all">Usuń wszystkie</string>
@@ -54,6 +56,9 @@
     <string name="search_currency">Szukaj waluty</string>
     <string name="select_tags">Wybierz tagi</string>
     <string name="settings">Ustawienia</string>
+    <string name="sign_out">Wyloguj się</string>
+    <string name="signed_in_as">Zalogowany jako %s</string>
+    <string name="simple_budget_tracker">Prostym manadżerze budżetu</string>
     <string name="summary_title">Wydałaś/eś</string>
     <string name="ok">OK</string>
     <string name="this_month">Ten miesiąc</string>
@@ -61,6 +66,7 @@
     <string name="title_hint">Tytuł</string>
     <string name="today">Dzisiaj</string>
     <string name="version">Wersja</string>
+    <string name="welcome_to_expenses">Witaj w aplikacji Wydatki</string>
     <string name="view_source_code">Kod źródłowy</string>
     <string name="view_source_code_summary">161 ★ na Githubie</string>
     <string name="yes">Tak</string>

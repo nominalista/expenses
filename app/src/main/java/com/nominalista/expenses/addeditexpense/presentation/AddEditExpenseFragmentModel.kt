@@ -170,9 +170,12 @@ class AddEditExpenseFragmentModel(
     ) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val databaseDataSource = DatabaseDataSource(application.database)
-            val firestoreDataSource = FirestoreDataSource(application.firestore)
-            val preferenceDataSource = PreferenceDataSource()
+            val databaseDataSource =
+                DatabaseDataSource(application.database)
+            val firestoreDataSource =
+                FirestoreDataSource(application.firebaseAuth, application.firestore)
+            val preferenceDataSource =
+                PreferenceDataSource()
 
             return AddEditExpenseFragmentModel(
                 application,

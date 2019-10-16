@@ -103,7 +103,8 @@ class ExpenseDetailFragmentModel(
         ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val firestoreDataSource = FirestoreDataSource(application.firestore)
+            val firestoreDataSource =
+                FirestoreDataSource(application.firebaseAuth, application.firestore)
 
             val observeExpenseUseCase = ObserveExpenseUseCase(firestoreDataSource)
             val deleteExpenseUseCase = DeleteExpenseUseCase(firestoreDataSource)

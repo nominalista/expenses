@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Expenses</string>
 
+    <string name="account">Account</string>
     <string name="add">Add</string>
     <string name="add_tag">Add tag</string>
     <string name="add_expense_button">Add expense</string>
@@ -19,6 +20,7 @@
     <string name="confirm">Confirm</string>
     <string name="contact_me">Contact me</string>
     <string name="contact_me_summary">Feedback is welcome!</string>
+    <string name="continue_with_google">Continue with Google</string>
     <string name="currency_abbreviation" translatable="false">%1$s\u0020\u0020%2$s</string>
     <string name="delete">Delete</string>
     <string name="default_currency">Default currency</string>
@@ -55,6 +57,9 @@
     <string name="search_currency">Search currency</string>
     <string name="select_tags">Select tags</string>
     <string name="settings">Settings</string>
+    <string name="sign_out">Sign out</string>
+    <string name="signed_in_as">Signed in as %s</string>
+    <string name="simple_budget_tracker">Simple budget tracker</string>
     <string name="summary_title">You spent</string>
     <string name="ok">OK</string>
     <string name="this_month">This month</string>
@@ -64,6 +69,7 @@
     <string name="version">Version</string>
     <string name="view_source_code">View source code</string>
     <string name="view_source_code_summary">161 ★ on Github</string>
+    <string name="welcome_to_expenses">Welcome to Expenses</string>
     <string name="yes">Yes</string>
 
     <!-- Shared Preferences -->

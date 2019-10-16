@@ -15,13 +15,19 @@
         android:theme="@style/Theme.Expenses"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="com.nominalista.expenses.home.presentation.HomeActivity"
+        <activity android:name=".splash.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".onboarding.OnboardingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".home.presentation.HomeActivity"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".expensedetail.presentation.ExpenseDetailActivity"
             android:screenOrientation="portrait"/>

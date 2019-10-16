@@ -160,7 +160,7 @@ class HomeFragmentModel(
             return HomeFragmentModel(
                 application,
                 DatabaseDataSource(application.database),
-                FirestoreDataSource(application.firestore),
+                FirestoreDataSource(application.firebaseAuth, application.firestore),
                 PreferenceDataSource()
             ) as T
         }
