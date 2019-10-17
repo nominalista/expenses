@@ -1,5 +1,7 @@
 package com.nominalista.expenses.data.database
 
+import android.content.Context
+import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.model.old.Expense
 import com.nominalista.expenses.data.model.old.ExpenseTagJoin
 import com.nominalista.expenses.data.model.old.Tag
@@ -83,6 +85,10 @@ class DatabaseDataSource(private val database: ApplicationDatabase) {
         return database.tagDao().observeAll()
     }
 
+    fun getTags(): Single<List<Tag>> {
+        return Single.fromCallable { database.tagDao().getAll() }
+    }
+
     /**
      * Insert tag to database provided that it contains unique name. Otherwise, return ID of the
      * first tag with same name.
@@ -104,5 +110,16 @@ class DatabaseDataSource(private val database: ApplicationDatabase) {
 
     fun deleteTag(tag: Tag): Completable {
         return Completable.fromAction { database.tagDao().delete(tag) }
+    }
+
+    fun deleteAllTags(): Completable {
+        return Completable.fromAction { database.tagDao().deleteAll() }
+    }
+
+    companion object {
+
+        fun getInstance(application: Application): DatabaseDataSource {
+            return DatabaseDataSource(application.database)
+        }
     }
 }

@@ -24,4 +24,7 @@ interface TagDao {
 
     @Delete
     fun delete(tag: Tag)
+
+    @Query("DELETE FROM tags")
+    fun deleteAll()
 }

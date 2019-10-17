@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.model.Tag
@@ -12,8 +13,10 @@ import com.nominalista.expenses.util.extensions.toEpochMillis
 import com.nominalista.expenses.util.extensions.toLocalDate
 import com.nominalista.expenses.util.reactive.ReactiveDocumentSnapshotListener
 import com.nominalista.expenses.util.reactive.ReactiveQuerySnapshotListener
+import com.nominalista.expenses.util.reactive.ReactiveTaskListener
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 class FirestoreDataSource(
     private val firebaseAuth: FirebaseAuth,
@@ -132,6 +135,14 @@ class FirestoreDataSource(
             .map { query -> query.mapNotNull { mapDocumentToTag(it) } }
     }
 
+    fun getTags(): Single<List<Tag>> {
+        val userReference = getUserReference() ?: return Single.error(NoCurrentUserError())
+        val tagReference = userReference.collection("tags")
+        val taskListener = ReactiveTaskListener(tagReference.get())
+        return Single.create(taskListener)
+            .map { query -> query.mapNotNull { mapDocumentToTag(it) } }
+    }
+
     private fun mapDocumentToTag(document: DocumentSnapshot): Tag? {
         val name = document.getString("name") ?: return null
         return Tag(document.id, name)
@@ -162,6 +173,11 @@ class FirestoreDataSource(
     }
 
     companion object {
+
         private const val TAG = "FirestoreDataSource"
+
+        fun getInstance(application: Application): FirestoreDataSource {
+            return FirestoreDataSource(application.firebaseAuth, application.firestore)
+        }
     }
 }
