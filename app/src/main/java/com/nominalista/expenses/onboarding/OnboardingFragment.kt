@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nominalista.expenses.R
 import com.nominalista.expenses.home.presentation.HomeActivity
 import com.nominalista.expenses.util.extensions.application
@@ -50,13 +51,23 @@ class OnboardingFragment : Fragment() {
         compositeDisposable += model.requestGoogleSignIn
             .toObservable()
             .subscribe { requestGoogleSignIn(it) }
-        compositeDisposable += model.navigateToHome
+        compositeDisposable += model.showTestVersionPromptAndNavigateHome
             .toObservable()
-            .subscribe { navigateToHome() }
+            .subscribe { showTestVersionPromptAndNavigateHome() }
     }
 
     private fun requestGoogleSignIn(intent: Intent) {
         startActivityForResult(intent, REQUEST_CODE_GOOGLE_SIGN_IN)
+    }
+
+    private fun showTestVersionPromptAndNavigateHome() {
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(R.string.test_version_prompt_title)
+            .setMessage(R.string.test_version_prompt_message)
+            .setPositiveButton(R.string.ok) { _, _ -> navigateToHome() }
+            .setOnCancelListener {navigateToHome()  }
+            .create()
+            .show()
     }
 
     private fun navigateToHome() {

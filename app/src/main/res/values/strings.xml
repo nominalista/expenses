@@ -63,6 +63,8 @@
     <string name="simple_budget_tracker">Simple budget tracker</string>
     <string name="summary_title">You spent</string>
     <string name="ok">OK</string>
+    <string name="test_version_prompt_message">Thank you for downloading the test version of the application. If you want to contact me, go to the settings.</string>
+    <string name="test_version_prompt_title">Hi, it\'s Expenses developer 👋</string>
     <string name="this_month">This month</string>
     <string name="this_week">This week</string>
     <string name="title_hint">Title</string>
