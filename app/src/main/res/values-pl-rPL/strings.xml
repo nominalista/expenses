@@ -41,6 +41,7 @@
     <string name="filter">Filtruj</string>
     <string name="filter_tags">Filtruj tagi</string>
     <string name="import_from_excel">Importuj z Excela (.xls)</string>
+    <string name="incompleted_feature_warning">Funkcjonalność nie jest jeszcze gotowa. Poczekaj na następną aktualizację aplikacji.</string>
     <string name="name">Nazwa</string>
     <string name="no">Nie</string>
     <string name="no_added_tags_message">Brak dodanych tagów. Możesz zarządzać swoimi tagami w ekranie dodawania nowego wydatku.</string>

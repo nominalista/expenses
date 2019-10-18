@@ -42,6 +42,7 @@
     <string name="filter">Filter</string>
     <string name="filter_tags">Filter tags</string>
     <string name="import_from_excel">Import from Excel (.xls)</string>
+    <string name="incompleted_feature_warning">Feature is not ready yet. Wait for the next application update.</string>
     <string name="name">Name</string>
     <string name="no">No</string>
     <string name="no_added_tags_message">No added tags. You can manage your tags on adding new expense screen.</string>

@@ -121,7 +121,10 @@ class SettingsFragmentModel(
         val title = context.getString(R.string.import_from_excel)
 
         return ActionSettingItemModel(title).apply {
-            click = { selectFileForImport.next() }
+            click = {
+                showMessage.next(R.string.incompleted_feature_warning)
+                // selectFileForImport.next()
+            }
         }
     }
 
@@ -129,7 +132,10 @@ class SettingsFragmentModel(
         val title = context.getString(R.string.export_to_excel)
 
         return ActionSettingItemModel(title).apply {
-            click = { requestWriteExternalStorageForExport.next() }
+            click = {
+                showMessage.next(R.string.incompleted_feature_warning)
+                // requestWriteExternalStorageForExport.next()
+            }
         }
     }
 
@@ -137,7 +143,10 @@ class SettingsFragmentModel(
         val title = context.getString(R.string.delete_all)
 
         return ActionSettingItemModel(title).apply {
-            click = { showDeleteAllExpensesDialog.next() }
+            click = {
+                showMessage.next(R.string.incompleted_feature_warning)
+                // showDeleteAllExpensesDialog.next()
+            }
         }
     }
 
