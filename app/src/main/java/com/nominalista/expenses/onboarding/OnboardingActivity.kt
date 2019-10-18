@@ -17,7 +17,6 @@ class OnboardingActivity: BaseActivity() {
     companion object {
         fun start(context: Context) {
             val intent = Intent(context, OnboardingActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
     }

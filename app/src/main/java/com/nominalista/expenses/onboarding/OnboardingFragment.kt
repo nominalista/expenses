@@ -61,6 +61,7 @@ class OnboardingFragment : Fragment() {
 
     private fun navigateToHome() {
         HomeActivity.start(requireContext())
+        requireActivity().finish()
     }
 
     override fun onDestroyView() {

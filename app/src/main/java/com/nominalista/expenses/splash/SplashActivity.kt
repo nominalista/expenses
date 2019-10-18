@@ -19,6 +19,8 @@ class SplashActivity: AppCompatActivity() {
         } else {
             OnboardingActivity.start(this)
         }
+
+        finish()
     }
 
     private fun isUserSignedIn(): Boolean {

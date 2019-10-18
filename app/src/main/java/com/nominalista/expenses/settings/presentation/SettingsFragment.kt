@@ -181,6 +181,7 @@ class SettingsFragment : Fragment() {
 
     private fun navigateToOnboarding() {
         OnboardingActivity.start(requireContext())
+        requireActivity().finishAffinity()
     }
 
     private fun observeWorkInfo(id: UUID) {
