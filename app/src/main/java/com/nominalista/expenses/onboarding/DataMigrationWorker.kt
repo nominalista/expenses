@@ -2,24 +2,24 @@ package com.nominalista.expenses.onboarding
 
 import android.content.Context
 import android.util.Log
-import androidx.work.OneTimeWorkRequest
-import androidx.work.RxWorker
-import androidx.work.WorkManager
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.database.DatabaseDataSource
 import com.nominalista.expenses.data.firebase.FirestoreDataSource
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers.io
+import kotlinx.coroutines.coroutineScope
 import java.util.*
 import com.nominalista.expenses.data.model.Expense as NewExpense
 import com.nominalista.expenses.data.model.Tag as NewTag
 import com.nominalista.expenses.data.model.old.Expense as OldExpense
 import com.nominalista.expenses.data.model.old.Tag as OldTag
 
-class DataMigrationWorker(context: Context, params: WorkerParameters) : RxWorker(context, params) {
+class DataMigrationWorker(context: Context, params: WorkerParameters) :
+    CoroutineWorker(context, params) {
 
     private val databaseDataSource: DatabaseDataSource by lazy {
         DatabaseDataSource.getInstance(applicationContext as Application)
@@ -29,57 +29,49 @@ class DataMigrationWorker(context: Context, params: WorkerParameters) : RxWorker
         FirestoreDataSource.getInstance(applicationContext as Application)
     }
 
-    override fun createWork(): Single<Result> {
-        return migrateTags().andThen(migrateExpenses())
-            .toSingleDefault(Result.success())
-            .doOnSuccess { Log.d(TAG, "Succeeded to migrate data.") }
-            .doOnError { Log.d(TAG, "Failed to migrate data: (${it.localizedMessage}).") }
+    override suspend fun doWork() = coroutineScope {
+        val oldTags = getOldTags()
+        insertNewTags(oldTags)
+
+        val oldExpenses = getOldExpenses()
+        val newTags = getNewTags()
+        insertNewExpenses(oldExpenses, newTags)
+
+        deleteOldTags()
+        deleteOldExpenses()
+
+        Log.d(TAG, "Succeeded to migrate data.")
+        Result.success()
     }
 
-    private fun migrateTags(): Completable {
-        return loadOldTags()
-            .flatMapCompletable { insertNewTags(it) }
-            .andThen(deleteOldTags())
+    private fun getOldTags(): List<OldTag> {
+        return databaseDataSource.getTags()
+            .subscribeOn(io())
+            .blockingGet()
     }
 
-    private fun loadOldTags(): Single<List<OldTag>> {
-        return databaseDataSource.getTags().subscribeOn(io())
-    }
-
-    private fun insertNewTags(oldTags: List<OldTag>): Completable {
+    private fun insertNewTags(oldTags: List<OldTag>) {
         val tagNames = oldTags.map { it.name }.toSet()
         val newTags = tagNames.map { NewTag("", it) }
         val newTagsInsertions = newTags.map { firestoreDataSource.insertTag(it) }
-        return Completable.merge(newTagsInsertions)
+        Completable.merge(newTagsInsertions).blockingAwait()
     }
 
-    private fun deleteOldTags(): Completable {
-        return databaseDataSource.deleteAllTags().subscribeOn(io())
-    }
-
-    private fun migrateExpenses(): Completable {
-        return Single.zip(
-            loadOldExpenses(),
-            loadNewTags(),
-            BiFunction { expenses: List<OldExpense>, tags: List<NewTag> -> expenses to tags }
-        )
-            .flatMapCompletable { insertNewExpenses(it.first, it.second) }
-            .andThen(deleteOldExpenses())
-    }
-
-    private fun loadOldExpenses(): Single<List<OldExpense>> {
+    private fun getOldExpenses(): List<OldExpense> {
         val comparator = compareBy(OldExpense::date).thenBy(OldExpense::createdAt)
-        return databaseDataSource.getExpenses().map { it.sortedWith(comparator) }
+        return databaseDataSource.getExpenses()
+            .map { it.sortedWith(comparator) }
+            .subscribeOn(io())
+            .blockingGet()
     }
 
-    private fun loadNewTags(): Single<List<NewTag>> {
-        return firestoreDataSource.getTags().subscribeOn(io())
+    private fun getNewTags(): List<NewTag> {
+        return firestoreDataSource.getTags()
+            .subscribeOn(io())
+            .blockingGet()
     }
 
-    private fun insertNewExpenses(
-        oldExpenses: List<OldExpense>,
-        newTags: List<NewTag>
-    ): Completable {
+    private fun insertNewExpenses(oldExpenses: List<OldExpense>, newTags: List<NewTag>) {
         val newExpenses = oldExpenses.map { oldExpense ->
             val newExpenseTags = oldExpense.tags.mapNotNull { oldTag ->
                 // Looks for the first new tag with the same name.
@@ -98,11 +90,15 @@ class DataMigrationWorker(context: Context, params: WorkerParameters) : RxWorker
             )
         }
         val newExpensesInsertions = newExpenses.map { firestoreDataSource.insertExpense(it) }
-        return Completable.merge(newExpensesInsertions)
+        Completable.merge(newExpensesInsertions).blockingAwait()
     }
 
-    private fun deleteOldExpenses(): Completable {
-        return databaseDataSource.deleteAllExpenses().subscribeOn(io())
+    private fun deleteOldTags() {
+        databaseDataSource.deleteAllTags().subscribeOn(io()).blockingAwait()
+    }
+
+    private fun deleteOldExpenses() {
+        databaseDataSource.deleteAllExpenses().subscribeOn(io()).blockingAwait()
     }
 
     companion object {
