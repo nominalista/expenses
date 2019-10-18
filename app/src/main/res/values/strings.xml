@@ -53,7 +53,7 @@
     <string name="notes_hint">Notes (optional)</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="rate_app">Rate the app</string>
-    <string name="rate_app_summary">4.8 &#x1F31F; on Google Play</string>
+    <string name="rate_app_summary">4.7 &#x1F31F; on Google Play</string>
     <string name="save">Save</string>
     <string name="search_currency">Search currency</string>
     <string name="select_tags">Select tags</string>
@@ -69,7 +69,7 @@
     <string name="today">Today</string>
     <string name="version">Version</string>
     <string name="view_source_code">View source code</string>
-    <string name="view_source_code_summary">161 ★ on Github</string>
+    <string name="view_source_code_summary">170 ★ on Github</string>
     <string name="welcome_to_expenses">Welcome to Expenses</string>
     <string name="yes">Yes</string>
 
