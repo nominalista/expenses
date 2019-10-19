@@ -17,7 +17,7 @@ ext {
     // Firebase
     firebaseAuthVersion = '19.1.0'
     firebaseCoreVersion = '17.2.0'
-    firebaseFirestoreVersion = '21.1.1'
+    firebaseFirestoreVersion = '21.2.0'
     firebaseMessagingVersion = '20.0.0'
     firebaseUiVersion = '4.3.1'
 

@@ -74,6 +74,12 @@ dependencies {
     def dependencies = rootProject.ext.appDependencies
     def testDependencies = rootProject.ext.appTestDependencies
 
+    configurations.all {
+        resolutionStrategy {
+            force 'com.google.code.gson:gson:2.8.0'
+        }
+    }
+
     // Kotlin
     implementation dependencies.kotlin
 
