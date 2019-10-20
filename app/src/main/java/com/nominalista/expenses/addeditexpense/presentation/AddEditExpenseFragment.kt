@@ -57,7 +57,7 @@ class AddEditExpenseFragment : Fragment() {
 
     private fun watchEditTexts() {
         editTextAmount.afterTextChanged {
-            model.updateAmount(it.toString().toFloatOrNull() ?: 0f)
+            model.updateAmount(it.toString().toDoubleOrNull() ?: 0.0)
         }
         editTextTitle.afterTextChanged { model.updateTitle(it.toString()) }
         editTextNotes.afterTextChanged { model.updateNotes(it.toString()) }
@@ -108,10 +108,10 @@ class AddEditExpenseFragment : Fragment() {
         editTextNotes.setText(model.notes)
     }
 
-    private fun makeEasilyEditableAmount(amount: Float?): String {
+    private fun makeEasilyEditableAmount(amount: Double?): String {
         return when {
             amount == null -> ""
-            amount - amount.toInt().toFloat() == 0f -> amount.toInt().toString()
+            amount - amount.toInt().toDouble() == 0.0 -> amount.toInt().toString()
             else -> amount.toString()
         }
     }

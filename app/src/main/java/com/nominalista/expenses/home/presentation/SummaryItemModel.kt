@@ -7,7 +7,7 @@ import com.nominalista.expenses.home.presentation.DateRange.*
 
 class SummaryItemModel(
     context: Context,
-    val currencySummaries: List<Pair<Currency, Float>>,
+    val currencySummaries: List<Pair<Currency, Double>>,
     val dateRange: DateRange
 ) : HomeItemModel {
 
@@ -20,10 +20,10 @@ class SummaryItemModel(
         dateRangeText = createDateRangeText(context, dateRange)
     }
 
-    private fun createItemModels(currencySummaries: List<Pair<Currency, Float>>) =
+    private fun createItemModels(currencySummaries: List<Pair<Currency, Double>>) =
             currencySummaries.map { createCurrencySummaryItemModel(it.first, it.second) }
 
-    private fun createCurrencySummaryItemModel(currency: Currency, amount: Float) =
+    private fun createCurrencySummaryItemModel(currency: Currency, amount: Double) =
             CurrencySummaryItemModel(currency, amount)
 
     private fun createDateRangeText(context: Context, dateRange: DateRange): String {

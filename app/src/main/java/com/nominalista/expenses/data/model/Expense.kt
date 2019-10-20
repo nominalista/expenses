@@ -7,7 +7,7 @@ import org.threeten.bp.LocalDate
 @Parcelize
 data class Expense(
     val id: String,
-    val amount: Float,
+    val amount: Double,
     val currency: Currency,
     val title: String,
     val tags: List<Tag>,

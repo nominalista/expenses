@@ -28,7 +28,7 @@ class AddEditExpenseFragmentModel(
     private val expense: Expense?
 ) : AndroidViewModel(application) {
 
-    var amount: Float? = null
+    var amount: Double? = null
     var title: String = ""
     var notes: String = ""
 
@@ -89,7 +89,7 @@ class AddEditExpenseFragmentModel(
 
     // Updating
 
-    fun updateAmount(amount: Float) {
+    fun updateAmount(amount: Double) {
         this.amount = amount
     }
 
@@ -128,7 +128,7 @@ class AddEditExpenseFragmentModel(
     private fun prepareExpenseForInsertion(): Expense {
         return Expense(
             "",
-            amount ?: 0f,
+            amount ?: 0.0,
             selectedCurrency.value,
             title,
             selectedTags.value,
@@ -154,7 +154,7 @@ class AddEditExpenseFragmentModel(
 
     private fun prepareExpenseForUpdate(expense: Expense): Expense {
         return expense.copy(
-            amount = amount ?: 0f,
+            amount = amount ?: 0.0,
             currency = selectedCurrency.value,
             title = title,
             tags = selectedTags.value,

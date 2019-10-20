@@ -115,7 +115,7 @@ class HomeFragmentModel(
         updateItemModels()
     }
 
-    private fun createCurrencySummaries(expenses: List<Expense>): List<Pair<Currency, Float>> {
+    private fun createCurrencySummaries(expenses: List<Expense>): List<Pair<Currency, Double>> {
         return expenses
             .groupBy({ it.currency }, { it.amount })
             .map { Pair(it.key, it.value.sum()) }

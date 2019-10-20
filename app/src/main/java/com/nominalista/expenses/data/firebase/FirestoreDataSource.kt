@@ -44,7 +44,7 @@ class FirestoreDataSource(
 
     @Suppress("UNCHECKED_CAST")
     private fun mapDocumentToExpense(document: DocumentSnapshot): Expense? {
-        val amount = document.getDouble("amount")?.toFloat()
+        val amount = document.getDouble("amount")
             ?: return null
 
         val currency = document.getString("currency")?.let { Currency.fromCode(it) }
