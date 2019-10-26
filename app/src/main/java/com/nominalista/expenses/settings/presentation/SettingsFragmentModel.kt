@@ -140,8 +140,7 @@ class SettingsFragmentModel(
 
         return ActionSettingItemModel(title).apply {
             click = {
-                showMessage.next(R.string.incompleted_feature_warning)
-                // showDeleteAllExpensesDialog.next()
+                showDeleteAllExpensesDialog.next()
             }
         }
     }
