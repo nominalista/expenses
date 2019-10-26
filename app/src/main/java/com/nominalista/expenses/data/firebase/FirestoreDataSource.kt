@@ -166,6 +166,17 @@ class FirestoreDataSource(
         return Completable.fromAction { tagReference.add(document) }
     }
 
+    fun insertTagAndReturnId(tag: Tag): Single<String> {
+        val userReference = getUserReference() ?: return Single.error(NoCurrentUserError())
+        val tagReference = userReference.collection("tags").document()
+
+        val data = hashMapOf(
+            "name" to tag.name
+        )
+
+        return Single.fromCallable { tagReference.set(data); tagReference.id }
+    }
+
     fun deleteTag(tag: Tag): Completable {
         val userReference = getUserReference() ?: return Completable.error(NoCurrentUserError())
         val tagReference = userReference.collection("tags").document(tag.id)
