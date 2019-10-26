@@ -33,6 +33,14 @@ class FirestoreDataSource(
             .map { query -> query.mapNotNull { mapDocumentToExpense(it) } }
     }
 
+    fun getExpenses(): Single<List<Expense>> {
+        val userReference = getUserReference() ?: return Single.error(NoCurrentUserError())
+        val expensesCollection = userReference.collection("expenses")
+        val taskListener = ReactiveTaskListener(expensesCollection.get())
+        return Single.create(taskListener)
+            .map { query -> query.mapNotNull { mapDocumentToExpense(it) } }
+    }
+
     fun observeExpense(id: String): Observable<Expense> {
         val userReference = getUserReference() ?: return Observable.error(NoCurrentUserError())
         val expenseDocument = userReference.collection("expenses").document(id)
@@ -40,7 +48,6 @@ class FirestoreDataSource(
         return Observable.create(snapshotListener)
             .map { document -> mapDocumentToExpense(document) }
     }
-
 
     @Suppress("UNCHECKED_CAST")
     private fun mapDocumentToExpense(document: DocumentSnapshot): Expense? {
