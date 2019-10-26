@@ -132,10 +132,7 @@ class SettingsFragmentModel(
         val title = context.getString(R.string.export_to_excel)
 
         return ActionSettingItemModel(title).apply {
-            click = {
-                showMessage.next(R.string.incompleted_feature_warning)
-                // requestWriteExternalStorageForExport.next()
-            }
+            click = { requestWriteExternalStorageForExport.next() }
         }
     }
 

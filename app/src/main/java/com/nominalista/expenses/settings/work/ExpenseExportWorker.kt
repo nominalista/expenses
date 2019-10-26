@@ -3,13 +3,14 @@ package com.nominalista.expenses.settings.work
 import android.content.Context
 import android.os.Environment.DIRECTORY_DOWNLOADS
 import android.os.Environment.getExternalStoragePublicDirectory
-import androidx.work.OneTimeWorkRequest
-import androidx.work.RxWorker
-import androidx.work.WorkManager
-import androidx.work.WorkerParameters
+import android.util.Log
+import androidx.work.*
+import androidx.work.ListenableWorker.Result.success
+import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.model.old.Expense
+import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.database.DatabaseDataSource
+import com.nominalista.expenses.data.firebase.FirestoreDataSource
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.toDate
 import com.nominalista.expenses.util.extensions.toEpochMillis
@@ -17,6 +18,7 @@ import io.reactivex.Single
 import jxl.Workbook
 import jxl.write.*
 import jxl.write.Number
+import kotlinx.coroutines.coroutineScope
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.io.File
@@ -24,28 +26,24 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
-    RxWorker(context, workerParams) {
+    CoroutineWorker(context, workerParams) {
 
-    override fun createWork(): Single<Result> {
-        return prepareExpenses().map { export(it) }.map { Result.success() }
+    private val firestoreDataSource: FirestoreDataSource by lazy {
+        FirestoreDataSource.getInstance(applicationContext as Application)
     }
 
-    private fun prepareExpenses(): Single<List<Expense>> {
-        val database = applicationContext.application.database
-        val databaseDataSource = DatabaseDataSource(database)
-
-        return databaseDataSource.getExpenses()
-            .map { expenses -> expenses.sortedBy { it.date.toEpochMillis() } }
-    }
-
-    private fun export(expenses: List<Expense>) {
+    override suspend fun doWork() = coroutineScope {
         val workbook = Workbook.createWorkbook(createFile())
         val sheet = createSheet(workbook)
 
+        val expenses = prepareExpenses()
         addContent(sheet, expenses)
 
         workbook.write()
         workbook.close()
+
+        Log.d(TAG, "Succeeded to export expenses.")
+        success()
     }
 
     private fun createFile(): File {
@@ -60,6 +58,10 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
     private fun createSheet(workbook: WritableWorkbook): WritableSheet {
         val name = applicationContext.getString(R.string.expenses)
         return workbook.createSheet(name, 0)
+    }
+
+    private fun prepareExpenses(): List<Expense> {
+        return firestoreDataSource.getExpenses().map { it.sorted() }.blockingGet()
     }
 
     private fun addContent(sheet: WritableSheet, expenses: List<Expense>) {
@@ -131,6 +133,8 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
     }
 
     companion object {
+
+        private const val TAG = "ExpenseExportWorker"
 
         private const val TIMESTAMP_PATTERN = "yyyyMMdd_HHmmss"
 
