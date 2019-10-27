@@ -18,7 +18,7 @@ class OnboardingFragmentModel(
 ) : AndroidViewModel(application) {
 
     val requestGoogleSignIn = DataEvent<Intent>()
-    val showTestVersionPromptAndNavigateHome = Event()
+    val navigateToHome = Event()
 
     private val disposables = CompositeDisposable()
 
@@ -31,7 +31,7 @@ class OnboardingFragmentModel(
             .subscribe({
                 Log.d(TAG, "Succeeded to sign in with Google.")
                 DataMigrationWorker.enqueue(getApplication())
-                showTestVersionPromptAndNavigateHome.next()
+                navigateToHome.next()
             }, { error ->
                 Log.w(TAG, "Failed to sign in with Google, cause: ($error).")
             })

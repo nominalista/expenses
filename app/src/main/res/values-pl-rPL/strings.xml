@@ -62,8 +62,6 @@
     <string name="simple_budget_tracker">Prostym manadżerze budżetu</string>
     <string name="summary_title">Wydałaś/eś</string>
     <string name="ok">OK</string>
-    <string name="test_version_prompt_message">Dziękuję Ci za pobranie testowej wersji aplikacji. Jeśli chciałabyś/chciałbyś się ze mną skontaktować, przejdź do ustawień.</string>
-    <string name="test_version_prompt_title">Cześć, tu twórca aplikacji Wydatki 👋</string>
     <string name="this_month">Ten miesiąc</string>
     <string name="this_week">Ten tydzień</string>
     <string name="title_hint">Tytuł</string>
