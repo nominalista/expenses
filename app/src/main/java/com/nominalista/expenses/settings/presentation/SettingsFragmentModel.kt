@@ -66,7 +66,11 @@ class SettingsFragmentModel(
 
         val itemModels = mutableListOf<SettingItemModel>()
         itemModels += createAccountHeader(context)
-        itemModels += createSignOut(context)
+        itemModels += if (authenticationManager.isUserSignedIn()) {
+            createSignOut(context)
+        } else {
+            signUpOrSignIn(context)
+        }
 
         return itemModels
     }
@@ -79,7 +83,22 @@ class SettingsFragmentModel(
         val summary = authenticationManager.getCurrentUserEmail() ?: ""
 
         return SummaryActionSettingItemModel(title, summary).apply {
-            click = { authenticationManager.signOut(); navigateToOnboarding.next() }
+            click = {
+                authenticationManager.signOut()
+                preferenceDataSource.setIsUserOnboarded(getApplication(), false)
+                navigateToOnboarding.next()
+            }
+        }
+    }
+
+    private fun signUpOrSignIn(context: Context): SettingItemModel {
+        val title = context.getString(R.string.sign_up_or_sign_in)
+
+        return ActionSettingItemModel(title).apply {
+            click = {
+                preferenceDataSource.setIsUserOnboarded(getApplication(), false)
+                navigateToOnboarding.next()
+            }
         }
     }
 

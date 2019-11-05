@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
 import com.nominalista.expenses.authentication.AuthenticationManager
+import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.home.presentation.HomeActivity
 import com.nominalista.expenses.onboarding.OnboardingActivity
 
@@ -14,7 +15,7 @@ class SplashActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        if (isUserSignedIn()) {
+        if (isUserOnboarded()) {
             HomeActivity.start(this)
         } else {
             OnboardingActivity.start(this)
@@ -23,8 +24,8 @@ class SplashActivity: AppCompatActivity() {
         finish()
     }
 
-    private fun isUserSignedIn(): Boolean {
-        val authenticationManager = AuthenticationManager.getInstance(application as Application)
-        return authenticationManager.isUserSignedIn()
+    private fun isUserOnboarded(): Boolean {
+        val preferenceDataSource = PreferenceDataSource()
+        return preferenceDataSource.getIsUserOnboarded(applicationContext)
     }
 }

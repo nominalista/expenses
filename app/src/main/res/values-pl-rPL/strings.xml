@@ -58,6 +58,7 @@
     <string name="select_tags">Wybierz tagi</string>
     <string name="settings">Ustawienia</string>
     <string name="sign_out">Wyloguj się</string>
+    <string name="sign_up_or_sign_in">Zarejestruj lub zaloguj się</string>
     <string name="signed_in_as">Zalogowany jako %s</string>
     <string name="simple_budget_tracker">Prostym manadżerze budżetu</string>
     <string name="summary_title">Wydałaś/eś</string>

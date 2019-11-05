@@ -59,6 +59,7 @@
     <string name="select_tags">Select tags</string>
     <string name="settings">Settings</string>
     <string name="sign_out">Sign out</string>
+    <string name="sign_up_or_sign_in">Sign up or sign in</string>
     <string name="signed_in_as">Signed in as %s</string>
     <string name="simple_budget_tracker">Simple budget tracker</string>
     <string name="summary_title">You spent</string>
@@ -77,5 +78,6 @@
     <string name="key_preferences" translatable="false">preferences</string>
     <string name="key_default_currency" translatable="false">default_currency</string>
     <string name="key_date_range" translatable="false">date_range</string>
+    <string name="key_is_user_onboarded" translatable="false">is_user_onboarded</string>
 
 </resources>

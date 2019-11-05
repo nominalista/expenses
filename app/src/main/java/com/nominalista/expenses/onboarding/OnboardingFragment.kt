@@ -36,6 +36,9 @@ class OnboardingFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        buttonCancel.setOnClickListener {
+            model.continueWithoutSigningInRequested()
+        }
         buttonContinueWithGoogle.setOnClickListener {
             model.continueWithGoogleRequested()
         }

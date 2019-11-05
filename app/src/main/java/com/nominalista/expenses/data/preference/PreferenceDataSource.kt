@@ -40,9 +40,28 @@ class PreferenceDataSource {
         preferences.edit().putString(key, dateRange.name).apply()
     }
 
+    fun getIsUserOnboarded(context: Context): Boolean {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val key = getIsUserOnboardedKey(context)
+
+        return preferences.getBoolean(key, false)
+    }
+
+    fun setIsUserOnboarded(context: Context, isUserOnboarded: Boolean) {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val key = getIsUserOnboardedKey(context)
+
+        preferences.edit().putBoolean(key, isUserOnboarded).apply()
+    }
+
     private fun getDefaultCurrencyKey(context: Context) =
         context.getString(R.string.key_default_currency)
 
     private fun getDateRangeKey(context: Context) =
         context.getString(R.string.key_date_range)
+
+    private fun getIsUserOnboardedKey(context: Context) =
+        context.getString(R.string.key_is_user_onboarded)
 }
