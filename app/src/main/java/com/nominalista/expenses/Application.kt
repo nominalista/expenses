@@ -2,9 +2,8 @@ package com.nominalista.expenses
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.nominalista.expenses.data.database.ApplicationDatabase
+import com.nominalista.expenses.data.room.ApplicationDatabase
 
 class Application : android.app.Application() {
 

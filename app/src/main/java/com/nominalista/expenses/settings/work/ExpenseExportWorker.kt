@@ -4,17 +4,17 @@ import android.content.Context
 import android.os.Environment.DIRECTORY_DOWNLOADS
 import android.os.Environment.getExternalStoragePublicDirectory
 import android.util.Log
-import androidx.work.*
+import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker.Result.success
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.model.Expense
-import com.nominalista.expenses.data.database.DatabaseDataSource
-import com.nominalista.expenses.data.firebase.FirestoreDataSource
-import com.nominalista.expenses.util.extensions.application
+import com.nominalista.expenses.data.store.DataStore
+import com.nominalista.expenses.data.store.DataStoreFactory
 import com.nominalista.expenses.util.extensions.toDate
-import com.nominalista.expenses.util.extensions.toEpochMillis
-import io.reactivex.Single
 import jxl.Workbook
 import jxl.write.*
 import jxl.write.Number
@@ -28,8 +28,8 @@ import kotlin.collections.ArrayList
 class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
 
-    private val firestoreDataSource: FirestoreDataSource by lazy {
-        FirestoreDataSource.getInstance(applicationContext as Application)
+    private val dataStore: DataStore by lazy {
+        DataStoreFactory.get(applicationContext as Application)
     }
 
     override suspend fun doWork() = coroutineScope {
@@ -61,7 +61,7 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
     }
 
     private fun prepareExpenses(): List<Expense> {
-        return firestoreDataSource.getExpenses().map { it.sorted() }.blockingGet()
+        return dataStore.getExpenses().map { it.sorted() }.blockingGet()
     }
 
     private fun addContent(sheet: WritableSheet, expenses: List<Expense>) {

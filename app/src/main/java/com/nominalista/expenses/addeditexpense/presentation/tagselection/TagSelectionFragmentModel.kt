@@ -4,8 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
-import com.nominalista.expenses.data.firebase.FirestoreDataSource
 import com.nominalista.expenses.data.model.Tag
+import com.nominalista.expenses.data.store.DataStore
+import com.nominalista.expenses.data.store.DataStoreFactory
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
@@ -13,9 +14,7 @@ import com.nominalista.expenses.util.reactive.SchedulerTransformer
 import com.nominalista.expenses.util.reactive.Variable
 import io.reactivex.disposables.CompositeDisposable
 
-class TagSelectionFragmentModel(
-    private val firestoreDataSource: FirestoreDataSource
-) : ViewModel() {
+class TagSelectionFragmentModel(private val dataStore: DataStore) : ViewModel() {
 
     val itemModels = Variable(emptyList<TagSelectionItemModel>())
     val showNewTagDialog = Event()
@@ -33,7 +32,7 @@ class TagSelectionFragmentModel(
     }
 
     private fun observeTags() {
-        disposables += firestoreDataSource.observeTags()
+        disposables += dataStore.observeTags()
             .compose(SchedulerTransformer())
             .subscribe({ tags ->
                 Log.d(TAG, "Tag observation updated.")
@@ -79,7 +78,7 @@ class TagSelectionFragmentModel(
 
         checkedTags.remove(tag)
 
-        disposables += firestoreDataSource.deleteTag(tag)
+        disposables += dataStore.deleteTag(tag)
             .compose(SchedulerTransformer<Any>())
             .subscribe({
                 Log.d(TAG, "Tag #${tag.id} deletion succeeded.")
@@ -102,7 +101,7 @@ class TagSelectionFragmentModel(
     // Public
 
     fun createTag(tag: Tag) {
-        disposables += firestoreDataSource.insertTag(tag)
+        disposables += dataStore.insertTag(tag)
             .compose(SchedulerTransformer<Any>())
             .subscribe({
                 Log.d(TAG, "Tag insertion succeeded.")
@@ -120,9 +119,7 @@ class TagSelectionFragmentModel(
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val firestoreDataSource =
-                FirestoreDataSource(application.firebaseAuth, application.firestore)
-            return TagSelectionFragmentModel(firestoreDataSource) as T
+            return TagSelectionFragmentModel(DataStoreFactory.get(application)) as T
         }
     }
 

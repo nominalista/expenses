@@ -1,12 +1,12 @@
 package com.nominalista.expenses.expensedetail.domain
 
-import com.nominalista.expenses.data.firebase.FirestoreDataSource
 import com.nominalista.expenses.data.model.Expense
+import com.nominalista.expenses.data.store.DataStore
 import io.reactivex.Completable
 
-class DeleteExpenseUseCase(private val firestoreDataSource: FirestoreDataSource) {
+class DeleteExpenseUseCase(private val dataStore: DataStore) {
 
     operator fun invoke(expense: Expense): Completable {
-        return firestoreDataSource.deleteExpense(expense)
+        return dataStore.deleteExpense(expense)
     }
 }

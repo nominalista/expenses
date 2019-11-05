@@ -115,6 +115,7 @@ dependencies {
     implementation dependencies.navigationFragment
     implementation dependencies.navigationUi
     implementation dependencies.rxAndroid
+    implementation dependencies.rxKotlin
     implementation dependencies.rxRelay
     implementation dependencies.threeTen
 

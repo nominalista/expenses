@@ -1,18 +1,18 @@
 package com.nominalista.expenses.util.reactive
 
-import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.QuerySnapshot
 import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.disposables.Disposables
 
-class ReactiveQuerySnapshotListener(
-    private val collectionReference: CollectionReference
-) : ObservableOnSubscribe<QuerySnapshot> {
+class ReactiveDocumentSnapshotEventListener(
+    private val documentReference: DocumentReference
+) : ObservableOnSubscribe<DocumentSnapshot> {
 
-    override fun subscribe(emitter: ObservableEmitter<QuerySnapshot>) {
-        val listener = EventListener<QuerySnapshot> { snapshot, error ->
+    override fun subscribe(emitter: ObservableEmitter<DocumentSnapshot>) {
+        val listener = EventListener<DocumentSnapshot> { snapshot, error ->
             if (snapshot == null || error != null) {
                 if (!emitter.isDisposed) {
                     emitter.onError(error ?: Error("Snapshot is null."))
@@ -24,7 +24,7 @@ class ReactiveQuerySnapshotListener(
             }
         }
 
-        val registration = collectionReference.addSnapshotListener(listener)
+        val registration = documentReference.addSnapshotListener(listener)
 
         emitter.setDisposable(Disposables.fromAction { registration.remove() })
     }

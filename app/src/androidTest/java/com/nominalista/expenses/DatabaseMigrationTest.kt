@@ -6,7 +6,7 @@ import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
-import com.nominalista.expenses.data.database.ApplicationDatabase
+import com.nominalista.expenses.data.room.ApplicationDatabase
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

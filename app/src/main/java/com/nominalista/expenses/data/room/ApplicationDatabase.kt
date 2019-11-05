@@ -1,4 +1,4 @@
-package com.nominalista.expenses.data.database
+package com.nominalista.expenses.data.room
 
 import android.content.Context
 import androidx.room.Database
@@ -7,20 +7,20 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.nominalista.expenses.data.model.old.Expense
-import com.nominalista.expenses.data.model.old.ExpenseTagJoin
-import com.nominalista.expenses.data.model.old.Tag
-import com.nominalista.expenses.data.database.converter.CurrencyConverter
-import com.nominalista.expenses.data.database.converter.LocalDateConverter
-import com.nominalista.expenses.data.database.dao.ExpenseDao
-import com.nominalista.expenses.data.database.dao.ExpenseTagJoinDao
-import com.nominalista.expenses.data.database.dao.TagDao
+import com.nominalista.expenses.data.room.converter.CurrencyConverter
+import com.nominalista.expenses.data.room.converter.LocalDateConverter
+import com.nominalista.expenses.data.room.dao.ExpenseDao
+import com.nominalista.expenses.data.room.dao.ExpenseTagJoinDao
+import com.nominalista.expenses.data.room.dao.TagDao
+import com.nominalista.expenses.data.room.entities.ExpenseEntity
+import com.nominalista.expenses.data.room.entities.ExpenseTagJoinEntity
+import com.nominalista.expenses.data.room.entities.TagEntity
 
 @Database(
     entities = [
-        Expense::class,
-        Tag::class,
-        ExpenseTagJoin::class
+        ExpenseEntity::class,
+        ExpenseTagJoinEntity::class,
+        TagEntity::class
     ],
     version = 2,
     exportSchema = true
@@ -55,7 +55,9 @@ abstract class ApplicationDatabase : RoomDatabase() {
         private const val DATABASE_NAME = "database"
 
         fun build(context: Context) =
-            Room.databaseBuilder(context, ApplicationDatabase::class.java, DATABASE_NAME)
+            Room.databaseBuilder(context, ApplicationDatabase::class.java,
+                DATABASE_NAME
+            )
                 .addMigrations(MIGRATION_1_2)
                 .fallbackToDestructiveMigration()
                 .build()

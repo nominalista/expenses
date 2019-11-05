@@ -4,12 +4,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
-import com.nominalista.expenses.data.database.DatabaseDataSource
-import com.nominalista.expenses.data.firebase.FirestoreDataSource
 import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.data.preference.PreferenceDataSource
+import com.nominalista.expenses.data.store.DataStore
+import com.nominalista.expenses.data.store.DataStoreFactory
 import com.nominalista.expenses.home.domain.FilterExpensesUseCase
 import com.nominalista.expenses.home.domain.SortExpensesUseCase
 import com.nominalista.expenses.home.domain.SortTagsUseCase
@@ -25,8 +25,7 @@ import io.reactivex.schedulers.Schedulers.io
 
 class HomeFragmentModel(
     application: Application,
-    private val databaseDataSource: DatabaseDataSource,
-    private val firestoreDataSource: FirestoreDataSource,
+    private val dataStore: DataStore,
     private val preferenceDataSource: PreferenceDataSource
 ) : AndroidViewModel(application) {
 
@@ -60,7 +59,7 @@ class HomeFragmentModel(
     }
 
     private fun observeExpenses() {
-        disposables += firestoreDataSource.observeExpenses()
+        disposables += dataStore.observeExpenses()
             .map { SortExpensesUseCase().invoke(it) }
             .subscribeOn(io())
             .observeOn(mainThread())
@@ -68,7 +67,7 @@ class HomeFragmentModel(
     }
 
     private fun observeTags() {
-        disposables += firestoreDataSource.observeTags()
+        disposables += dataStore.observeTags()
             .map { SortTagsUseCase().invoke(it) }
             .subscribeOn(io())
             .observeOn(mainThread())
@@ -159,8 +158,7 @@ class HomeFragmentModel(
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return HomeFragmentModel(
                 application,
-                DatabaseDataSource(application.database),
-                FirestoreDataSource(application.firebaseAuth, application.firestore),
+                DataStoreFactory.get(application),
                 PreferenceDataSource()
             ) as T
         }

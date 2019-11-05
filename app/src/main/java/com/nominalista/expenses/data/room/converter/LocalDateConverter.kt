@@ -1,4 +1,4 @@
-package com.nominalista.expenses.data.database.converter
+package com.nominalista.expenses.data.room.converter
 
 import androidx.room.TypeConverter
 import org.threeten.bp.Instant

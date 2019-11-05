@@ -8,11 +8,10 @@ import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.model.Tag
-import com.nominalista.expenses.data.database.DatabaseDataSource
-import com.nominalista.expenses.data.firebase.FirestoreDataSource
 import com.nominalista.expenses.data.preference.PreferenceDataSource
+import com.nominalista.expenses.data.store.DataStore
+import com.nominalista.expenses.data.store.DataStoreFactory
 import com.nominalista.expenses.util.extensions.plusAssign
-import com.nominalista.expenses.util.getCurrentTimestamp
 import com.nominalista.expenses.util.reactive.Event
 import com.nominalista.expenses.util.reactive.Variable
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -22,8 +21,7 @@ import org.threeten.bp.LocalDate
 
 class AddEditExpenseFragmentModel(
     application: Application,
-    private val databaseDataSource: DatabaseDataSource,
-    private val firestoreDataSource: FirestoreDataSource,
+    private val dataStore: DataStore,
     private val preferenceDataSource: PreferenceDataSource,
     private val expense: Expense?
 ) : AndroidViewModel(application) {
@@ -114,7 +112,7 @@ class AddEditExpenseFragmentModel(
     private fun createExpense() {
         val expenseForInsertion = prepareExpenseForInsertion()
 
-        disposables += firestoreDataSource.insertExpense(expenseForInsertion)
+        disposables += dataStore.insertExpense(expenseForInsertion)
             .subscribeOn(io())
             .observeOn(mainThread())
             .doOnTerminate { finish.next() }
@@ -141,7 +139,7 @@ class AddEditExpenseFragmentModel(
     private fun updateExpense(expense: Expense) {
         val expenseForUpdate = prepareExpenseForUpdate(expense)
 
-        disposables += firestoreDataSource.updateExpense(expenseForUpdate)
+        disposables += dataStore.updateExpense(expenseForUpdate)
             .subscribeOn(io())
             .observeOn(mainThread())
             .doOnTerminate { finish.next() }
@@ -170,18 +168,10 @@ class AddEditExpenseFragmentModel(
     ) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val databaseDataSource =
-                DatabaseDataSource(application.database)
-            val firestoreDataSource =
-                FirestoreDataSource(application.firebaseAuth, application.firestore)
-            val preferenceDataSource =
-                PreferenceDataSource()
-
             return AddEditExpenseFragmentModel(
                 application,
-                databaseDataSource,
-                firestoreDataSource,
-                preferenceDataSource,
+                DataStoreFactory.get(application),
+                PreferenceDataSource(),
                 expense
             ) as T
         }

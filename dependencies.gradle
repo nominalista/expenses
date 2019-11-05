@@ -29,6 +29,7 @@ ext {
     jxlVersion = '2.6.12'
     materialVersion = '1.1.0-alpha10'
     rxAndroidVersion = '2.1.1'
+    rxKotlinVersion = '2.4.0'
     rxRelayVersion = '2.1.1'
     threeTeenVersion = '1.2.1'
 
@@ -63,6 +64,7 @@ ext {
             "roomRuntime"             : "androidx.room:room-runtime:${roomVersion}",
             "roomRxJava"              : "androidx.room:room-rxjava2:${roomVersion}",
             "rxAndroid"               : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+            "rxKotlin"                : "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
             "rxRelay"                 : "com.jakewharton.rxrelay2:rxrelay:${rxRelayVersion}",
             "threeTen"                : "com.jakewharton.threetenabp:threetenabp:${threeTeenVersion}",
             "workRuntime"             : "androidx.work:work-runtime-ktx:${workVersion}",

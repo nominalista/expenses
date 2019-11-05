@@ -7,10 +7,11 @@ import androidx.work.*
 import androidx.work.ListenableWorker.Result.success
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
-import com.nominalista.expenses.data.firebase.FirestoreDataSource
 import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.model.Tag
+import com.nominalista.expenses.data.store.DataStore
+import com.nominalista.expenses.data.store.DataStoreFactory
 import com.nominalista.expenses.util.extensions.toLocalDate
 import jxl.DateCell
 import jxl.NumberCell
@@ -23,8 +24,8 @@ import java.util.*
 class ExpenseImportWorker(context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params) {
 
-    private val firestoreDataSource by lazy {
-        FirestoreDataSource.getInstance(applicationContext as Application)
+    private val dataStore: DataStore by lazy {
+        DataStoreFactory.get(applicationContext as Application)
     }
 
     override suspend fun doWork() = coroutineScope {
@@ -73,7 +74,7 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
     }
 
     private fun insertOrGetTagsForNames(names: List<String>): List<Tag> {
-        val existingTags = firestoreDataSource.getTags().blockingGet()
+        val existingTags = dataStore.getTags().blockingGet()
 
         val resultTags = mutableListOf<Tag>()
 
@@ -82,7 +83,7 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
             if (existingTagWithSameName != null) {
                 resultTags.add(existingTagWithSameName)
             } else {
-                val id = firestoreDataSource.insertTagAndReturnId(Tag("", name)).blockingGet()
+                val id = dataStore.insertTag(Tag("", name)).blockingGet()
                 resultTags.add(Tag(id, name))
             }
         }
@@ -175,7 +176,7 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
     }
 
     private fun insertExpenses(expenses: List<Expense>) {
-        expenses.forEach { firestoreDataSource.insertExpense(it).blockingGet() }
+        expenses.forEach { dataStore.insertExpense(it).blockingGet() }
     }
 
     companion object {
