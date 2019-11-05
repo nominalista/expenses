@@ -27,7 +27,7 @@ class RoomDataStore(
 
     override fun observeExpenses(): Observable<List<Expense>> {
         return expenseDao.observeAll()
-            .flatMap { makeExpensesObservable(it) }
+            .switchMap { makeExpensesObservable(it) }
     }
 
     private fun makeExpensesObservable(
