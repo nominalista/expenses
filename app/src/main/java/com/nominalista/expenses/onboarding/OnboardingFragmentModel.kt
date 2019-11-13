@@ -47,6 +47,8 @@ class OnboardingFragmentModel(
                 DataMigrationWorker.enqueue(getApplication())
                 finishOnboardingAndNavigateHome()
             }, { error ->
+                isLoading.value = false
+
                 Log.w(TAG, "Failed to sign in with Google, cause: ($error).")
             })
     }
