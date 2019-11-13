@@ -11,6 +11,7 @@ import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
+import com.nominalista.expenses.util.reactive.Variable
 import io.reactivex.disposables.CompositeDisposable
 
 class OnboardingFragmentModel(
@@ -18,6 +19,8 @@ class OnboardingFragmentModel(
     private val authenticationManager: AuthenticationManager,
     private val preferenceDataSource: PreferenceDataSource
 ) : AndroidViewModel(application) {
+
+    val isLoading = Variable(false)
 
     val requestGoogleSignIn = DataEvent<Intent>()
     val navigateToHome = Event()
@@ -33,9 +36,14 @@ class OnboardingFragmentModel(
     }
 
     fun handleGoogleSignInResult(result: Intent) {
+        isLoading.value = true
+
         disposables += authenticationManager.handleGoogleSignInResult(result)
             .subscribe({
                 Log.d(TAG, "Succeeded to sign in with Google.")
+
+                isLoading.value = false
+
                 DataMigrationWorker.enqueue(getApplication())
                 finishOnboardingAndNavigateHome()
             }, { error ->

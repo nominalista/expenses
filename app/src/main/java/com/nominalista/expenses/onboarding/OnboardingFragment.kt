@@ -1,5 +1,6 @@
 package com.nominalista.expenses.onboarding
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -50,12 +51,20 @@ class OnboardingFragment : Fragment() {
     }
 
     private fun bindModel() {
+        compositeDisposable += model.isLoading
+            .toObservable()
+            .subscribe { enableOrDisableButtons(it) }
         compositeDisposable += model.requestGoogleSignIn
             .toObservable()
             .subscribe { requestGoogleSignIn(it) }
         compositeDisposable += model.navigateToHome
             .toObservable()
             .subscribe { navigateToHome() }
+    }
+
+    private fun enableOrDisableButtons(isLoading: Boolean) {
+        buttonCancel.isEnabled = !isLoading
+        buttonContinueWithGoogle.isEnabled = !isLoading
     }
 
     private fun requestGoogleSignIn(intent: Intent) {
