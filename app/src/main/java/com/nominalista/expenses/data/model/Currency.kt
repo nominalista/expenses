@@ -51,7 +51,7 @@ enum class Currency(
     DZD("Algerian Dinar", "دج", "\uD83C\uDDE9\uD83C\uDDFF"),
     EGP("Egypt Pound", "£", "\uD83C\uDDEA\uD83C\uDDEC"),
     ERN("Eritrean Nakfa", "نافكا", "\uD83C\uDDEA\uD83C\uDDF7"),
-    ETB("Ethiopian Nirr", "Br", "\uD83C\uDDEA\uD83C\uDDF9"),
+    ETB("Ethiopian Birr", "Br", "\uD83C\uDDEA\uD83C\uDDF9"),
     EUR("Euro", "€", "\uD83C\uDDEA\uD83C\uDDFA"),
     FJB("Fijian Dollar", "FJ$", "\uD83C\uDDEB\uD83C\uDDEF"),
     GBP("British Pound", "£", "\uD83C\uDDEC\uD83C\uDDE7"),
