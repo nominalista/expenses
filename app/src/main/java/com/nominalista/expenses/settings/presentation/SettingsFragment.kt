@@ -5,11 +5,13 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.nominalista.expenses.R
 import com.nominalista.expenses.currencyselection.CurrencySelectionActivity
 import com.nominalista.expenses.data.model.Currency
+import com.nominalista.expenses.data.model.Theme
 import com.nominalista.expenses.onboarding.OnboardingActivity
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
@@ -88,12 +91,12 @@ class SettingsFragment : Fragment() {
         compositeDisposable += model.itemModels
             .toObservable()
             .subscribe(adapter::submitList)
-        compositeDisposable += model.selectDefaultCurrency
-            .toObservable()
-            .subscribe { selectDefaultCurrency() }
         compositeDisposable += model.selectFileForImport
             .toObservable()
             .subscribe { selectFileForImport() }
+        compositeDisposable += model.selectDefaultCurrency
+            .toObservable()
+            .subscribe { selectDefaultCurrency() }
         compositeDisposable += model.showDeleteAllExpensesDialog
             .toObservable()
             .subscribe { showDeleteAllExpensesDialog() }
@@ -112,6 +115,12 @@ class SettingsFragment : Fragment() {
         compositeDisposable += model.showActivity
             .toObservable()
             .subscribe { showActivity(it) }
+        compositeDisposable += model.showThemeSelectionDialog
+            .toObservable()
+            .subscribe { showThemeSelectionDialog(it) }
+        compositeDisposable += model.applyTheme
+            .toObservable()
+            .subscribe { applyTheme(it) }
         compositeDisposable += model.navigateToOnboarding
             .toObservable()
             .subscribe { navigateToOnboarding() }
@@ -179,6 +188,19 @@ class SettingsFragment : Fragment() {
         requireActivity().startActivitySafely(intent)
     }
 
+    private fun showThemeSelectionDialog(currentTheme: Theme) {
+        val dialogFragment = ThemeSelectionDialogFragment.newInstance(currentTheme)
+        dialogFragment.onThemeSelected = { model.themeSelected(it) }
+        dialogFragment.show(requireFragmentManager(), ThemeSelectionDialogFragment.TAG)
+    }
+
+    private fun applyTheme(theme: Theme) {
+        // Naively add short delay to make sure that all animations are finished.
+        Handler().postDelayed({
+            AppCompatDelegate.setDefaultNightMode(theme.toNightMode())
+        }, THEME_APPLICATION_DELAY)
+    }
+
     private fun navigateToOnboarding() {
         OnboardingActivity.start(requireContext())
         requireActivity().finishAffinity()
@@ -226,7 +248,7 @@ class SettingsFragment : Fragment() {
             REQUEST_CODE_SELECT_DEFAULT_CURRENCY -> {
                 val currency: Currency? =
                     data?.getParcelableExtra(CurrencySelectionActivity.EXTRA_CURRENCY)
-                currency?.let { model.defaultCurrencySelect(it) }
+                currency?.let { model.defaultCurrencySelected(it) }
             }
             REQUEST_CODE_SELECT_FILE_FOR_IMPORT -> {
                 val uriToSelectedFile = data?.data
@@ -250,7 +272,7 @@ class SettingsFragment : Fragment() {
         private const val REQUEST_CODE_SELECT_DEFAULT_CURRENCY = 1
         private const val REQUEST_CODE_SELECT_FILE_FOR_IMPORT = 2
         private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE_FOR_EXPORT = 3
-
         private const val XLS_MIME_TYPE = "application/vnd.ms-excel"
+        private const val THEME_APPLICATION_DELAY = 500L
     }
 }

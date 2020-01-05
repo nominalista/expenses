@@ -2,6 +2,8 @@ package com.nominalista.expenses.settings.presentation
 
 import android.content.Context
 import android.net.Uri
+import android.os.Handler
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +13,7 @@ import com.nominalista.expenses.BuildConfig
 import com.nominalista.expenses.R
 import com.nominalista.expenses.authentication.AuthenticationManager
 import com.nominalista.expenses.data.model.Currency
+import com.nominalista.expenses.data.model.Theme
 import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.settings.work.ExpenseDeletionWorker
 import com.nominalista.expenses.settings.work.ExpenseExportWorker
@@ -29,8 +32,8 @@ class SettingsFragmentModel(
 
     val itemModels = Variable(emptyList<SettingItemModel>())
 
-    val selectDefaultCurrency = Event()
     val selectFileForImport = Event()
+    val selectDefaultCurrency = Event()
     val requestWriteExternalStorageForExport = Event()
     val showDeleteAllExpensesDialog = Event()
     val showExpenseImportFailureDialog = Event()
@@ -39,6 +42,8 @@ class SettingsFragmentModel(
 
     val showMessage = DataEvent<Int>()
     val showActivity = DataEvent<Uri>()
+    val showThemeSelectionDialog = DataEvent<Theme>()
+    val applyTheme = DataEvent<Theme>()
 
     val observeWorkInfo = DataEvent<UUID>()
 
@@ -55,8 +60,10 @@ class SettingsFragmentModel(
     }
 
     private fun loadItemModels() {
-        itemModels.value =
-            createAccountSection() + createExpensesSection() + createApplicationSection()
+        itemModels.value = createAccountSection() +
+                createExpensesSection() +
+                createApplicationSection() +
+                createAboutSection()
     }
 
     // Account section
@@ -109,7 +116,6 @@ class SettingsFragmentModel(
 
         val itemModels = mutableListOf<SettingItemModel>()
         itemModels += createExpenseHeader(context)
-        itemModels += createDefaultCurrency(context)
         itemModels += createImportExpenses(context)
         itemModels += createExportExpenses(context)
         itemModels += createDeleteAllExpenses(context)
@@ -119,22 +125,6 @@ class SettingsFragmentModel(
 
     private fun createExpenseHeader(context: Context): SettingItemModel =
         SettingsHeaderModel(context.getString(R.string.expenses))
-
-    private fun createDefaultCurrency(context: Context): SettingItemModel {
-        val defaultCurrency = preferenceDataSource.getDefaultCurrency(context)
-
-        val title = context.getString(R.string.default_currency)
-        val summary = context.getString(
-            R.string.default_currency_summary,
-            defaultCurrency.flag,
-            defaultCurrency.title,
-            defaultCurrency.code
-        )
-
-        return SummaryActionSettingItemModel(title, summary).apply {
-            click = { selectDefaultCurrency.next() }
-        }
-    }
 
     private fun createImportExpenses(context: Context): SettingItemModel {
         val title = context.getString(R.string.import_from_excel)
@@ -164,13 +154,61 @@ class SettingsFragmentModel(
         }
     }
 
-    // About section
+    // Application section
 
     private fun createApplicationSection(): List<SettingItemModel> {
         val context = getApplication<Application>()
 
         val itemModels = mutableListOf<SettingItemModel>()
         itemModels += createApplicationHeader(context)
+        itemModels += createDefaultCurrency(context)
+        itemModels += createTheme(context)
+
+        return itemModels
+    }
+
+    private fun createApplicationHeader(context: Context): SettingItemModel =
+        SettingsHeaderModel(context.getString(R.string.application))
+
+    private fun createDefaultCurrency(context: Context): SettingItemModel {
+        val defaultCurrency = preferenceDataSource.getDefaultCurrency(context)
+
+        val title = context.getString(R.string.default_currency)
+        val summary = context.getString(
+            R.string.default_currency_summary,
+            defaultCurrency.flag,
+            defaultCurrency.title,
+            defaultCurrency.code
+        )
+
+        return SummaryActionSettingItemModel(title, summary).apply {
+            click = { selectDefaultCurrency.next() }
+        }
+    }
+
+    private fun createTheme(context: Context): SettingItemModel {
+        val title = context.getString(R.string.theme)
+
+        val currentTheme = preferenceDataSource.getTheme(context)
+
+        val summary = when (currentTheme) {
+            Theme.LIGHT -> context.getString(R.string.light)
+            Theme.DARK -> context.getString(R.string.dark)
+            Theme.AUTO -> context.getString(R.string.auto)
+        }
+
+        return SummaryActionSettingItemModel(title, summary).apply {
+            click = { showThemeSelectionDialog.next(currentTheme) }
+        }
+    }
+
+    // About section
+
+    private fun createAboutSection(): List<SettingItemModel> {
+        val context = getApplication<Application>()
+
+        val itemModels = mutableListOf<SettingItemModel>()
+        itemModels += createAboutHeader(context)
         itemModels += createContactMe(context)
         itemModels += createRateApp(context)
         itemModels += createViewSourceCode(context)
@@ -180,8 +218,8 @@ class SettingsFragmentModel(
         return itemModels
     }
 
-    private fun createApplicationHeader(context: Context): SettingItemModel =
-        SettingsHeaderModel(context.getString(R.string.application))
+    private fun createAboutHeader(context: Context): SettingItemModel =
+        SettingsHeaderModel(context.getString(R.string.about))
 
     private fun createContactMe(context: Context): SettingItemModel {
         val title = context.getString(R.string.contact_me)
@@ -233,14 +271,6 @@ class SettingsFragmentModel(
     }
 
     // Public
-
-    fun defaultCurrencySelect(defaultCurrency: Currency) {
-        getApplication<Application>().let {
-            preferenceDataSource.setDefaultCurrency(it, defaultCurrency)
-        }
-
-        loadItemModels()
-    }
 
     fun fileForImportSelected(fileUri: Uri) {
         importExpenses(fileUri)
@@ -328,6 +358,24 @@ class SettingsFragmentModel(
         showActivity.next(TEMPLATE_XLS_URI)
     }
 
+    fun defaultCurrencySelected(defaultCurrency: Currency) {
+        getApplication<Application>().let {
+            preferenceDataSource.setDefaultCurrency(it, defaultCurrency)
+        }
+
+        loadItemModels()
+    }
+
+    fun themeSelected(theme: Theme) {
+        getApplication<Application>().let {
+            preferenceDataSource.setTheme(it, theme)
+        }
+
+        loadItemModels()
+
+        applyTheme.next(theme)
+    }
+
     @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
@@ -346,16 +394,12 @@ class SettingsFragmentModel(
 
         private val TEMPLATE_XLS_URI =
             Uri.parse("https://raw.githubusercontent.com/nominalista/expenses/master/resources/template.xls")
-
         private val EMAIL_URI =
             Uri.parse("mailto:the.nominalista@gmail.com")
-
         private val GOOGLE_PLAY_URI =
             Uri.parse("https://play.google.com/store/apps/details?id=com.nominalista.expenses")
-
         private val GITHUB_URI =
             Uri.parse("https://github.com/Nominalista/Expenses")
-
         private val PRIVACY_POLICY_URI =
             Uri.parse("https://raw.githubusercontent.com/nominalista/expenses/master/resources/privacy_policy.md")
     }
