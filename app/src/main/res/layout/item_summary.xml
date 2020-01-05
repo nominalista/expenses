@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,8 +26,8 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="@string/summary_title"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:textColor="@color/text_secondary_light"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textColor="@color/color_on_primary_emphasis_medium"
         app:layout_constraintEnd_toStartOf="@+id/chip_date_range"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -38,22 +39,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:theme="@style/ThemeOverlay.Expenses.Light"
         app:chipIcon="@drawable/ic_arrow_down_active_dark_24dp"
         app:chipIconEnabled="true"
         app:layout_constraintBottom_toBottomOf="@+id/text_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/text_title"
-        app:layout_constraintTop_toTopOf="@+id/text_title" />
-
+        app:layout_constraintTop_toTopOf="@+id/text_title"
+        tools:text="All time" />
 
     <TextView
         android:id="@+id/text_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no_expenses"
-        android:textAppearance="@style/TextAppearance.Expenses.Subtitle1"
-        android:textColor="@color/text_primary_light"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textColor="@color/color_on_primary_emphasis_high"
         app:layout_constraintBottom_toBottomOf="@id/recycler_view"
         app:layout_constraintEnd_toEndOf="@id/recycler_view"
         app:layout_constraintStart_toStartOf="@id/recycler_view"

@@ -9,7 +9,7 @@
     <dimen name="spacing_xlarge">24dp</dimen>
     <dimen name="spacing_xxlarge">48dp</dimen>
 
-    <dimen name="divider">0.5dp</dimen>
+    <dimen name="divider">1dp</dimen>
 
     <dimen name="chip_height">32dp</dimen>
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Final, top-level theme. -->
+    <style name="Theme.Expenses.DayNight" parent="Theme.Expenses.Dark"/>
+
+    <style name="Theme.Expenses.Dark" parent="Theme.Expenses">
+        <!-- Colors -->
+        <item name="colorPrimary">@color/expenses_blue</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+        <item name="colorPrimaryVariant">@color/expenses_blue_dark</item>
+        <item name="colorPrimaryDark">@color/expenses_blue_dark</item>
+
+        <item name="colorSecondary">@color/expenses_red</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+
+        <item name="android:colorBackground">#000000</item>
+        <item name="colorOnBackground">#FFFFFF</item>
+
+        <item name="colorSurface">#121212</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+    </style>
+
+    <style name="ThemeOverlay.Expenses.Dark" parent="ThemeOverlay.MaterialComponents.Dark">
+        <item name="android:colorBackground">#000000</item>
+        <item name="colorOnBackground">#FFFFFF</item>
+
+        <item name="colorSurface">#121212</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+    </style>
+
+</resources>

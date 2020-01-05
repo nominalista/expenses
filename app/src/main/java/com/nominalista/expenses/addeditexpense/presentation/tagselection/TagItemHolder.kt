@@ -1,7 +1,7 @@
 package com.nominalista.expenses.addeditexpense.presentation.tagselection
 
 import android.view.View
-import android.widget.PopupMenu
+import androidx.appcompat.widget.PopupMenu
 import com.nominalista.expenses.R
 import kotlinx.android.synthetic.main.item_tag.view.*
 

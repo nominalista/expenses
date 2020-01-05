@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="expenses_blue">#4388E9</color>
+    <color name="expenses_blue_dark">#3E76D5</color>
+    <color name="expenses_red">#E44343</color>
+
+
+
+
     <color name="primary">#4388E9</color>
     <color name="primary_dark">#3E76D5</color>
     <color name="accent">#E44343</color>

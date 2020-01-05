@@ -3,18 +3,17 @@
     <!-- Dialogs -->
 
     <style name="Dialog.Expenses.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-        <item name="android:textAppearance">@style/TextAppearance.Expenses.Headline6</item>
-        <item name="android:textColor">@color/text_secondary_dark</item>
+        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+        <item name="android:textColor">@color/color_on_surface_emphasis_medium</item>
     </style>
 
     <style name="Dialog.Expenses.Body.Text" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
-        <item name="android:textAppearance">@style/TextAppearance.Expenses.Body1</item>
-        <item name="android:textColor">@color/text_primary_dark</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+        <item name="android:textColor">@color/color_on_surface_emphasis_high</item>
     </style>
 
     <style name="Widget.Expenses.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Expenses.Dialog.BottomSheet
-        </item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Expenses.Dialog.BottomSheet</item>
     </style>
 
     <!-- Buttons -->

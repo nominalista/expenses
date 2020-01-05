@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?colorSurface"
     tools:context=".home.presentation.HomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -23,10 +25,12 @@
         style="@style/Widget.Expenses.Button.Large"
         android:layout_width="wrap_content"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/accent"
+        android:backgroundTint="?colorSecondary"
         android:text="@string/add_expense_button"
-        android:textAppearance="@style/TextAppearance.Expenses.Button"
+        android:textAppearance="?attr/textAppearanceButton"
+        android:textColor="@color/color_on_secondary_emphasis_high"
         app:icon="@drawable/ic_add_active_light_24dp"
+        app:iconTint="@color/color_on_secondary_emphasis_high"
         app:layout_constraintBottom_toBottomOf="@+id/recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
