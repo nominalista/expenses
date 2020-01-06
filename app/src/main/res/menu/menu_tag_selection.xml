@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/confirm"
-        android:icon="@drawable/ic_check_active_light_24dp"
+        android:icon="@drawable/ic_check_24dp"
         android:title="@string/confirm"
         app:showAsAction="always" />
 </menu>

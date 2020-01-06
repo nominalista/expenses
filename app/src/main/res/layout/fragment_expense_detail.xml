@@ -70,7 +70,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/text_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_title"
-        app:srcCompat="@drawable/ic_title_inactive_dark_24dp"
+        app:srcCompat="@drawable/ic_title_24dp"
         app:tint="@color/color_on_surface_emphasis_medium" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -120,7 +120,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/layout_tag"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/layout_tag"
-        app:srcCompat="@drawable/ic_label_inactive_dark_24dp"
+        app:srcCompat="@drawable/ic_local_24dp"
         app:tint="@color/color_on_surface_emphasis_medium" />
 
     <TextView
@@ -148,7 +148,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/text_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_date"
-        app:srcCompat="@drawable/ic_date_range_inactive_dark_24dp"
+        app:srcCompat="@drawable/ic_date_range_24dp"
         app:tint="@color/color_on_surface_emphasis_medium" />
 
     <TextView

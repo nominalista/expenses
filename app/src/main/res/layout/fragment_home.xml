@@ -29,7 +29,7 @@
         android:text="@string/add_expense_button"
         android:textAppearance="?attr/textAppearanceButton"
         android:textColor="@color/color_on_secondary_emphasis_high"
-        app:icon="@drawable/ic_add_active_light_24dp"
+        app:icon="@drawable/ic_add_24dp"
         app:iconTint="@color/color_on_secondary_emphasis_high"
         app:layout_constraintBottom_toBottomOf="@+id/recycler_view"
         app:layout_constraintEnd_toEndOf="parent"

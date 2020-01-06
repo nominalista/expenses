@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:background="?selectableItemBackgroundBorderless"
-                android:drawableEnd="@drawable/ic_arrow_down_active_light_24dp"
+                android:drawableEnd="@drawable/ic_arrow_drop_down_24dp"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textColor="?colorOnPrimary"
@@ -53,16 +53,16 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageTitle"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:tint="@color/color_on_surface_emphasis_medium"
             app:layout_constraintBottom_toBottomOf="@id/editTextTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/editTextTitle"
-            app:srcCompat="@drawable/ic_title_inactive_dark_24dp" />
+            app:srcCompat="@drawable/ic_title_24dp"
+            app:tint="@color/color_on_surface_emphasis_medium" />
 
         <EditText
             android:id="@+id/editTextTitle"
@@ -77,16 +77,16 @@
             app:layout_constraintStart_toEndOf="@id/imageTitle"
             app:layout_constraintTop_toBottomOf="@id/containerCurrencyAndAmount" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageTags"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:tint="@color/color_on_surface_emphasis_medium"
             app:layout_constraintBottom_toBottomOf="@+id/containerTags"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/containerTags"
-            app:srcCompat="@drawable/ic_label_inactive_dark_24dp" />
+            app:srcCompat="@drawable/ic_local_24dp"
+            app:tint="@color/color_on_surface_emphasis_medium" />
 
         <FrameLayout
             android:id="@+id/containerTags"
@@ -125,16 +125,16 @@
 
         </FrameLayout>
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageDate"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:tint="@color/color_on_surface_emphasis_medium"
             app:layout_constraintBottom_toBottomOf="@+id/textDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textDate"
-            app:srcCompat="@drawable/ic_date_range_inactive_dark_24dp" />
+            app:srcCompat="@drawable/ic_date_range_24dp"
+            app:tint="@color/color_on_surface_emphasis_medium" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textDate"
@@ -150,7 +150,7 @@
             android:paddingBottom="@dimen/spacing_large"
             android:textAppearance="?textAppearanceSubtitle1"
             android:textColor="@color/color_on_surface_emphasis_medium"
-            app:drawableEndCompat="@drawable/ic_arrow_down_active_dark_24dp"
+            app:drawableEndCompat="@drawable/ic_arrow_drop_down_24dp"
             app:drawableTint="@color/color_on_surface_emphasis_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imageDate"

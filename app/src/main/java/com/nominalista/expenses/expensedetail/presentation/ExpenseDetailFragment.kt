@@ -62,7 +62,7 @@ class ExpenseDetailFragment : Fragment() {
         val actionBar = (requireActivity() as AppCompatActivity).supportActionBar ?: return
         actionBar.setTitle(R.string.expense_detail_title)
         actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_back_active_light_24dp)
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_24dp)
         setHasOptionsMenu(true)
     }
 

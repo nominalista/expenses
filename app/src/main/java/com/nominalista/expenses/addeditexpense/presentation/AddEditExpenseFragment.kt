@@ -51,7 +51,7 @@ class AddEditExpenseFragment : Fragment() {
         val actionBar = (requireActivity() as AppCompatActivity).supportActionBar ?: return
         actionBar.title = ""
         actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_close_light_active_24dp)
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_24dp)
         setHasOptionsMenu(true)
     }
 

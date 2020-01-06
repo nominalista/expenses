@@ -56,7 +56,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_more_vertical_inactive_dark_24dp"
+        app:srcCompat="@drawable/ic_more_vertical_24dp"
         app:tint="@color/color_on_surface_emphasis_medium" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
