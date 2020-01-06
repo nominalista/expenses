@@ -1,11 +1,10 @@
 package com.nominalista.expenses.data.preference
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.nominalista.expenses.R
+import com.nominalista.expenses.common.presentation.DarkMode
 import com.nominalista.expenses.data.model.Currency
-import com.nominalista.expenses.data.model.Theme
 import com.nominalista.expenses.home.presentation.DateRange
 
 class PreferenceDataSource {
@@ -46,16 +45,16 @@ class PreferenceDataSource {
         preferences.edit().putBoolean(key, isUserOnboarded).apply()
     }
 
-    fun getTheme(context: Context): Theme {
+    fun getDarkMode(context: Context): DarkMode {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val key = getThemeKey(context)
-        return preferences.getString(key, null)?.let { Theme.valueOf(it) } ?: Theme.AUTO
+        val key = getDarkModeKey(context)
+        return preferences.getString(key, null)?.let { DarkMode.valueOf(it) } ?: DarkMode.SYSTEM_DEFAULT
     }
 
-    fun setTheme(context: Context, theme: Theme) {
+    fun setDarkMode(context: Context, darkMode: DarkMode) {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val key = getThemeKey(context)
-        preferences.edit().putString(key, theme.name).apply()
+        val key = getDarkModeKey(context)
+        preferences.edit().putString(key, darkMode.name).apply()
     }
 
     private fun getDefaultCurrencyKey(context: Context) =
@@ -67,6 +66,6 @@ class PreferenceDataSource {
     private fun getIsUserOnboardedKey(context: Context) =
         context.getString(R.string.key_is_user_onboarded)
 
-    private fun getThemeKey(context: Context) =
-        context.getString(R.string.key_theme)
+    private fun getDarkModeKey(context: Context) =
+        context.getString(R.string.key_dark_mode)
 }

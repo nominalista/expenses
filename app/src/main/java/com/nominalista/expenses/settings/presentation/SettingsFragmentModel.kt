@@ -5,16 +5,13 @@ import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.WorkInfo
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.BuildConfig
 import com.nominalista.expenses.R
 import com.nominalista.expenses.authentication.AuthenticationManager
+import com.nominalista.expenses.common.presentation.DarkMode
 import com.nominalista.expenses.data.model.Currency
-import com.nominalista.expenses.data.model.Theme
 import com.nominalista.expenses.data.preference.PreferenceDataSource
-import com.nominalista.expenses.settings.work.ExpenseExportWorker
-import com.nominalista.expenses.settings.work.ExpenseImportWorker
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
 import com.nominalista.expenses.util.reactive.Variable
@@ -33,8 +30,8 @@ class SettingsFragmentModel(
 
     val showMessage = DataEvent<Int>()
     val showActivity = DataEvent<Uri>()
-    val showThemeSelectionDialog = DataEvent<Theme>()
-    val applyTheme = DataEvent<Theme>()
+    val showDarkModeSelectionDialog = DataEvent<DarkMode>()
+    val applyNightMode = DataEvent<Int>()
 
     private val disposables = CompositeDisposable()
 
@@ -99,7 +96,7 @@ class SettingsFragmentModel(
         val itemModels = mutableListOf<SettingItemModel>()
         itemModels += createApplicationHeader(context)
         itemModels += createDefaultCurrency(context)
-        itemModels += createTheme(context)
+        itemModels += createDarkMode(context)
 
         return itemModels
     }
@@ -123,19 +120,19 @@ class SettingsFragmentModel(
         }
     }
 
-    private fun createTheme(context: Context): SettingItemModel {
-        val title = context.getString(R.string.theme)
+    private fun createDarkMode(context: Context): SettingItemModel {
+        val title = context.getString(R.string.dark_mode)
 
-        val currentTheme = preferenceDataSource.getTheme(context)
+        val darkMode = preferenceDataSource.getDarkMode(context)
 
-        val summary = when (currentTheme) {
-            Theme.LIGHT -> context.getString(R.string.light)
-            Theme.DARK -> context.getString(R.string.dark)
-            Theme.AUTO -> context.getString(R.string.auto)
+        val summary = when (darkMode) {
+            DarkMode.ON -> context.getString(R.string.on)
+            DarkMode.OFF -> context.getString(R.string.off)
+            DarkMode.SYSTEM_DEFAULT -> context.getString(R.string.system_default)
         }
 
         return SummaryActionSettingItemModel(title, summary).apply {
-            click = { showThemeSelectionDialog.next(currentTheme) }
+            click = { showDarkModeSelectionDialog.next(darkMode) }
         }
     }
 
@@ -217,14 +214,14 @@ class SettingsFragmentModel(
         loadItemModels()
     }
 
-    fun themeSelected(theme: Theme) {
+    fun themeSelected(darkMode: DarkMode) {
         getApplication<Application>().let {
-            preferenceDataSource.setTheme(it, theme)
+            preferenceDataSource.setDarkMode(it, darkMode)
         }
 
         loadItemModels()
 
-        applyTheme.next(theme)
+        applyNightMode.next(darkMode.toNightMode())
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.nominalista.expenses.R
+import com.nominalista.expenses.common.presentation.DarkMode
 import com.nominalista.expenses.currencyselection.CurrencySelectionActivity
 import com.nominalista.expenses.data.model.Currency
-import com.nominalista.expenses.data.model.Theme
 import com.nominalista.expenses.onboarding.OnboardingActivity
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
@@ -93,10 +93,10 @@ class SettingsFragment : Fragment() {
             .subscribe(::showMessage)
         compositeDisposable += model.showActivity
             .subscribe(::showActivity)
-        compositeDisposable += model.showThemeSelectionDialog
-            .subscribe(::showThemeSelectionDialog)
-        compositeDisposable += model.applyTheme
-            .subscribe(::applyTheme)
+        compositeDisposable += model.showDarkModeSelectionDialog
+            .subscribe(::showDarkModeSelectionDialog)
+        compositeDisposable += model.applyNightMode
+            .subscribe(::applyNightMode)
     }
 
     private fun selectDefaultCurrency() {
@@ -112,17 +112,17 @@ class SettingsFragment : Fragment() {
         requireActivity().startActivitySafely(intent)
     }
 
-    private fun showThemeSelectionDialog(currentTheme: Theme) {
-        val dialogFragment = ThemeSelectionDialogFragment.newInstance(currentTheme)
+    private fun showDarkModeSelectionDialog(darkMode: DarkMode) {
+        val dialogFragment = DarkModeSelectionDialogFragment.newInstance(darkMode)
         dialogFragment.onThemeSelected = { model.themeSelected(it) }
-        dialogFragment.show(requireFragmentManager(), ThemeSelectionDialogFragment.TAG)
+        dialogFragment.show(requireFragmentManager(), DarkModeSelectionDialogFragment.TAG)
     }
 
-    private fun applyTheme(theme: Theme) {
+    private fun applyNightMode(nightMode: Int) {
         // Naively add short delay to make sure that all animations are finished.
         Handler().postDelayed({
-            AppCompatDelegate.setDefaultNightMode(theme.toNightMode())
-        }, THEME_APPLICATION_DELAY)
+            AppCompatDelegate.setDefaultNightMode(nightMode)
+        }, NIGHT_MODE_APPLICATION_DELAY)
     }
 
     private fun navigateToOnboarding() {
@@ -174,6 +174,6 @@ class SettingsFragment : Fragment() {
     companion object {
 
         private const val REQUEST_CODE_SELECT_DEFAULT_CURRENCY = 1
-        private const val THEME_APPLICATION_DELAY = 500L
+        private const val NIGHT_MODE_APPLICATION_DELAY = 500L
     }
 }

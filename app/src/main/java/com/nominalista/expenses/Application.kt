@@ -18,15 +18,15 @@ class Application : android.app.Application() {
     override fun onCreate() {
         super.onCreate()
         initializeThreeTeen()
-        applyTheme()
+        applyNightMode()
     }
 
     private fun initializeThreeTeen() {
         AndroidThreeTen.init(this)
     }
 
-    private fun applyTheme() {
-        val theme = PreferenceDataSource().getTheme(applicationContext)
-        AppCompatDelegate.setDefaultNightMode(theme.toNightMode())
+    private fun applyNightMode() {
+        val darkMode = PreferenceDataSource().getDarkMode(applicationContext)
+        AppCompatDelegate.setDefaultNightMode(darkMode.toNightMode())
     }
 }

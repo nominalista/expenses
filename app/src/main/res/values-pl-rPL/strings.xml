@@ -10,7 +10,6 @@
     <string name="amount">Kwota</string>
     <string name="all_time">Cały czas</string>
     <string name="application">Aplikacja</string>
-    <string name="auto">Automatyczny</string>
     <string name="banner_subtitle">Dostępne wkrótce</string>
     <string name="banner_title">Wydatki Online 💻</string>
     <string name="cancel">Anuluj</string>
@@ -26,7 +25,7 @@
     <string name="contact_me">Skontaktuj się ze mną</string>
     <string name="contact_me_summary">Opinia mile widziana!</string>
     <string name="continue_with_google">Kontynuuj z Google</string>
-    <string name="dark">Ciemny</string>
+    <string name="dark_mode">Ciemny tryb</string>
     <string name="delete">Usuń</string>
     <string name="default_currency">Domyślna waluta</string>
     <string name="delete_all">Usuń wszystkie</string>
@@ -48,7 +47,6 @@
     <string name="filter_tags">Filtruj tagi</string>
     <string name="import_from_excel">Importuj z Excela (.xls)</string>
     <string name="incompleted_feature_warning">Funkcjonalność nie jest jeszcze gotowa. Poczekaj na następną aktualizację aplikacji.</string>
-    <string name="light">Jasny</string>
     <string name="name">Nazwa</string>
     <string name="no">Nie</string>
     <string name="no_added_tags_message">Brak dodanych tagów. Możesz zarządzać swoimi tagami w ekranie dodawania nowego wydatku.</string>
@@ -63,15 +61,16 @@
     <string name="save">Zapisz</string>
     <string name="search_currency">Szukaj waluty</string>
     <string name="select_tags">Wybierz tagi</string>
-    <string name="select_theme">Wybierz motyw</string>
     <string name="settings">Ustawienia</string>
     <string name="sign_out">Wyloguj się</string>
     <string name="sign_up_or_sign_in">Zarejestruj lub zaloguj się</string>
     <string name="signed_in_as">Zalogowany jako</string>
     <string name="simple_budget_tracker">Prostym manadżerze budżetu</string>
     <string name="summary_title">Wydałaś/eś</string>
+    <string name="system_default">Domyślny systemowy</string>
+    <string name="off">Wyłaczony</string>
     <string name="ok">OK</string>
-    <string name="theme">Motyw</string>
+    <string name="on">Włączony</string>
     <string name="this_month">Ten miesiąc</string>
     <string name="this_week">Ten tydzień</string>
     <string name="title_hint">Tytuł</string>
