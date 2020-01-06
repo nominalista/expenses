@@ -2,8 +2,6 @@ package com.nominalista.expenses.settings.presentation
 
 import android.content.Context
 import android.net.Uri
-import android.os.Handler
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,14 +13,12 @@ import com.nominalista.expenses.authentication.AuthenticationManager
 import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.model.Theme
 import com.nominalista.expenses.data.preference.PreferenceDataSource
-import com.nominalista.expenses.settings.work.ExpenseDeletionWorker
 import com.nominalista.expenses.settings.work.ExpenseExportWorker
 import com.nominalista.expenses.settings.work.ExpenseImportWorker
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
 import com.nominalista.expenses.util.reactive.Variable
 import io.reactivex.disposables.CompositeDisposable
-import java.util.*
 
 class SettingsFragmentModel(
     application: Application,
@@ -32,24 +28,13 @@ class SettingsFragmentModel(
 
     val itemModels = Variable(emptyList<SettingItemModel>())
 
-    val selectFileForImport = Event()
     val selectDefaultCurrency = Event()
-    val requestWriteExternalStorageForExport = Event()
-    val showDeleteAllExpensesDialog = Event()
-    val showExpenseImportFailureDialog = Event()
-    val showExpenseExportFailureDialog = Event()
     val navigateToOnboarding = Event()
 
     val showMessage = DataEvent<Int>()
     val showActivity = DataEvent<Uri>()
     val showThemeSelectionDialog = DataEvent<Theme>()
     val applyTheme = DataEvent<Theme>()
-
-    val observeWorkInfo = DataEvent<UUID>()
-
-    private var expenseImportId: UUID? = null
-    private var expenseExportId: UUID? = null
-    private var expenseDeletionId: UUID? = null
 
     private val disposables = CompositeDisposable()
 
@@ -60,10 +45,8 @@ class SettingsFragmentModel(
     }
 
     private fun loadItemModels() {
-        itemModels.value = createAccountSection() +
-                createExpensesSection() +
-                createApplicationSection() +
-                createAboutSection()
+        itemModels.value =
+            createAccountSection() + createApplicationSection() + createAboutSection()
     }
 
     // Account section
@@ -87,9 +70,8 @@ class SettingsFragmentModel(
 
     private fun createSignOut(context: Context): SettingItemModel {
         val title = context.getString(R.string.sign_out)
-        val summary = authenticationManager.getCurrentUserEmail() ?: ""
 
-        return SummaryActionSettingItemModel(title, summary).apply {
+        return ActionSettingItemModel(title).apply {
             click = {
                 authenticationManager.signOut()
                 preferenceDataSource.setIsUserOnboarded(getApplication(), false)
@@ -105,51 +87,6 @@ class SettingsFragmentModel(
             click = {
                 preferenceDataSource.setIsUserOnboarded(getApplication(), false)
                 navigateToOnboarding.next()
-            }
-        }
-    }
-
-    // Expenses section
-
-    private fun createExpensesSection(): List<SettingItemModel> {
-        val context = getApplication<Application>()
-
-        val itemModels = mutableListOf<SettingItemModel>()
-        itemModels += createExpenseHeader(context)
-        itemModels += createImportExpenses(context)
-        itemModels += createExportExpenses(context)
-        itemModels += createDeleteAllExpenses(context)
-
-        return itemModels
-    }
-
-    private fun createExpenseHeader(context: Context): SettingItemModel =
-        SettingsHeaderModel(context.getString(R.string.expenses))
-
-    private fun createImportExpenses(context: Context): SettingItemModel {
-        val title = context.getString(R.string.import_from_excel)
-
-        return ActionSettingItemModel(title).apply {
-            click = {
-                selectFileForImport.next()
-            }
-        }
-    }
-
-    private fun createExportExpenses(context: Context): SettingItemModel {
-        val title = context.getString(R.string.export_to_excel)
-
-        return ActionSettingItemModel(title).apply {
-            click = { requestWriteExternalStorageForExport.next() }
-        }
-    }
-
-    private fun createDeleteAllExpenses(context: Context): SettingItemModel {
-        val title = context.getString(R.string.delete_all)
-
-        return ActionSettingItemModel(title).apply {
-            click = {
-                showDeleteAllExpensesDialog.next()
             }
         }
     }
@@ -272,92 +209,6 @@ class SettingsFragmentModel(
 
     // Public
 
-    fun fileForImportSelected(fileUri: Uri) {
-        importExpenses(fileUri)
-    }
-
-    private fun importExpenses(fileUri: Uri) {
-        if (expenseImportId != null) return
-
-        val id = ExpenseImportWorker.enqueue(getApplication<Application>(), fileUri)
-        expenseImportId = id
-        observeWorkInfo.next(id)
-    }
-
-    fun permissionGranted() {
-        exportExpenses()
-    }
-
-    private fun exportExpenses() {
-        if (expenseExportId != null) return
-
-        val id = ExpenseExportWorker.enqueue(getApplication<Application>())
-        expenseExportId = id
-        observeWorkInfo.next(id)
-    }
-
-    fun deleteAllExpenses() {
-        if (expenseDeletionId != null) return
-
-        val id = ExpenseDeletionWorker.enqueue(getApplication<Application>())
-        expenseDeletionId = id
-        observeWorkInfo.next(id)
-    }
-
-    fun handleWorkInfo(workInfo: WorkInfo) {
-        when (workInfo.id) {
-            expenseImportId -> handleExpenseImportWorkInfo(workInfo)
-            expenseExportId -> handleExpenseExportWorkInfo(workInfo)
-            expenseDeletionId -> handleExpenseDeletionWorkInfo(workInfo)
-        }
-    }
-
-    private fun handleExpenseImportWorkInfo(workInfo: WorkInfo) {
-        expenseImportId = when (workInfo.state) {
-            WorkInfo.State.SUCCEEDED -> {
-                showMessage.next(R.string.expense_import_success_message)
-                null
-            }
-            WorkInfo.State.FAILED -> {
-                showExpenseImportFailureDialog.next()
-                null
-            }
-            else -> return
-        }
-    }
-
-    private fun handleExpenseExportWorkInfo(workInfo: WorkInfo) {
-        expenseExportId = when (workInfo.state) {
-            WorkInfo.State.SUCCEEDED -> {
-                showMessage.next(R.string.expense_export_success_message)
-                null
-            }
-            WorkInfo.State.FAILED -> {
-                showExpenseExportFailureDialog.next()
-                null
-            }
-            else -> return
-        }
-    }
-
-    private fun handleExpenseDeletionWorkInfo(workInfo: WorkInfo) {
-        expenseDeletionId = when (workInfo.state) {
-            WorkInfo.State.SUCCEEDED -> {
-                showMessage.next(R.string.expense_deletion_success_message)
-                null
-            }
-            WorkInfo.State.FAILED -> {
-                showMessage.next(R.string.expense_deletion_failure_message)
-                null
-            }
-            else -> return
-        }
-    }
-
-    fun downloadTemplate() {
-        showActivity.next(TEMPLATE_XLS_URI)
-    }
-
     fun defaultCurrencySelected(defaultCurrency: Currency) {
         getApplication<Application>().let {
             preferenceDataSource.setDefaultCurrency(it, defaultCurrency)
@@ -392,8 +243,6 @@ class SettingsFragmentModel(
 
     companion object {
 
-        private val TEMPLATE_XLS_URI =
-            Uri.parse("https://raw.githubusercontent.com/nominalista/expenses/master/resources/template.xls")
         private val EMAIL_URI =
             Uri.parse("mailto:the.nominalista@gmail.com")
         private val GOOGLE_PLAY_URI =

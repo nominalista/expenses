@@ -3,6 +3,8 @@ package com.nominalista.expenses.util.reactive
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
+import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.flow.flow
 
 class Event {
 
@@ -12,4 +14,6 @@ class Event {
 
     @Suppress("HasPlatformType")
     fun toObservable() = (relay as Observable<Any>).observeOn(mainThread())
+
+    fun subscribe(block: () -> Unit): Disposable = toObservable().subscribe { block() }
 }

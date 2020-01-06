@@ -34,6 +34,7 @@ class HomeFragmentModel(
     val showExpenseDetail = DataEvent<Expense>()
     val showTagFiltering = Event()
     val showNoAddedTags = Event()
+    val showDeleteAllExpensesConfirmation = Event()
 
     var expenses = emptyList<Expense>()
     var tags = emptyList<Tag>()
@@ -140,7 +141,7 @@ class HomeFragmentModel(
 
     // Public
 
-    fun filterSelected() {
+    fun filterTagsRequested() {
         if (tags.isEmpty()) showNoAddedTags.next()
         else showTagFiltering.next()
     }
@@ -150,7 +151,16 @@ class HomeFragmentModel(
         updateItemModels()
     }
 
-    // Sending inputs
+    fun deleteAllExpensesRequested() {
+        showDeleteAllExpensesConfirmation.next()
+    }
+
+    fun deleteAllExpensesConfirmed() {
+        disposables += dataStore.deleteAllExpenses()
+            .subscribeOn(io())
+            .observeOn(mainThread())
+            .subscribe()
+    }
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {

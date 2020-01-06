@@ -15,12 +15,13 @@ import com.nominalista.expenses.R
 import com.nominalista.expenses.addeditexpense.presentation.AddEditExpenseActivity
 import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.expensedetail.presentation.ExpenseDetailActivity
-import com.nominalista.expenses.settings.presentation.SettingsActivity
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import io.reactivex.disposables.CompositeDisposable
 
 class HomeFragment : Fragment() {
+
+    private val compositeDisposable = CompositeDisposable()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var newExpenseButton: Button
@@ -29,7 +30,6 @@ class HomeFragment : Fragment() {
     private lateinit var model: HomeFragmentModel
     private lateinit var adapter: HomeAdapter
     private lateinit var layoutManager: LinearLayoutManager
-    private val compositeDisposable = CompositeDisposable()
 
     // Lifecycle start
 
@@ -60,7 +60,6 @@ class HomeFragment : Fragment() {
     private fun setupActionBar() {
         val actionBar = (requireActivity() as AppCompatActivity).supportActionBar ?: return
         actionBar.setTitle(R.string.app_name)
-        actionBar.setDisplayHomeAsUpEnabled(false)
         setHasOptionsMenu(true)
     }
 
@@ -81,17 +80,19 @@ class HomeFragment : Fragment() {
     }
 
     private fun bindModel() {
-        compositeDisposable += model.itemModels.toObservable().subscribe(adapter::submitList)
-        compositeDisposable += model.isLoading.toObservable().subscribe { configureProgressBar(it) }
+        compositeDisposable += model.itemModels
+            .subscribe { adapter.submitList(it) }
+        compositeDisposable += model.isLoading
+            .subscribe { configureProgressBar(it) }
+
         compositeDisposable += model.showExpenseDetail
-            .toObservable()
             .subscribe { showExpenseDetail(it) }
         compositeDisposable += model.showTagFiltering
-            .toObservable()
             .subscribe { showTagFiltering() }
         compositeDisposable += model.showNoAddedTags
-            .toObservable()
             .subscribe { showNoAddedTags() }
+        compositeDisposable += model.showDeleteAllExpensesConfirmation
+            .subscribe { showDeleteAllExpensesConfirmation() }
     }
 
     private fun configureProgressBar(isVisible: Boolean) {
@@ -116,6 +117,15 @@ class HomeFragment : Fragment() {
             .show()
     }
 
+    private fun showDeleteAllExpensesConfirmation() {
+        MaterialAlertDialogBuilder(requireActivity())
+            .setMessage(R.string.delete_all_expenses_message)
+            .setPositiveButton(R.string.delete) { _, _ -> model.deleteAllExpensesConfirmed() }
+            .setNegativeButton(R.string.cancel) { _, _ -> }
+            .create()
+            .show()
+    }
+
     // Lifecycle end
 
     override fun onDestroyView() {
@@ -136,19 +146,19 @@ class HomeFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.item_settings -> settingsSelected()
             R.id.item_filter -> filterSelected()
+            R.id.item_delete_all_expenses -> deleteAllExpensesSelected()
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun settingsSelected(): Boolean {
-        SettingsActivity.start(requireContext())
+    private fun filterSelected(): Boolean {
+        model.filterTagsRequested()
         return true
     }
 
-    private fun filterSelected(): Boolean {
-        model.filterSelected()
+    private fun deleteAllExpensesSelected(): Boolean {
+        model.deleteAllExpensesRequested()
         return true
     }
 }

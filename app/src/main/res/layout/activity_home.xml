@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:colorBackground"
-    android:orientation="vertical"
-    tools:context=".home.presentation.HomeActivity">
+    android:background="?android:colorBackground">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?colorPrimary"
-        android:elevation="@dimen/spacing_normal"
-        android:theme="@style/ThemeOverlay.Expenses.Toolbar"
-        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
-
-    <fragment
-        android:id="@+id/fragment_navigation_host"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <LinearLayout
+        android:id="@+id/containerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation_home" />
+        android:orientation="vertical">
 
-</LinearLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:elevation="@dimen/spacing_normal"
+            android:theme="@style/ThemeOverlay.Expenses.Toolbar"
+            app:navigationIcon="@drawable/ic_menu_24dp"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
+
+        <fragment
+            android:id="@+id/fragment_navigation_host"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/navigation_home" />
+
+    </LinearLayout>
+
+    <include layout="@layout/include_drawer" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

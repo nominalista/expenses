@@ -11,6 +11,8 @@
     <string name="all_time">Cały czas</string>
     <string name="application">Aplikacja</string>
     <string name="auto">Automatyczny</string>
+    <string name="banner_subtitle">Dostępne wkrótce</string>
+    <string name="banner_title">Wydatki Online 💻</string>
     <string name="cancel">Anuluj</string>
     <string name="channel_name_default">Domyślny kanał</string>
     <string name="channel_description_default">Kanał dla każdegu typu powiadomień.</string>
@@ -28,6 +30,7 @@
     <string name="delete">Usuń</string>
     <string name="default_currency">Domyślna waluta</string>
     <string name="delete_all">Usuń wszystkie</string>
+    <string name="delete_all_expenses">Usuń wszystkie wydatki</string>
     <string name="delete_all_expenses_message">Czy na pewno chcesz usunąć wszystkie wydatki?</string>
     <string name="delete_expense_message">Czy na pewno chcesz usunąć wydatek?</string>
     <string name="download_template">Pobierz wzór</string>
@@ -64,7 +67,7 @@
     <string name="settings">Ustawienia</string>
     <string name="sign_out">Wyloguj się</string>
     <string name="sign_up_or_sign_in">Zarejestruj lub zaloguj się</string>
-    <string name="signed_in_as">Zalogowany jako %s</string>
+    <string name="signed_in_as">Zalogowany jako</string>
     <string name="simple_budget_tracker">Prostym manadżerze budżetu</string>
     <string name="summary_title">Wydałaś/eś</string>
     <string name="ok">OK</string>

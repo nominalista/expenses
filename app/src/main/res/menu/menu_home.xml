@@ -3,17 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_settings"
-        android:orderInCategory="200"
-        android:icon="@drawable/ic_settings_24dp"
-        app:showAsAction="ifRoom"
-        android:title="@string/settings"/>
-
-    <item
         android:id="@+id/item_filter"
         android:orderInCategory="100"
         android:icon="@drawable/ic_filter_list_24dp"
         app:showAsAction="ifRoom"
         android:title="@string/filter"/>
+
+    <item
+        android:id="@+id/item_delete_all_expenses"
+        android:orderInCategory="200"
+        app:showAsAction="never"
+        android:title="@string/delete_all_expenses"/>
 
 </menu>
