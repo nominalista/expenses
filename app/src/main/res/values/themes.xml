@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Final, top-level theme. -->
-    <style name="Theme.Expenses.DayNight" parent="Theme.Expenses"/>
+    <style name="Theme.Expenses.DayNight" parent="Theme.Expenses" />
 
     <style name="Theme.Expenses" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Colors -->
@@ -44,7 +44,8 @@
 
         <!-- Dialogs -->
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.Expenses.Dialog</item>
-        <item name="android:datePickerDialogTheme">@style/ThemeOverlay.Expenses.Dialog.DatePicker</item>
+        <item name="android:datePickerDialogTheme">@style/ThemeOverlay.Expenses.Dialog.DatePicker
+        </item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Expenses.Dialog.BottomSheet</item>
 
         <!-- Popup Menu -->
@@ -98,9 +99,10 @@
 
     <!-- TextInputLayout - Theme Overlay -->
 
-    <style name="ThemeOverlay.Expenses.TextInputLayout" parent="ThemeOverlay.MaterialComponents.Light">
-        <item name="colorControlActivated">@color/accent</item>
-        <item name="colorControlHighlight">@color/accent</item>
+    <style name="ThemeOverlay.Expenses.TextInputLayout" parent="">
+        <item name="colorControlNormal">@color/color_on_surface_emphasis_medium</item>
+        <item name="colorControlActivated">?attr/colorSecondary</item>
+        <item name="colorControlHighlight">?attr/colorSecondary</item>
     </style>
 
 </resources>
