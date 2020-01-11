@@ -82,8 +82,10 @@ class HomeActivity : BaseActivity() {
     private fun bindModel() {
         compositeDisposable += model.isUserSignedIn
             .subscribe { configureHeaderLayout(it) }
+        compositeDisposable += model.userName
+            .subscribe { configureUserNameTextView(it) }
         compositeDisposable += model.userEmail
-            .subscribe { configureUserEmail(it) }
+            .subscribe { configureUserEmailTextView(it) }
 
         compositeDisposable += model.navigateToOnboarding
             .subscribe { navigateToOnboarding() }
@@ -107,12 +109,17 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun configureHeaderLayout(isUserSignedIn: Boolean) {
-        userEmailHintTextView.isVisible = isUserSignedIn
+        userNameTextView.isVisible = isUserSignedIn
         userEmailTextView.isVisible = isUserSignedIn
+
         signUpOrSignInButton.isVisible = !isUserSignedIn
     }
 
-    private fun configureUserEmail(userEmail: String) {
+    private fun configureUserNameTextView(userName: String) {
+        userNameTextView.text = userName
+    }
+
+    private fun configureUserEmailTextView(userEmail: String) {
         userEmailTextView.text = userEmail
     }
 

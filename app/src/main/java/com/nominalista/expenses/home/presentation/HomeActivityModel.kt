@@ -23,6 +23,9 @@ class HomeActivityModel(
     val isUserSignedIn: Variable<Boolean> by lazy {
         Variable(defaultValue = authenticationManager.isUserSignedIn())
     }
+    val userName: Variable<String> by lazy {
+        Variable(defaultValue = authenticationManager.getCurrentUserName() ?: "")
+    }
     val userEmail: Variable<String> by lazy {
         Variable(defaultValue = authenticationManager.getCurrentUserEmail() ?: "")
     }
