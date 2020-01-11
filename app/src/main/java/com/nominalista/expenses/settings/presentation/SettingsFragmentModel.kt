@@ -228,12 +228,10 @@ class SettingsFragmentModel(
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val preferenceDataSource = PreferenceDataSource()
-            val authenticationManager = AuthenticationManager.getInstance(application)
             return SettingsFragmentModel(
                 application,
-                preferenceDataSource,
-                authenticationManager
+                application.preferenceDataSource,
+                application.authenticationManager
             ) as T
         }
     }

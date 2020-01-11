@@ -13,7 +13,6 @@ import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.store.DataStore
-import com.nominalista.expenses.data.store.DataStoreFactory
 import com.nominalista.expenses.util.extensions.toDate
 import jxl.Workbook
 import jxl.write.*
@@ -29,7 +28,7 @@ class ExpenseExportWorker(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
 
     private val dataStore: DataStore by lazy {
-        DataStoreFactory.get(applicationContext as Application)
+        (applicationContext as Application).defaultDataStore
     }
 
     override suspend fun doWork() = coroutineScope {

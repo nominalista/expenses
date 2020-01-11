@@ -133,8 +133,8 @@ class HomeActivityModel(
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return HomeActivityModel(
                 application,
-                AuthenticationManager.getInstance(application),
-                FirebaseConfiguration.getInstance(application)
+                application.authenticationManager,
+                application.configuration
             ) as T
         }
     }

@@ -11,7 +11,6 @@ import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.data.store.DataStore
-import com.nominalista.expenses.data.store.DataStoreFactory
 import com.nominalista.expenses.util.extensions.toLocalDate
 import jxl.DateCell
 import jxl.NumberCell
@@ -25,7 +24,7 @@ class ExpenseImportWorker(context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params) {
 
     private val dataStore: DataStore by lazy {
-        DataStoreFactory.get(applicationContext as Application)
+        (applicationContext as Application).defaultDataStore
     }
 
     override suspend fun doWork() = coroutineScope {

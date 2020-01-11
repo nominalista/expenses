@@ -1,6 +1,5 @@
 package com.nominalista.expenses.data.room
 
-import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.data.room.dao.ExpenseDao
@@ -152,17 +151,5 @@ class RoomDataStore(
 
     override fun deleteAllTags(): Completable {
         return tagDao.deleteAll()
-    }
-
-    companion object {
-
-        fun getInstance(application: Application): RoomDataStore {
-            val database = application.database
-            return RoomDataStore(
-                database.expenseDao(),
-                database.tagDao(),
-                database.expenseTagJoinDao()
-            )
-        }
     }
 }

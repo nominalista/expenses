@@ -94,11 +94,6 @@ class AuthenticationManager(
     }
 
     companion object {
-
         private const val TAG = "AuthenticationManager"
-
-        fun getInstance(application: Application): AuthenticationManager {
-            return AuthenticationManager(application, application.firebaseAuth)
-        }
     }
 }
