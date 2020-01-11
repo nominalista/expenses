@@ -127,6 +127,11 @@ class HomeActivityModel(
         navigateToSettings.next()
     }
 
+    fun performBannerActionRequested() {
+        val bannerActionUrl = configuration.getString(Configuration.KEY_BANNER_ACTION_URL)
+        showActivity.next(Uri.parse(bannerActionUrl))
+    }
+
     @Suppress("UNCHECKED_CAST")
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 

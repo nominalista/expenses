@@ -12,5 +12,6 @@ interface Configuration {
         const val KEY_BANNER_ENABLED = "banner_enabled"
         const val KEY_BANNER_TITLE = "banner_title"
         const val KEY_BANNER_SUBTITLE = "banner_subtitle"
+        const val KEY_BANNER_ACTION_URL = "banner_action_url"
     }
 }

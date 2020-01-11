@@ -42,6 +42,7 @@ class HomeActivity : BaseActivity() {
         setupToolbar()
         setupHeaderLayout()
         setupItemLayouts()
+        setupBannerLayout()
         bindModel()
     }
 
@@ -71,6 +72,12 @@ class HomeActivity : BaseActivity() {
 
         settingsItemLayout.setOnClickListener {
             runAfterDrawerClose { model.navigateToSettingsRequested() }
+        }
+    }
+
+    private fun setupBannerLayout() {
+        bannerLayout.setOnClickListener {
+            runAfterDrawerClose { model.performBannerActionRequested() }
         }
     }
 

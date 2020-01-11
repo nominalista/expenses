@@ -12,4 +12,8 @@
         <key>banner_subtitle</key>
         <value />
     </entry>
+    <entry>
+        <key>banner_action_url</key>
+        <value />
+    </entry>
 </defaultsMap>
