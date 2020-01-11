@@ -86,6 +86,12 @@ class HomeActivity : BaseActivity() {
             .subscribe { configureUserNameTextView(it) }
         compositeDisposable += model.userEmail
             .subscribe { configureUserEmailTextView(it) }
+        compositeDisposable += model.isBannerEnabled
+            .subscribe { configureBannerLayout(it) }
+        compositeDisposable += model.bannerTitle
+            .subscribe { configureBannerTitle(it) }
+        compositeDisposable += model.bannerSubtitle
+            .subscribe { configureBannerSubtitle(it) }
 
         compositeDisposable += model.navigateToOnboarding
             .subscribe { navigateToOnboarding() }
@@ -121,6 +127,18 @@ class HomeActivity : BaseActivity() {
 
     private fun configureUserEmailTextView(userEmail: String) {
         userEmailTextView.text = userEmail
+    }
+
+    private fun configureBannerLayout(isBannerEnabled: Boolean) {
+        bannerLayout.isVisible = isBannerEnabled
+    }
+
+    private fun configureBannerTitle(bannerTitle: String) {
+        bannerTitleTextView.text = bannerTitle
+    }
+
+    private fun configureBannerSubtitle(bannerSubtitle: String) {
+        bannerSubtitleTextView.text = bannerSubtitle
     }
 
     private fun navigateToOnboarding() {

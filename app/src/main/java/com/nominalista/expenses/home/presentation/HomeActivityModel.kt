@@ -8,6 +8,8 @@ import androidx.work.WorkInfo
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
 import com.nominalista.expenses.authentication.AuthenticationManager
+import com.nominalista.expenses.configuration.Configuration
+import com.nominalista.expenses.configuration.FirebaseConfiguration
 import com.nominalista.expenses.settings.work.ExpenseExportWorker
 import com.nominalista.expenses.settings.work.ExpenseImportWorker
 import com.nominalista.expenses.util.reactive.DataEvent
@@ -17,7 +19,8 @@ import java.util.*
 
 class HomeActivityModel(
     application: Application,
-    private val authenticationManager: AuthenticationManager
+    private val authenticationManager: AuthenticationManager,
+    private val configuration: Configuration
 ) : AndroidViewModel(application) {
 
     val isUserSignedIn: Variable<Boolean> by lazy {
@@ -28,6 +31,15 @@ class HomeActivityModel(
     }
     val userEmail: Variable<String> by lazy {
         Variable(defaultValue = authenticationManager.getCurrentUserEmail() ?: "")
+    }
+    val isBannerEnabled: Variable<Boolean> by lazy {
+        Variable(defaultValue = configuration.getBoolean(Configuration.KEY_BANNER_ENABLED))
+    }
+    val bannerTitle: Variable<String> by lazy {
+        Variable(defaultValue = configuration.getString(Configuration.KEY_BANNER_TITLE))
+    }
+    val bannerSubtitle: Variable<String> by lazy {
+        Variable(defaultValue = configuration.getString(Configuration.KEY_BANNER_SUBTITLE))
     }
 
     val navigateToOnboarding = Event()
@@ -121,7 +133,8 @@ class HomeActivityModel(
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return HomeActivityModel(
                 application,
-                AuthenticationManager.getInstance(application)
+                AuthenticationManager.getInstance(application),
+                FirebaseConfiguration.getInstance(application)
             ) as T
         }
     }

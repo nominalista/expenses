@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>banner_enabled</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>banner_title</key>
+        <value />
+    </entry>
+    <entry>
+        <key>banner_subtitle</key>
+        <value />
+    </entry>
+</defaultsMap>

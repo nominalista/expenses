@@ -197,7 +197,7 @@
                 android:id="@+id/bannerTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/banner_title"
+                tools:text="An awesome feature"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 android:textColor="@color/color_on_surface_emphasis_high" />
 
@@ -205,7 +205,7 @@
                 android:id="@+id/bannerSubtitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/banner_subtitle"
+                tools:text="Available soon"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="@color/color_on_surface_emphasis_medium" />
 
