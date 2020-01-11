@@ -16,11 +16,9 @@ class FirebaseConfiguration(
 
         remoteConfig.setConfigSettingsAsync(settings)
         remoteConfig.setDefaultsAsync(R.xml.configuration_defaults)
-
-        enqueueSync()
     }
 
-    private fun enqueueSync() {
+    override fun enqueueSync() {
         remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "Succeeded to fetch and active configuration.")

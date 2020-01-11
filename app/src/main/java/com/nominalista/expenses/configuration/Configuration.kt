@@ -2,6 +2,8 @@ package com.nominalista.expenses.configuration
 
 interface Configuration {
 
+    fun enqueueSync()
+
     fun getBoolean(key: String): Boolean
 
     fun getString(key: String): String
