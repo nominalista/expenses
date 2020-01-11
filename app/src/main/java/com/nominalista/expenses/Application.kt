@@ -26,7 +26,7 @@ class Application : android.app.Application() {
     }
 
     private fun applyNightMode() {
-        val darkMode = PreferenceDataSource().getDarkMode(applicationContext)
+        val darkMode = PreferenceDataSource().getTheme(applicationContext)
         AppCompatDelegate.setDefaultNightMode(darkMode.toNightMode())
     }
 }
