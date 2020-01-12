@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mis gastos</string>
+    <string name="app_name">Gastos</string>
 
     <string name="about">Sobre la app</string>
     <string name="account">Mi cuenta</string>
@@ -9,8 +9,6 @@
     <string name="amount">Valor</string>
     <string name="all_time">Todo el tiempo</string>
     <string name="application">Aplicación</string>
-    <string name="banner_subtitle">Disponible próximamente</string>
-    <string name="banner_title">Mis gastos Web 💻</string>
     <string name="cancel">Cancelar</string>
     <string name="channel_name_default">Canal por defecto</string>
     <string name="channel_description_default">Canal para todo tipo de notificaciones.</string>
@@ -19,12 +17,11 @@
     <string name="column_date">Fecha</string>
     <string name="column_notes">Notas</string>
     <string name="column_tags">Etiquetas</string>
-    <string name="column_title">Titulo</string>
+    <string name="column_title">Título</string>
     <string name="confirm">Confirmar</string>
     <string name="contact_me">Contáctame</string>
     <string name="contact_me_summary">La retroalimentación es bienvenida</string>
     <string name="continue_with_google">Continuar con Google</string>
-    <string name="dark_mode">Modo oscuro</string>
     <string name="delete">Borrar</string>
     <string name="default_currency">Moneda por defecto</string>
     <string name="delete_all">Borrar todo</string>
@@ -67,9 +64,7 @@
     <string name="simple_budget_tracker">Manejador simple de presupuesto</string>
     <string name="summary_title">Has gastado</string>
     <string name="system_default">Por defecto</string>
-    <string name="off">Apagado</string>
     <string name="ok">OK</string>
-    <string name="on">Prendido</string>
     <string name="this_month">Este mes</string>
     <string name="this_week">Esta semana</string>
     <string name="title_hint">Titulo</string>
@@ -77,7 +72,11 @@
     <string name="version">Versión</string>
     <string name="view_source_code">Ver código fuente</string>
     <string name="view_source_code_summary">200 ★ en Github</string>
-    <string name="welcome_to_expenses">Bienvenido a expenses</string>
+    <string name="welcome_to_expenses">Bienvenido a la aplicación Gastos</string>
     <string name="yes">Si</string>
+    <string name="theme">Tema</string>
+    <string name="select_theme">Seleccionar tema</string>
+    <string name="light">Claro</string>
+    <string name="dark">Oscuro</string>
 
 </resources>
