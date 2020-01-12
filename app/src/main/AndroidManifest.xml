@@ -4,6 +4,7 @@
     package="com.nominalista.expenses">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:name=".Application"
