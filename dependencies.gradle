@@ -52,6 +52,7 @@ ext {
             "firebaseFirestore"       : "com.google.firebase:firebase-firestore:${firebaseFirestoreVersion}",
             "firebaseMessaging"       : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
             "googlePlayBilling"       : "com.android.billingclient:billing:${googlePlayBillingVersion}",
+            "googlePlayBillingExt"    : "com.android.billingclient:billing-ktx:${googlePlayBillingVersion}",
             "googlePlayServicesAuth"  : "com.google.android.gms:play-services-auth:${googlePlayServicesVersion}",
             "jxl"                     : "net.sourceforge.jexcelapi:jxl:${jxlVersion}",
             "kotlin"                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",

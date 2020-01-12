@@ -106,6 +106,7 @@ dependencies {
 
     // Google Play
     implementation dependencies.googlePlayBilling
+    implementation dependencies.googlePlayBillingExt
     implementation dependencies.googlePlayServicesAuth
 
     // Libraries
