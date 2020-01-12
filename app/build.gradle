@@ -104,7 +104,8 @@ dependencies {
     implementation dependencies.firebaseFirestore
     implementation dependencies.firebaseMessaging
 
-    // Google Play Services
+    // Google Play
+    implementation dependencies.googlePlayBilling
     implementation dependencies.googlePlayServicesAuth
 
     // Libraries

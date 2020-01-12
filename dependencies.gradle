@@ -21,7 +21,8 @@ ext {
     firebaseFirestoreVersion = '21.3.1'
     firebaseMessagingVersion = '20.1.0'
 
-    // Google Play Services
+    // Google Play
+    googlePlayBillingVersion = '2.1.0'
     googlePlayServicesVersion = '17.0.0'
 
     // Libraries
@@ -50,6 +51,7 @@ ext {
             "firebaseCore"            : "com.google.firebase:firebase-core:${firebaseCoreVersion}",
             "firebaseFirestore"       : "com.google.firebase:firebase-firestore:${firebaseFirestoreVersion}",
             "firebaseMessaging"       : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
+            "googlePlayBilling"       : "com.android.billingclient:billing:${googlePlayBillingVersion}",
             "googlePlayServicesAuth"  : "com.google.android.gms:play-services-auth:${googlePlayServicesVersion}",
             "jxl"                     : "net.sourceforge.jexcelapi:jxl:${jxlVersion}",
             "kotlin"                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
