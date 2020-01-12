@@ -9,8 +9,6 @@
     <string name="amount">Amount</string>
     <string name="all_time">All time</string>
     <string name="application">Application</string>
-    <string name="banner_subtitle">Available soon</string>
-    <string name="banner_title">Expenses Web 💻</string>
     <string name="cancel">Cancel</string>
     <string name="channel_name_default">Default channel</string>
     <string name="channel_description_default">Channel for all types of notifications.</string>
@@ -25,7 +23,7 @@
     <string name="contact_me_summary">Feedback is welcome!</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="currency_abbreviation" translatable="false">%1$s\u0020\u0020%2$s</string>
-    <string name="dark_mode">Dark mode</string>
+    <string name="dark">Dark</string>
     <string name="delete">Delete</string>
     <string name="default_currency">Default currency</string>
     <string name="default_currency_summary" translatable="false">%1$s\u0020\u0020%2$s\u0020(%3$s)</string>
@@ -48,6 +46,7 @@
     <string name="filter_tags">Filter tags</string>
     <string name="import_from_excel">Import from Excel (.xls)</string>
     <string name="incompleted_feature_warning">Feature is not ready yet. Wait for the next application update.</string>
+    <string name="light">Light</string>
     <string name="name">Name</string>
     <string name="no">No</string>
     <string name="no_added_tags_message">No added tags. You can manage your tags on adding new expense screen.</string>
@@ -62,6 +61,7 @@
     <string name="save">Save</string>
     <string name="search_currency">Search currency</string>
     <string name="select_tags">Select tags</string>
+    <string name="select_theme">Select theme</string>
     <string name="settings">Settings</string>
     <string name="sign_out">Sign out</string>
     <string name="sign_up_or_sign_in">Sign up or sign in</string>
@@ -69,9 +69,8 @@
     <string name="simple_budget_tracker">Simple budget tracker</string>
     <string name="summary_title">You spent</string>
     <string name="system_default">System default</string>
-    <string name="off">Off</string>
     <string name="ok">OK</string>
-    <string name="on">On</string>
+    <string name="theme">Theme</string>
     <string name="this_month">This month</string>
     <string name="this_week">This week</string>
     <string name="title_hint">Title</string>
@@ -87,6 +86,6 @@
     <string name="key_default_currency" translatable="false">default_currency</string>
     <string name="key_date_range" translatable="false">date_range</string>
     <string name="key_is_user_onboarded" translatable="false">is_user_onboarded</string>
-    <string name="key_dark_mode" translatable="false">dark_mode</string>
+    <string name="key_theme" translatable="false">theme</string>
 
 </resources>

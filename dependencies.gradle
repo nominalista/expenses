@@ -15,11 +15,11 @@ ext {
     workVersion = '2.2.0'
 
     // Firebase
-    firebaseAuthVersion = '19.1.0'
-    firebaseCoreVersion = '17.2.0'
-    firebaseFirestoreVersion = '21.2.0'
-    firebaseMessagingVersion = '20.0.0'
-    firebaseUiVersion = '4.3.1'
+    firebaseAuthVersion = '19.2.0'
+    firebaseConfigVersion = '19.1.0'
+    firebaseCoreVersion = '17.2.1'
+    firebaseFirestoreVersion = '21.3.1'
+    firebaseMessagingVersion = '20.1.0'
 
     // Google Play Services
     googlePlayServicesVersion = '17.0.0'
@@ -46,10 +46,10 @@ ext {
             "coroutinesAndroid"       : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesVersion}",
             "coroutinesCore"          : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}",
             "firebaseAuth"            : "com.google.firebase:firebase-auth:${firebaseAuthVersion}",
+            "firebaseConfig"          : "com.google.firebase:firebase-config:${firebaseConfigVersion}",
             "firebaseCore"            : "com.google.firebase:firebase-core:${firebaseCoreVersion}",
             "firebaseFirestore"       : "com.google.firebase:firebase-firestore:${firebaseFirestoreVersion}",
             "firebaseMessaging"       : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
-            "firebaseUiAuth"          : "com.firebaseui:firebase-ui-auth:${firebaseUiVersion}",
             "googlePlayServicesAuth"  : "com.google.android.gms:play-services-auth:${googlePlayServicesVersion}",
             "jxl"                     : "net.sourceforge.jexcelapi:jxl:${jxlVersion}",
             "kotlin"                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",

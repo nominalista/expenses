@@ -2,6 +2,7 @@ package com.nominalista.expenses.authentication
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -37,12 +38,16 @@ class AuthenticationManager(
         return firebaseAuth.currentUser != null
     }
 
+    fun getCurrentUserId(): String? {
+        return firebaseAuth.currentUser?.uid
+    }
+
     fun getCurrentUserEmail(): String? {
         return firebaseAuth.currentUser?.email
     }
 
-    fun getCurrentUserId(): String? {
-        return firebaseAuth.currentUser?.uid
+    fun getCurrentUserName(): String? {
+        return firebaseAuth.currentUser?.displayName
     }
 
     // Sign in
@@ -89,11 +94,6 @@ class AuthenticationManager(
     }
 
     companion object {
-
         private const val TAG = "AuthenticationManager"
-
-        fun getInstance(application: Application): AuthenticationManager {
-            return AuthenticationManager(application, application.firebaseAuth)
-        }
     }
 }

@@ -10,8 +10,8 @@ android {
 
     defaultConfig {
         applicationId "com.nominalista.expenses"
-        versionCode 14
-        versionName "0.4.0"
+        versionCode 15
+        versionName "0.4.1"
         minSdkVersion 21
         targetSdkVersion 28
 
@@ -99,10 +99,10 @@ dependencies {
 
     // Firebase
     implementation dependencies.firebaseAuth
+    implementation dependencies.firebaseConfig
     implementation dependencies.firebaseCore
     implementation dependencies.firebaseFirestore
     implementation dependencies.firebaseMessaging
-    implementation dependencies.firebaseUiAuth
 
     // Google Play Services
     implementation dependencies.googlePlayServicesAuth

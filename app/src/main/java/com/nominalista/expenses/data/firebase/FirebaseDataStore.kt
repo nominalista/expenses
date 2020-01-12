@@ -229,13 +229,4 @@ class FirebaseDataStore(
     }
 
     class ReferenceAccessError : Error("Cannot access reference.")
-
-    companion object {
-
-        fun getInstance(application: Application) =
-            FirebaseDataStore(
-                application.firebaseAuth,
-                application.firestore
-            )
-    }
 }

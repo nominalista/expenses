@@ -21,11 +21,11 @@ class DataMigrationWorker(context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params) {
 
     private val localDataStore: DataStore by lazy {
-        RoomDataStore.getInstance(applicationContext as Application)
+        (applicationContext as Application).localDataStore
     }
 
     private val cloudDataStore: DataStore by lazy {
-        FirebaseDataStore.getInstance(applicationContext as Application)
+        (applicationContext as Application).cloudDataStore
     }
 
     override suspend fun doWork() = coroutineScope {

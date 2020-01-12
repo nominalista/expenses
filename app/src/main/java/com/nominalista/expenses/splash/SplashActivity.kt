@@ -3,14 +3,13 @@ package com.nominalista.expenses.splash
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.nominalista.expenses.Application
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.home.presentation.HomeActivity
 import com.nominalista.expenses.onboarding.OnboardingActivity
 
 class SplashActivity : AppCompatActivity() {
-
-    private val preferenceDataSource by lazy { PreferenceDataSource() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,5 +25,5 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun isUserOnboarded(): Boolean =
-        preferenceDataSource.getIsUserOnboarded(applicationContext)
+        (application as Application).preferenceDataSource.getIsUserOnboarded(applicationContext)
 }

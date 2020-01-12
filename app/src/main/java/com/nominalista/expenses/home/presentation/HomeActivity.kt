@@ -42,6 +42,7 @@ class HomeActivity : BaseActivity() {
         setupToolbar()
         setupHeaderLayout()
         setupItemLayouts()
+        setupBannerLayout()
         bindModel()
     }
 
@@ -74,6 +75,12 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+    private fun setupBannerLayout() {
+        bannerLayout.setOnClickListener {
+            runAfterDrawerClose { model.performBannerActionRequested() }
+        }
+    }
+
     private fun runAfterDrawerClose(block: () -> Unit) {
         drawerLayout.closeDrawer(GravityCompat.START)
         runOnUiThread(DRAWER_CLOSE_DELAY) { block() }
@@ -82,8 +89,16 @@ class HomeActivity : BaseActivity() {
     private fun bindModel() {
         compositeDisposable += model.isUserSignedIn
             .subscribe { configureHeaderLayout(it) }
+        compositeDisposable += model.userName
+            .subscribe { configureUserNameTextView(it) }
         compositeDisposable += model.userEmail
-            .subscribe { configureUserEmail(it) }
+            .subscribe { configureUserEmailTextView(it) }
+        compositeDisposable += model.isBannerEnabled
+            .subscribe { configureBannerLayout(it) }
+        compositeDisposable += model.bannerTitle
+            .subscribe { configureBannerTitle(it) }
+        compositeDisposable += model.bannerSubtitle
+            .subscribe { configureBannerSubtitle(it) }
 
         compositeDisposable += model.navigateToOnboarding
             .subscribe { navigateToOnboarding() }
@@ -107,13 +122,30 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun configureHeaderLayout(isUserSignedIn: Boolean) {
-        userEmailHintTextView.isVisible = isUserSignedIn
+        userNameTextView.isVisible = isUserSignedIn
         userEmailTextView.isVisible = isUserSignedIn
+
         signUpOrSignInButton.isVisible = !isUserSignedIn
     }
 
-    private fun configureUserEmail(userEmail: String) {
+    private fun configureUserNameTextView(userName: String) {
+        userNameTextView.text = userName
+    }
+
+    private fun configureUserEmailTextView(userEmail: String) {
         userEmailTextView.text = userEmail
+    }
+
+    private fun configureBannerLayout(isBannerEnabled: Boolean) {
+        bannerLayout.isVisible = isBannerEnabled
+    }
+
+    private fun configureBannerTitle(bannerTitle: String) {
+        bannerTitleTextView.text = bannerTitle
+    }
+
+    private fun configureBannerSubtitle(bannerSubtitle: String) {
+        bannerSubtitleTextView.text = bannerSubtitle
     }
 
     private fun navigateToOnboarding() {

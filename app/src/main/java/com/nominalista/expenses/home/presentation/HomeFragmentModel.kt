@@ -9,7 +9,6 @@ import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.data.preference.PreferenceDataSource
 import com.nominalista.expenses.data.store.DataStore
-import com.nominalista.expenses.data.store.DataStoreFactory
 import com.nominalista.expenses.home.domain.FilterExpensesUseCase
 import com.nominalista.expenses.home.domain.SortExpensesUseCase
 import com.nominalista.expenses.home.domain.SortTagsUseCase
@@ -168,8 +167,8 @@ class HomeFragmentModel(
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return HomeFragmentModel(
                 application,
-                DataStoreFactory.get(application),
-                PreferenceDataSource()
+                application.defaultDataStore,
+                application.preferenceDataSource
             ) as T
         }
     }
