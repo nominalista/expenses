@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wydatki</string>
-
+    <string name="app_description">To darmowa aplikacja typu open-source, którą stworzyłem tak, abyś mógł śledzić wydatki w pięknie prosty sposób.</string>
     <string name="about">O aplikacji</string>
     <string name="account">Konto</string>
     <string name="add">Dodaj</string>
@@ -10,6 +10,7 @@
     <string name="amount">Kwota</string>
     <string name="all_time">Cały czas</string>
     <string name="application">Aplikacja</string>
+    <string name="basic">Podstawowy</string>
     <string name="cancel">Anuluj</string>
     <string name="channel_name_default">Domyślny kanał</string>
     <string name="channel_description_default">Kanał dla każdegu typu powiadomień.</string>
@@ -30,6 +31,12 @@
     <string name="delete_all_expenses">Usuń wszystkie wydatki</string>
     <string name="delete_all_expenses_message">Czy na pewno chcesz usunąć wszystkie wydatki?</string>
     <string name="delete_expense_message">Czy na pewno chcesz usunąć wydatek?</string>
+    <string name="donate_app">Wesprzyj aplikację 💕</string>
+    <string name="donate_app_summary">Pomóż mi utrzymać aplikację darmową.</string>
+    <string name="donate_description">Jeśli naprawdę polubiłeś Wydatki, rozważ wsparcie rozwoju i utrzymania aplikacji zostawiając hojny napiwek.</string>
+    <string name="donate_with_price">Wesprzyj (%s)</string>
+    <string name="donation_thanks_title">Dziękuję!</string>
+    <string name="donation_thanks_message">Dziękuję za wsparcie oprogramowania typu open-source, jesteś niesamowity.</string>
     <string name="download_template">Pobierz wzór</string>
     <string name="edit">Edytuj</string>
     <string name="expense_detail_title">Detale</string>
@@ -43,6 +50,7 @@
     <string name="export_to_excel">Eksportuj do Excela (.xls)</string>
     <string name="filter">Filtruj</string>
     <string name="filter_tags">Filtruj tagi</string>
+    <string name="generous">Hojny</string>
     <string name="import_from_excel">Importuj z Excela (.xls)</string>
     <string name="incompleted_feature_warning">Funkcjonalność nie jest jeszcze gotowa. Poczekaj na następną aktualizację aplikacji.</string>
     <string name="light">Jasny</string>
@@ -55,8 +63,11 @@
     <string name="notes_title">Notatki</string>
     <string name="notes_hint">Notatki (opcjonalnie)</string>
     <string name="privacy_policy">Polityka Prywatności</string>
+    <string name="purchase_unavailable">Zakup niedostępny</string>
     <string name="rate_app">Oceń aplikację</string>
-    <string name="rate_app_summary">4.5 &#x1F31F; w Sklepie Play</string>
+    <string name="rate_app_summary">Podziel się z innymi jeśli polubiłeś aplikację.</string>
+    <string name="review">Recenzja</string>
+    <string name="review_description">Opisz innym jak aplikacja pomaga Ci zarządzać Twoim budżetem na codzień. Uwolnijmy wspólnie potencjał Wydatków.</string>
     <string name="save">Zapisz</string>
     <string name="search_currency">Szukaj waluty</string>
     <string name="select_tags">Wybierz tagi</string>
@@ -67,6 +78,8 @@
     <string name="signed_in_as">Zalogowany jako</string>
     <string name="simple_budget_tracker">Prostym manadżerze budżetu</string>
     <string name="summary_title">Wydałaś/eś</string>
+    <string name="support">Wesprzyj</string>
+    <string name="support_description">Jeśli jesteś zainteresowana/y, jest kilka sposób aby wesprzeć Wydatki. Dzięki za rozważenie!</string>
     <string name="system_default">Domyślny systemowy</string>
     <string name="ok">OK</string>
     <string name="theme">Motyw</string>
@@ -74,9 +87,13 @@
     <string name="this_week">Ten tydzień</string>
     <string name="title_hint">Tytuł</string>
     <string name="today">Dzisiaj</string>
+    <string name="translate_app">Przetłumacz aplikację</string>
+    <string name="translate_app_summary">Stwórzmy aplikację dostępną dla wszystkich.</string>
+    <string name="translation_description">Jeśli jesteś zainteresowany pomocą w przetłumaczeniu aplikacji na twój język, proszę skontaktuj się ze mną. Chciałbym wspierać tyle języków ile to możliwe!\n\nObecnie wspierane: 🇺🇸 🇪🇸 🇵🇱</string>
     <string name="version">Wersja</string>
     <string name="welcome_to_expenses">Witaj w aplikacji Wydatki</string>
     <string name="view_source_code">Kod źródłowy</string>
+    <string name="view_source_code_on_github">Wyświetl kod na Githubie</string>
     <string name="view_source_code_summary">200 ★ na Githubie</string>
     <string name="yes">Tak</string>
 </resources>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- General section -->
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appLogoImageView"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/img_logo_with_shadow" />
+
+        <TextView
+            android:id="@+id/appNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textColor="@color/color_on_surface_emphasis_high"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appLogoImageView" />
+
+        <TextView
+            android:id="@+id/appDescriptionTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:gravity="center"
+            android:text="@string/app_description"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/color_on_surface_emphasis_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appNameTextView" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/contactButton"
+            style="@style/Widget.Expenses.TextButton.Normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:text="@string/contact_me"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appDescriptionTextView" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/generalSectionDivider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="@drawable/divider"
+            app:backgroundTint="@color/color_on_surface_emphasis_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contactButton" />
+
+        <!-- Support section -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rateLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/generalSectionDivider">
+
+            <TextView
+                android:id="@+id/rateTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rate_app"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/color_on_surface_emphasis_high"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/rateSummaryTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_large"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/rate_app_summary"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/color_on_surface_emphasis_medium"
+                app:layout_constraintEnd_toStartOf="@id/rateNavigationImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rateTitleTextView" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/rateNavigationImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_arrow_forward_24dp"
+                app:tint="@color/color_on_surface_emphasis_low" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/translateLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rateLayout">
+
+            <TextView
+                android:id="@+id/translateTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/translate_app"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/color_on_surface_emphasis_high"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/translateSummaryTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_large"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/translate_app_summary"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/color_on_surface_emphasis_medium"
+                app:layout_constraintEnd_toStartOf="@id/translateNavigationImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/translateTitleTextView" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/translateNavigationImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_arrow_forward_24dp"
+                app:tint="@color/color_on_surface_emphasis_low" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/donateLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/translateLayout">
+
+            <TextView
+                android:id="@+id/donateTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/donate_app"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/color_on_surface_emphasis_high"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/donateSummaryTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_large"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/donate_app_summary"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/color_on_surface_emphasis_medium"
+                app:layout_constraintEnd_toStartOf="@id/donateNavigationImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/donateTitleTextView" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/donateNavigationImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_arrow_forward_24dp"
+                app:tint="@color/color_on_surface_emphasis_low" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/supportSectionDivider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="@drawable/divider"
+            app:backgroundTint="@color/color_on_surface_emphasis_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/donateLayout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

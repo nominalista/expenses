@@ -18,6 +18,7 @@ import com.nominalista.expenses.R
 import com.nominalista.expenses.common.presentation.BaseActivity
 import com.nominalista.expenses.onboarding.OnboardingActivity
 import com.nominalista.expenses.settings.presentation.SettingsActivity
+import com.nominalista.expenses.about.AboutActivity
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.util.extensions.startActivitySafely
@@ -69,9 +70,11 @@ class HomeActivity : BaseActivity() {
         exportExpensesItemLayout.setOnClickListener {
             runAfterDrawerClose { model.exportExpensesRequested() }
         }
-
         settingsItemLayout.setOnClickListener {
             runAfterDrawerClose { model.navigateToSettingsRequested() }
+        }
+        supportItemLayout.setOnClickListener {
+            runAfterDrawerClose { model.navigateToSupportRequested() }
         }
     }
 
@@ -112,6 +115,8 @@ class HomeActivity : BaseActivity() {
             .subscribe { showExpenseExportFailureDialog() }
         compositeDisposable += model.navigateToSettings
             .subscribe { navigateToSettings() }
+        compositeDisposable += model.navigateToSupport
+            .subscribe { navigateToSupport() }
 
         compositeDisposable += model.showMessage
             .subscribe { showMessage(it) }
@@ -183,7 +188,6 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-
     private fun showExpenseExportFailureDialog() {
         MaterialAlertDialogBuilder(this)
             .setMessage(R.string.expense_export_failure_message)
@@ -194,6 +198,10 @@ class HomeActivity : BaseActivity() {
 
     private fun navigateToSettings() {
         SettingsActivity.start(this)
+    }
+
+    private fun navigateToSupport() {
+        AboutActivity.start(this)
     }
 
     private fun showMessage(messageId: Int) {

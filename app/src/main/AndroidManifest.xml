@@ -40,6 +40,9 @@
         <activity android:name=".settings.presentation.SettingsActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".about.AboutActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".currencyselection.CurrencySelectionActivity"
             android:screenOrientation="portrait"/>
 
