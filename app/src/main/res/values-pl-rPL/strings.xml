@@ -10,7 +10,6 @@
     <string name="amount">Kwota</string>
     <string name="all_time">Cały czas</string>
     <string name="application">Aplikacja</string>
-    <string name="basic">Podstawowy</string>
     <string name="cancel">Anuluj</string>
     <string name="channel_name_default">Domyślny kanał</string>
     <string name="channel_description_default">Kanał dla każdegu typu powiadomień.</string>
@@ -22,12 +21,10 @@
     <string name="column_title">Tytuł</string>
     <string name="confirm">Potwierdź</string>
     <string name="contact_me">Skontaktuj się ze mną</string>
-    <string name="contact_me_summary">Opinia mile widziana!</string>
     <string name="continue_with_google">Kontynuuj z Google</string>
     <string name="dark">Ciemny</string>
     <string name="delete">Usuń</string>
     <string name="default_currency">Domyślna waluta</string>
-    <string name="delete_all">Usuń wszystkie</string>
     <string name="delete_all_expenses">Usuń wszystkie wydatki</string>
     <string name="delete_all_expenses_message">Czy na pewno chcesz usunąć wszystkie wydatki?</string>
     <string name="delete_expense_message">Czy na pewno chcesz usunąć wydatek?</string>
@@ -40,8 +37,6 @@
     <string name="download_template">Pobierz wzór</string>
     <string name="edit">Edytuj</string>
     <string name="expense_detail_title">Detale</string>
-    <string name="expense_deletion_failure_message">Nie można było usunąć wydatków. Spróbuj ponownie.</string>
-    <string name="expense_deletion_success_message">Pomyślnie usunięto wszystkie wydatki.</string>
     <string name="expense_export_failure_message">Nie można było wyeksportować wydatków. Spróbuj ponownie.</string>
     <string name="expense_export_success_message">Pomyślnie wyeksportowano wydatki do folderu Pobrane.</string>
     <string name="expense_import_failure_message">Nie można było zaimportować wydatków. Porównaj plik z szablonem.</string>
@@ -50,9 +45,7 @@
     <string name="export_to_excel">Eksportuj do Excela (.xls)</string>
     <string name="filter">Filtruj</string>
     <string name="filter_tags">Filtruj tagi</string>
-    <string name="generous">Hojny</string>
     <string name="import_from_excel">Importuj z Excela (.xls)</string>
-    <string name="incompleted_feature_warning">Funkcjonalność nie jest jeszcze gotowa. Poczekaj na następną aktualizację aplikacji.</string>
     <string name="light">Jasny</string>
     <string name="name">Nazwa</string>
     <string name="no">Nie</string>
@@ -67,8 +60,6 @@
     <string name="purchase_unavailable">Zakup niedostępny</string>
     <string name="rate_app">Oceń aplikację</string>
     <string name="rate_app_summary">Podziel się z innymi jeśli polubiłeś aplikację.</string>
-    <string name="review">Recenzja</string>
-    <string name="review_description">Opisz innym jak aplikacja pomaga Ci zarządzać Twoim budżetem na codzień. Uwolnijmy wspólnie potencjał Wydatków.</string>
     <string name="save">Zapisz</string>
     <string name="search_currency">Szukaj waluty</string>
     <string name="select_tags">Wybierz tagi</string>
@@ -76,11 +67,8 @@
     <string name="settings">Ustawienia</string>
     <string name="sign_out">Wyloguj się</string>
     <string name="sign_up_or_sign_in">Zarejestruj lub zaloguj się</string>
-    <string name="signed_in_as">Zalogowany jako</string>
     <string name="simple_budget_tracker">Prostym manadżerze budżetu</string>
     <string name="summary_title">Wydałaś/eś</string>
-    <string name="support">Wesprzyj</string>
-    <string name="support_description">Jeśli jesteś zainteresowana/y, jest kilka sposób aby wesprzeć Wydatki. Dzięki za rozważenie!</string>
     <string name="system_default">Domyślny systemowy</string>
     <string name="ok">OK</string>
     <string name="theme">Motyw</string>
@@ -90,11 +78,7 @@
     <string name="today">Dzisiaj</string>
     <string name="translate_app">Przetłumacz aplikację</string>
     <string name="translate_app_summary">Stwórzmy aplikację dostępną dla wszystkich.</string>
-    <string name="translation_description">Jeśli jesteś zainteresowany pomocą w przetłumaczeniu aplikacji na twój język, proszę skontaktuj się ze mną. Chciałbym wspierać tyle języków ile to możliwe!\n\nObecnie wspierane: 🇺🇸 🇪🇸 🇵🇱</string>
-    <string name="version">Wersja</string>
+    <string name="translation_description">Jeśli jesteś zainteresowany pomocą w przetłumaczeniu aplikacji na twój język, proszę skontaktuj się ze mną. Chciałbym wspierać tyle języków ile to możliwe!\n\nObecnie wspierane: 🇺🇸 🇦🇺 🇪🇸 🇵🇱</string>
     <string name="welcome_to_expenses">Witaj w aplikacji Wydatki</string>
-    <string name="view_source_code">Kod źródłowy</string>
-    <string name="view_source_code_on_github">Wyświetl kod na Githubie</string>
-    <string name="view_source_code_summary">200 ★ na Githubie</string>
     <string name="yes">Tak</string>
 </resources>

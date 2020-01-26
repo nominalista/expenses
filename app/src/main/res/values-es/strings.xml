@@ -1,8 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Gastos</string>
-
+    <string name="app_description">It is a free and open-source app, that I made so you could track expenses in a beautifully simple way.</string>
     <string name="about">Sobre la app</string>
-    <string name="account">Mi cuenta</string>
+    <string name="account">Cuenta</string>
     <string name="add">Agregar</string>
     <string name="add_tag">Agregar etiqueta</string>
     <string name="add_expense_button">Agregar gasto</string>
@@ -20,19 +21,22 @@
     <string name="column_title">Título</string>
     <string name="confirm">Confirmar</string>
     <string name="contact_me">Contáctame</string>
-    <string name="contact_me_summary">La retroalimentación es bienvenida</string>
     <string name="continue_with_google">Continuar con Google</string>
+    <string name="dark">Oscuro</string>
     <string name="delete">Borrar</string>
     <string name="default_currency">Moneda por defecto</string>
-    <string name="delete_all">Borrar todo</string>
     <string name="delete_all_expenses">Borrar todos los gastos</string>
     <string name="delete_all_expenses_message">Estás seguro que deseas borrar todos los gastos?</string>
     <string name="delete_expense_message">Estás seguro que deseas borrar el gasto?</string>
+    <string name="donate_app">Donate the app 💕</string>
+    <string name="donate_app_summary">Help me to keep the app free forever.</string>
+    <string name="donate_description">If you really like Expenses, consider supporting its development and maintenance by leaving a generous tip.</string>
+    <string name="donate_with_price">Donate (%s)</string>
+    <string name="donation_thanks_title">Thank you!</string>
+    <string name="donation_thanks_message">Thank you for donating open-source software, you\'re awesome.</string>
     <string name="download_template">Descargar plantilla</string>
     <string name="edit">Editar</string>
     <string name="expense_detail_title">Detalles</string>
-    <string name="expense_deletion_failure_message">No se pudo borrar los gastos. Intenta de nuevo.</string>
-    <string name="expense_deletion_success_message">Todos los gastos fueron borrados.</string>
     <string name="expense_export_failure_message">No se pudo exportar los gastos. Intenta de nuevo.</string>
     <string name="expense_export_success_message">Los gastos fueron exportados a la carpeta de descargas.</string>
     <string name="expense_import_failure_message">No se pudieron importar los gasts. Compara con la plantilla.</string>
@@ -42,7 +46,7 @@
     <string name="filter">Filtrar</string>
     <string name="filter_tags">Filtrar etiquetas</string>
     <string name="import_from_excel">Importar desde Excel (.xls)</string>
-    <string name="incompleted_feature_warning">La funcionalidad no está lista aun. Espera a la siguiente actualización.</string>
+    <string name="light">Claro</string>
     <string name="name">Nombre</string>
     <string name="no">No</string>
     <string name="no_added_tags_message">No hay etiquetas agregadas. Puedes administrar tus etiquetas en la pantalla de un nuevo gasto.</string>
@@ -51,32 +55,30 @@
     <string name="no_tags">No hay etiquetas</string>
     <string name="notes_title">Notas</string>
     <string name="notes_hint">Notas (opcional)</string>
+    <string name="privacy">Privacidad</string>
     <string name="privacy_policy">Política de privacidad</string>
+    <string name="purchase_unavailable">Purchase unavailable</string>
     <string name="rate_app">Califica la app</string>
-    <string name="rate_app_summary">4.5 &#x1F31F; en Google Play</string>
+    <string name="rate_app_summary">Share with others if you like the app.</string>
     <string name="save">Guardar</string>
     <string name="search_currency">Buscar moneda</string>
     <string name="select_tags">Seleccionar etiquetas</string>
+    <string name="select_theme">Seleccionar tema</string>
     <string name="settings">Ajustes</string>
     <string name="sign_out">Cerrar sesión</string>
     <string name="sign_up_or_sign_in">Crear cuenta o iniciar sesión</string>
-    <string name="signed_in_as">Sesión iniciada como</string>
     <string name="simple_budget_tracker">Manejador simple de presupuesto</string>
     <string name="summary_title">Has gastado</string>
     <string name="system_default">Por defecto</string>
     <string name="ok">OK</string>
+    <string name="theme">Tema</string>
     <string name="this_month">Este mes</string>
     <string name="this_week">Esta semana</string>
     <string name="title_hint">Titulo</string>
     <string name="today">Hoy</string>
-    <string name="version">Versión</string>
-    <string name="view_source_code">Ver código fuente</string>
-    <string name="view_source_code_summary">200 ★ en Github</string>
+    <string name="translate_app">Translate the app</string>
+    <string name="translate_app_summary">Let\'s make the app available for everyone.</string>
+    <string name="translation_description">If you\'re interested in helping with translating the app to your language, please contact me. I\'d love to support as many as possible!\n\n\Currently supported: 🇺🇸 🇦🇺 🇪🇸 🇵🇱</string>
     <string name="welcome_to_expenses">Bienvenido a la aplicación Gastos</string>
     <string name="yes">Si</string>
-    <string name="theme">Tema</string>
-    <string name="select_theme">Seleccionar tema</string>
-    <string name="light">Claro</string>
-    <string name="dark">Oscuro</string>
-
 </resources>

@@ -22,11 +22,9 @@
     <string name="confirm">Confirm</string>
     <string name="contact_me">Contact me</string>
     <string name="continue_with_google">Continue with Google</string>
-    <string name="currency_abbreviation" translatable="false">%1$s\u0020\u0020%2$s</string>
     <string name="dark">Dark</string>
     <string name="delete">Delete</string>
     <string name="default_currency">Default currency</string>
-    <string name="default_currency_summary" translatable="false">%1$s\u0020\u0020%2$s\u0020(%3$s)</string>
     <string name="delete_all_expenses">Delete all expenses</string>
     <string name="delete_all_expenses_message">Are you sure you want to delete all expenses?</string>
     <string name="delete_expense_message">Are you sure you want to delete expense?</string>
@@ -83,11 +81,4 @@
     <string name="translation_description">If you\'re interested in helping with translating the app to your language, please contact me. I\'d love to support as many as possible!\n\n\Currently supported: 🇺🇸 🇦🇺 🇪🇸 🇵🇱</string>
     <string name="welcome_to_expenses">Welcome to Expenses</string>
     <string name="yes">Yes</string>
-
-    <!-- Shared Preferences -->
-    <string name="key_preferences" translatable="false">preferences</string>
-    <string name="key_default_currency" translatable="false">default_currency</string>
-    <string name="key_date_range" translatable="false">date_range</string>
-    <string name="key_is_user_onboarded" translatable="false">is_user_onboarded</string>
-    <string name="key_theme" translatable="false">theme</string>
 </resources>
