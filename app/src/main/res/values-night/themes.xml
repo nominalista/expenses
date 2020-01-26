@@ -18,7 +18,7 @@
         <item name="android:colorBackground">@color/background_dark</item>
         <item name="colorOnBackground">#FFFFFF</item>
 
-        <item name="colorSurface">@color/background_dark_1dp</item>
+        <item name="colorSurface">@color/background_dark_2dp</item>
         <item name="colorOnSurface">#FFFFFF</item>
     </style>
 

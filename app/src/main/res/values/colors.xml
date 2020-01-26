@@ -5,13 +5,13 @@
     <color name="expenses_red">#E44343</color>
 
     <color name="background_light">#FFFFFF</color>
-    <color name="background_light_1dp">#F2F2F2</color> <!-- 5% black on background light -->
+    <color name="background_light_2dp">#F0F0F0</color> <!-- 6% black on background light -->
     <color name="background_light_4dp">#EBEBEB</color> <!-- 8% black on background light -->
     <color name="background_light_8dp">#E0E0E0</color> <!-- 12% black on background light -->
 
     <color name="background_dark">#202122</color>
-    <color name="background_dark_1dp">#2B2C2D</color>  <!-- 5% white on background dark -->
-    <color name="background_dark_4dp">#343536</color>  <!-- 8% white on background dark -->
+    <color name="background_dark_2dp">#2D2E2F</color>  <!-- 6% white on background dark -->
+    <color name="background_dark_4dp">#313233</color>  <!-- 8% white on background dark -->
     <color name="background_dark_8dp">#3B3C3D</color>  <!-- 12% white on background dark -->
 
     <color name="divider">#14000000</color>
