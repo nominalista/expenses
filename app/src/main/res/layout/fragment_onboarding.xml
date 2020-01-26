@@ -71,7 +71,7 @@
         android:layout_marginBottom="@dimen/spacing_xxlarge"
         android:text="@string/continue_with_google"
         android:textColor="@color/text_primary_dark"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="@android:color/white"
         app:icon="@drawable/ic_google_colored_24dp"
         app:iconSize="24dp"
         app:iconTint="@null"

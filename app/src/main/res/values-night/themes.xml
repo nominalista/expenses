@@ -15,10 +15,10 @@
         <item name="colorSecondary">@color/expenses_red</item>
         <item name="colorOnSecondary">#FFFFFF</item>
 
-        <item name="android:colorBackground">#000000</item>
+        <item name="android:colorBackground">@color/background_dark</item>
         <item name="colorOnBackground">#FFFFFF</item>
 
-        <item name="colorSurface">#121212</item>
+        <item name="colorSurface">@color/background_dark_1dp</item>
         <item name="colorOnSurface">#FFFFFF</item>
     </style>
 

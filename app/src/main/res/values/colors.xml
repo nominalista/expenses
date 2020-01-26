@@ -4,18 +4,17 @@
     <color name="expenses_blue_dark">#3E76D5</color>
     <color name="expenses_red">#E44343</color>
 
+    <color name="background_light">#FFFFFF</color>
+    <color name="background_light_1dp">#F2F2F2</color> <!-- 5% black on background light -->
+    <color name="background_light_4dp">#EBEBEB</color> <!-- 8% black on background light -->
+    <color name="background_light_8dp">#E0E0E0</color> <!-- 12% black on background light -->
 
-
-
-    <color name="primary">#4388E9</color>
-    <color name="primary_dark">#3E76D5</color>
-    <color name="accent">#E44343</color>
-    <color name="background">#FFFFFF</color>
-    <color name="background_dark">#F5F5F5</color>
+    <color name="background_dark">#202122</color>
+    <color name="background_dark_1dp">#2B2C2D</color>  <!-- 5% white on background dark -->
+    <color name="background_dark_4dp">#343536</color>  <!-- 8% white on background dark -->
+    <color name="background_dark_8dp">#3B3C3D</color>  <!-- 12% white on background dark -->
 
     <color name="divider">#14000000</color>
-    <color name="transparent">#00000000</color>
-    <color name="white">#FFFFFF</color>
 
     <!-- Text -->
     <color name="text_primary_dark">#DE000000</color>    <!-- 87% - Primary text dark on light background -->

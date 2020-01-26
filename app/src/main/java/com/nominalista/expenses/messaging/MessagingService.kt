@@ -30,7 +30,7 @@ class MessagingService : FirebaseMessagingService() {
     private fun handleRemoteNotification(remoteNotification: RemoteMessage.Notification) {
         val notificationBuilder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
-            .setColor(ContextCompat.getColor(this, R.color.primary))
+            .setColor(ContextCompat.getColor(this, R.color.expenses_blue))
 
         remoteNotification.title?.let { notificationBuilder.setContentTitle(it) }
         remoteNotification.body?.let { notificationBuilder.setContentText(it) }

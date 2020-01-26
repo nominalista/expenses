@@ -15,10 +15,10 @@
         <item name="colorSecondary">@color/expenses_red</item>
         <item name="colorOnSecondary">#FFFFFF</item>
 
-        <item name="android:colorBackground">#FFFFFF</item>
+        <item name="android:colorBackground">@color/background_light</item>
         <item name="colorOnBackground">#000000</item>
 
-        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorSurface">@color/background_light_1dp</item>
         <item name="colorOnSurface">#000000</item>
 
         <!-- Emphasis -->
@@ -94,7 +94,7 @@
     <!-- Toolbars - Theme Overlay -->
 
     <style name="ThemeOverlay.Expenses.Toolbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
-        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimary">@color/expenses_blue</item>
     </style>
 
     <!-- TextInputLayout - Theme Overlay -->
