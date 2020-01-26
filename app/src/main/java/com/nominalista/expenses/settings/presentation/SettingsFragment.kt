@@ -27,15 +27,13 @@ import com.nominalista.expenses.util.extensions.startActivitySafely
 import io.reactivex.disposables.CompositeDisposable
 
 class SettingsFragment : Fragment() {
+    private val compositeDisposable = CompositeDisposable()
 
     private lateinit var containerLayout: ViewGroup
     private lateinit var recyclerView: RecyclerView
-
     private lateinit var adapter: SettingsAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var model: SettingsFragmentModel
-
-    private val compositeDisposable = CompositeDisposable()
 
     // Lifecycle start
 
@@ -81,22 +79,13 @@ class SettingsFragment : Fragment() {
     }
 
     private fun bindModel() {
-        compositeDisposable += model.itemModels
-            .subscribe(adapter::submitList)
-
-        compositeDisposable += model.selectDefaultCurrency
-            .subscribe { selectDefaultCurrency() }
-        compositeDisposable += model.navigateToOnboarding
-            .subscribe { navigateToOnboarding() }
-
-        compositeDisposable += model.showMessage
-            .subscribe(::showMessage)
-        compositeDisposable += model.showActivity
-            .subscribe(::showActivity)
-        compositeDisposable += model.showThemeSelectionDialog
-            .subscribe(::showThemeSelectionDialog)
-        compositeDisposable += model.applyTheme
-            .subscribe(::applyTheme)
+        compositeDisposable += model.itemModels.subscribe(adapter::submitList)
+        compositeDisposable += model.selectDefaultCurrency.subscribe(::selectDefaultCurrency)
+        compositeDisposable += model.navigateToOnboarding.subscribe(::navigateToOnboarding)
+        compositeDisposable += model.showMessage.subscribe(::showMessage)
+        compositeDisposable += model.showActivity.subscribe(::showActivity)
+        compositeDisposable += model.showThemeSelectionDialog.subscribe(::showThemeSelectionDialog)
+        compositeDisposable += model.applyTheme.subscribe(::applyTheme)
     }
 
     private fun selectDefaultCurrency() {

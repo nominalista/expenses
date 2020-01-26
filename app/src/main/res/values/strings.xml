@@ -63,6 +63,7 @@
     <string name="no_tags">No tags</string>
     <string name="notes_title">Notes</string>
     <string name="notes_hint">Notes (optional)</string>
+    <string name="privacy">Privacy</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="purchase_unavailable">Purchase unavailable</string>
     <string name="rate_app">Rate the app</string>

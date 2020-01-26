@@ -62,6 +62,7 @@
     <string name="no_tags">Brak tagów</string>
     <string name="notes_title">Notatki</string>
     <string name="notes_hint">Notatki (opcjonalnie)</string>
+    <string name="privacy">Prywatność</string>
     <string name="privacy_policy">Polityka Prywatności</string>
     <string name="purchase_unavailable">Zakup niedostępny</string>
     <string name="rate_app">Oceń aplikację</string>

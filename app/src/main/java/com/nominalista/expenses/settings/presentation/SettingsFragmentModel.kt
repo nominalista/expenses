@@ -22,12 +22,9 @@ class SettingsFragmentModel(
     private val preferenceDataSource: PreferenceDataSource,
     private val authenticationManager: AuthenticationManager
 ) : AndroidViewModel(application) {
-
     val itemModels = Variable(emptyList<SettingItemModel>())
-
     val selectDefaultCurrency = Event()
     val navigateToOnboarding = Event()
-
     val showMessage = DataEvent<Int>()
     val showActivity = DataEvent<Uri>()
     val showThemeSelectionDialog = DataEvent<Theme>()
@@ -43,7 +40,7 @@ class SettingsFragmentModel(
 
     private fun loadItemModels() {
         itemModels.value =
-            createAccountSection() + createApplicationSection() + createAboutSection()
+            createAccountSection() + createApplicationSection() + createPrivacySection()
     }
 
     // Account section
@@ -138,49 +135,18 @@ class SettingsFragmentModel(
 
     // About section
 
-    private fun createAboutSection(): List<SettingItemModel> {
+    private fun createPrivacySection(): List<SettingItemModel> {
         val context = getApplication<Application>()
 
         val itemModels = mutableListOf<SettingItemModel>()
-        itemModels += createAboutHeader(context)
-        itemModels += createContactMe(context)
-        itemModels += createRateApp(context)
-        itemModels += createViewSourceCode(context)
+        itemModels += createPrivacyHeader(context)
         itemModels += createPrivacyPolicy(context)
-        itemModels += createVersion(context)
 
         return itemModels
     }
 
-    private fun createAboutHeader(context: Context): SettingItemModel =
-        SettingsHeaderModel(context.getString(R.string.about))
-
-    private fun createContactMe(context: Context): SettingItemModel {
-        val title = context.getString(R.string.contact_me)
-        val summary = context.getString(R.string.contact_me_summary)
-
-        return SummaryActionSettingItemModel(title, summary).apply {
-            click = { showActivity.next(EMAIL_URI) }
-        }
-    }
-
-    private fun createRateApp(context: Context): SettingItemModel {
-        val title = context.getString(R.string.rate_app)
-        val summary = context.getString(R.string.rate_app_summary)
-
-        return SummaryActionSettingItemModel(title, summary).apply {
-            click = { showActivity.next(GOOGLE_PLAY_URI) }
-        }
-    }
-
-    private fun createViewSourceCode(context: Context): SettingItemModel {
-        val title = context.getString(R.string.view_source_code)
-        val summary = context.getString(R.string.view_source_code_summary)
-
-        return SummaryActionSettingItemModel(title, summary).apply {
-            click = { showActivity.next(GITHUB_URI) }
-        }
-    }
+    private fun createPrivacyHeader(context: Context): SettingItemModel =
+        SettingsHeaderModel(context.getString(R.string.privacy))
 
     private fun createPrivacyPolicy(context: Context): SettingItemModel {
         val title = context.getString(R.string.privacy_policy)
@@ -189,14 +155,6 @@ class SettingsFragmentModel(
             click = { showActivity.next(PRIVACY_POLICY_URI) }
         }
     }
-
-    private fun createVersion(context: Context): SettingItemModel {
-        val title = context.getString(R.string.version)
-        val summary = BuildConfig.VERSION_NAME
-
-        return SummaryActionSettingItemModel(title, summary)
-    }
-
     // Lifecycle end
 
     override fun onCleared() {
@@ -237,13 +195,6 @@ class SettingsFragmentModel(
     }
 
     companion object {
-
-        private val EMAIL_URI =
-            Uri.parse("mailto:the.nominalista@gmail.com")
-        private val GOOGLE_PLAY_URI =
-            Uri.parse("https://play.google.com/store/apps/details?id=com.nominalista.expenses")
-        private val GITHUB_URI =
-            Uri.parse("https://github.com/Nominalista/Expenses")
         private val PRIVACY_POLICY_URI =
             Uri.parse("https://raw.githubusercontent.com/nominalista/expenses/master/resources/privacy_policy.md")
     }
