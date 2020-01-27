@@ -28,7 +28,7 @@ ext {
     // Libraries
     coroutinesVersion = '1.3.0'
     jxlVersion = '2.6.12'
-    materialVersion = '1.1.0-rc01'
+    materialVersion = '1.1.0-rc02'
     rxAndroidVersion = '2.1.1'
     rxKotlinVersion = '2.4.0'
     rxRelayVersion = '2.1.1'
