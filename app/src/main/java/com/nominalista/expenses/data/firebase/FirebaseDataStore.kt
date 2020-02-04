@@ -115,8 +115,14 @@ class FirebaseDataStore(
         return Completable.fromAction { expenseDocumentReference.delete() }
     }
 
+    /**
+     * Firebase does not support deleting collection. Get all expenses and delete one by one.
+     */
     override fun deleteAllExpenses(): Completable {
-        throw NotImplementedError("Deleting a collection in Firestore is impossible.")
+        return getExpenses()
+            .flatMapCompletable { expenses ->
+                Completable.merge(expenses.map { deleteExpense(it) })
+            }
     }
 
     // Tags
