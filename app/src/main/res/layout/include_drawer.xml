@@ -135,7 +135,7 @@
             app:layout_constraintTop_toBottomOf="@id/exportExpensesItemLayout" />
 
         <LinearLayout
-            android:id="@+id/settingsItemLayout"
+            android:id="@+id/expenseHistoryItemLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_normal"
@@ -149,6 +149,43 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sectionDivider">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_attach_money_24px"
+                app:tint="@color/color_on_surface_emphasis_medium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/expense_history_title"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/color_on_surface_emphasis_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/settingsItemLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/spacing_xlarge"
+            android:paddingTop="@dimen/spacing_large"
+            android:paddingEnd="@dimen/spacing_xlarge"
+            android:paddingBottom="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expenseHistoryItemLayout">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
