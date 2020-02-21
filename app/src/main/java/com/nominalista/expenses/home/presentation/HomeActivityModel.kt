@@ -48,6 +48,7 @@ class HomeActivityModel(
     val requestExportPermissions = Event()
     val showExpenseExportFailureDialog = Event()
     val navigateToSettings = Event()
+    val navigateToExpensesHistory = Event()
     val navigateToSupport = Event()
 
     val showMessage = DataEvent<Int>()
@@ -122,6 +123,10 @@ class HomeActivityModel(
             }
             else -> return
         }
+    }
+
+    fun navigateToExpensesHistory() {
+        navigateToExpensesHistory.next()
     }
 
     fun navigateToSettingsRequested() {

@@ -90,4 +90,5 @@
     <string name="key_date_range" translatable="false">date_range</string>
     <string name="key_is_user_onboarded" translatable="false">is_user_onboarded</string>
     <string name="key_theme" translatable="false">theme</string>
+    <string name="expense_history_title">Expense History</string>
 </resources>
