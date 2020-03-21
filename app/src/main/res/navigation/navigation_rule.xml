@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_rule.xml"
+    app:startDestination="@id/ruleFragment">
+
+    <fragment
+        android:id="@+id/ruleFragment"
+        android:name="com.nominalista.expenses.sms.rule.RuleFragment"
+        android:label="RuleFragment" >
+        <action
+            android:id="@+id/action_ruleFragment_to_addRuleFragment"
+            app:destination="@id/addRuleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addRuleFragment"
+        android:name="com.nominalista.expenses.sms.rule.AddRuleFragment"
+        android:label="AddRuleFragment">
+        <argument
+            android:name="rule"
+            app:argType="com.nominalista.expenses.data.model.Rule"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+</navigation>

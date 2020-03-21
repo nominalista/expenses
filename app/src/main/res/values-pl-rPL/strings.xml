@@ -81,4 +81,16 @@
     <string name="translation_description">Jeśli jesteś zainteresowany pomocą w przetłumaczeniu aplikacji na twój język, proszę skontaktuj się ze mną. Chciałbym wspierać tyle języków ile to możliwe!\n\nObecnie wspierane: 🇺🇸 🇦🇺 🇪🇸 🇵🇱</string>
     <string name="welcome_to_expenses">Witaj w aplikacji Wydatki</string>
     <string name="yes">Tak</string>
+    <string name="sms_reader">"Czytnik SMS "</string>
+    <string name="sms_reader_rules_placeholder">"Żaden. dodaj część, aby utworzyć wydatki na podstawie wiadomości przychodzących "</string>
+    <string name="sms_reader_rules">"Zasady dla czytnika wiadomości "</string>
+    <string name="rules">Zasady</string>
+    <string name="rule">władca</string>
+    <string name="group_separator">Separator grupy</string>
+    <string name="decimal_separator">Separator dziesiętny np ,</string>
+    <string name="symbol_after_amount">"Symbol po kwocie "</string>
+    <string name="symbol_before_amount">Symbol przed kwotą np. ¤</string>
+    <string name="add_keyword">"Dodaj regułę "</string>
+    <string name="duplicate">Duplikat</string>
+    <string name="use">use</string>
 </resources>

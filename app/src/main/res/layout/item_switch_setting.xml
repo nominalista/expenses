@@ -8,36 +8,20 @@
     android:background="?selectableItemBackground"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_title"
+    <Switch
+        android:id="@+id/switch_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:textAppearance="?attr/textAppearanceBody1"
         android:textColor="@color/color_on_surface_emphasis_high"
-        app:layout_constraintBottom_toTopOf="@+id/text_summary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Title" />
-
-    <TextView
-        android:id="@+id/text_summary"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:textAppearance="?attr/textAppearanceBody2"
-        android:textColor="@color/color_on_surface_emphasis_medium"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/text_title"
-        app:layout_constraintTop_toBottomOf="@+id/text_title"
-        tools:text="Summary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

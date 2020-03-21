@@ -1,8 +1,10 @@
 package com.nominalista.expenses.settings.presentation
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -24,6 +26,7 @@ import com.nominalista.expenses.onboarding.OnboardingActivity
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.util.extensions.startActivitySafely
+import com.nominalista.expenses.util.isPermissionGranted
 import io.reactivex.disposables.CompositeDisposable
 
 class SettingsFragment : Fragment() {
@@ -86,6 +89,8 @@ class SettingsFragment : Fragment() {
         compositeDisposable += model.showActivity.subscribe(::showActivity)
         compositeDisposable += model.showThemeSelectionDialog.subscribe(::showThemeSelectionDialog)
         compositeDisposable += model.applyTheme.subscribe(::applyTheme)
+        compositeDisposable += model.requestSmsPermission.subscribe(::requestSmsPermission)
+        compositeDisposable += model.manageRules.subscribe(::manageRules)
     }
 
     private fun selectDefaultCurrency() {
@@ -117,6 +122,23 @@ class SettingsFragment : Fragment() {
     private fun navigateToOnboarding() {
         OnboardingActivity.start(requireContext())
         requireActivity().finishAffinity()
+    }
+
+    private fun requestSmsPermission() {
+        activity?.applicationContext?.let {
+            if (!isPermissionGranted(it, Manifest.permission.RECEIVE_SMS)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(
+                            arrayOf(Manifest.permission.RECEIVE_SMS),
+                            REQUEST_CODE_RECEIVE_SMS
+                    )
+                }
+            }
+        }
+    }
+
+    private fun manageRules() {
+        RuleActivity.start(this, REQUEST_RULES)
     }
 
     // Lifecycle end
@@ -157,6 +179,9 @@ class SettingsFragment : Fragment() {
                     data?.getParcelableExtra(CurrencySelectionActivity.EXTRA_CURRENCY)
                 currency?.let { model.defaultCurrencySelected(it) }
             }
+            REQUEST_RULES -> {
+                model.loadItemModels()
+            }
         }
     }
 
@@ -164,5 +189,7 @@ class SettingsFragment : Fragment() {
 
         private const val REQUEST_CODE_SELECT_DEFAULT_CURRENCY = 1
         private const val NIGHT_MODE_APPLICATION_DELAY = 500L
+        private const val REQUEST_CODE_RECEIVE_SMS = 3
+        private const val REQUEST_RULES = 4
     }
 }

@@ -1,12 +1,15 @@
 package com.nominalista.expenses.data.room
 
 import com.nominalista.expenses.data.model.Expense
+import com.nominalista.expenses.data.model.Rule
 import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.data.room.dao.ExpenseDao
 import com.nominalista.expenses.data.room.dao.ExpenseTagJoinDao
+import com.nominalista.expenses.data.room.dao.RuleDao
 import com.nominalista.expenses.data.room.dao.TagDao
 import com.nominalista.expenses.data.room.entities.ExpenseEntity
 import com.nominalista.expenses.data.room.entities.ExpenseTagJoinEntity
+import com.nominalista.expenses.data.room.entities.RuleEntity
 import com.nominalista.expenses.data.room.entities.TagEntity
 import com.nominalista.expenses.data.store.DataStore
 import com.nominalista.expenses.util.reactive.combineLatest
@@ -19,7 +22,8 @@ import io.reactivex.functions.BiFunction
 class RoomDataStore(
     private val expenseDao: ExpenseDao,
     private val tagDao: TagDao,
-    private val expenseTagJoinDao: ExpenseTagJoinDao
+    private val expenseTagJoinDao: ExpenseTagJoinDao,
+    private val ruleDao: RuleDao
 ) : DataStore {
 
     // Expenses
@@ -151,5 +155,41 @@ class RoomDataStore(
 
     override fun deleteAllTags(): Completable {
         return tagDao.deleteAll()
+    }
+
+    // Rules
+
+    override fun observeRules(): Observable<List<Rule>> {
+        return ruleDao.observeAll()
+                .map { ruleEntities -> ruleEntities.map { it.mapToRule() } }
+    }
+
+    override fun getRules(): Single<List<Rule>> {
+        return ruleDao.getAll()
+                .map { ruleEntities -> ruleEntities.map { it.mapToRule() } }
+    }
+
+    override fun observeRule(id: String): Observable<Rule> {
+        return ruleDao.observeById(id.toLong()).map { it.mapToRule() }
+    }
+
+    override fun getRule(id: String): Single<Rule> {
+        return ruleDao.getById(id.toLong()).map { it.mapToRule() }
+    }
+
+    override fun insertRule(rule: Rule): Single<String> {
+        return Single.fromCallable { RuleEntity.prepareForInsertion(rule) }
+                .flatMap {
+                    ruleDao.insert(it)
+                }
+                .map { it.toString() }
+    }
+
+    override fun updateRule(rule: Rule): Completable {
+        return ruleDao.update(RuleEntity.prepareForUpdate(rule))
+    }
+
+    override fun deleteRule(rule: Rule): Completable {
+        return ruleDao.deleteById(RuleEntity.fromRule(rule).id)
     }
 }

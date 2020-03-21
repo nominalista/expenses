@@ -81,4 +81,16 @@
     <string name="translation_description">If you\'re interested in helping with translating the app to your language, please contact me. I\'d love to support as many as possible!\n\n\Currently supported: 🇺🇸 🇦🇺 🇪🇸 🇵🇱</string>
     <string name="welcome_to_expenses">Bienvenido a la aplicación Gastos</string>
     <string name="yes">Si</string>
+    <string name="sms_reader">Lector de SMS</string>
+    <string name="sms_reader_rules_placeholder">Ninguna. Agrega algunas para crear tus gastos de los mensajes entrantes</string>
+    <string name="sms_reader_rules">Reglas del lector de SMS</string>
+    <string name="rules">Reglas</string>
+    <string name="rule">Regla</string>
+    <string name="group_separator">Separador de grupo e.g .</string>
+    <string name="decimal_separator">Separador decimal e.g ,</string>
+    <string name="symbol_before_amount">Simbolo anterior al valor: $</string>
+    <string name="symbol_after_amount">Simbolo después del valor</string>
+    <string name="add_keyword">Agregar regla</string>
+    <string name="duplicate">Duplicar</string>
+    <string name="use">usar</string>
 </resources>

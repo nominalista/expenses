@@ -83,6 +83,18 @@
     <string name="translation_description">If you\'re interested in helping with translating the app to your language, please contact me. I\'d love to support as many as possible!\n\n\Currently supported: 🇺🇸 🇦🇺 🇪🇸 🇵🇱</string>
     <string name="welcome_to_expenses">Welcome to Expenses</string>
     <string name="yes">Yes</string>
+    <string name="sms_reader">Sms reader</string>
+    <string name="sms_reader_rules">Rules for message reader</string>
+    <string name="sms_reader_rules_placeholder">None. Please add some to create your expenses from the incoming messages</string>
+    <string name="rules">Rules</string>
+    <string name="rule">Rule</string>
+    <string name="group_separator">Group separator e.g ,</string>
+    <string name="decimal_separator">Decimal separator e.g .</string>
+    <string name="symbol_after_amount">Symbol after amount</string>
+    <string name="symbol_before_amount">Symbol before amount e.g $</string>
+    <string name="add_keyword">Add rule</string>
+    <string name="duplicate">Duplicate</string>
+    <string name="use">use</string>
 
     <!-- Shared Preferences -->
     <string name="key_preferences" translatable="false">preferences</string>
@@ -90,4 +102,5 @@
     <string name="key_date_range" translatable="false">date_range</string>
     <string name="key_is_user_onboarded" translatable="false">is_user_onboarded</string>
     <string name="key_theme" translatable="false">theme</string>
+    <string name="key_sms_reader" translatable="false">sms_reader</string>
 </resources>

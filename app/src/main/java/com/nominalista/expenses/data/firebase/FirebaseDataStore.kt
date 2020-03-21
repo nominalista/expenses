@@ -5,6 +5,7 @@ import com.google.firebase.firestore.*
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.model.Expense
+import com.nominalista.expenses.data.model.Rule
 import com.nominalista.expenses.data.model.Tag
 import com.nominalista.expenses.data.store.DataStore
 import com.nominalista.expenses.util.extensions.toEpochMillis
@@ -173,6 +174,87 @@ class FirebaseDataStore(
         throw NotImplementedError("Deleting a collection in Firestore is impossible.")
     }
 
+    // Rules
+
+    override fun observeRules(): Observable<List<Rule>> {
+        val ruleCollectionReference = getRuleCollectionReference()
+                ?: return Observable.error(ReferenceAccessError())
+
+        val listener = ReactiveQuerySnapshotEventListener(ruleCollectionReference)
+
+        return Observable.create(listener)
+                .map { query -> query.mapNotNull { mapDocumentToRule(it) } }
+    }
+
+    override fun getRules(): Single<List<Rule>> {
+        val ruleCollectionReference = getRuleCollectionReference()
+                ?: return Single.error(ReferenceAccessError())
+
+        val listener = ReactiveTaskListener(ruleCollectionReference.get())
+
+        return Single.create(listener)
+                .map { query -> query.mapNotNull { mapDocumentToRule(it) } }
+    }
+
+    override fun observeRule(id: String): Observable<Rule> {
+        val ruleCollectionReference = getRuleCollectionReference()
+                ?: return Observable.error(ReferenceAccessError())
+
+        val ruleDocumentReference = ruleCollectionReference.document(id)
+
+        val listener = ReactiveDocumentSnapshotEventListener(ruleDocumentReference)
+
+        return Observable.create(listener)
+                .map { document -> mapDocumentToRule(document) }
+    }
+
+    override fun getRule(id: String): Single<Rule> {
+        val ruleCollectionReference = getRuleCollectionReference()
+                ?: return Single.error(ReferenceAccessError())
+
+        val ruleDocumentReference = ruleCollectionReference.document(id)
+
+        val listener = ReactiveTaskListener(ruleDocumentReference.get())
+
+        return Single.create(listener)
+                .map { document -> mapDocumentToRule(document) }
+    }
+
+    override fun insertRule(rule: Rule): Single<String> {
+        val ruleCollectionReference = getRuleCollectionReference()
+                ?: return Single.error(ReferenceAccessError())
+
+        val data = hashMapOf("name" to rule.name)
+
+        return Single.fromCallable {
+            val document = ruleCollectionReference.document()
+            document.set(data)
+            document.id
+        }
+    }
+
+    override fun updateRule(rule: Rule): Completable {
+        val ruleCollectionReference = getRuleCollectionReference() ?: return Completable.error(ReferenceAccessError())
+
+        val ruleDocumentReference = ruleCollectionReference.document(rule.id)
+
+        val data = hashMapOf("name" to rule.name,
+                "firstSymbol" to rule.firstSymbol,
+                "lastSymbol" to rule.lastSymbol,
+                "decimalSeparator" to rule.decimalSeparator,
+                "groupSeparator" to rule.groupSeparator)
+        return Completable.fromAction { ruleDocumentReference.update(data as Map<String, Any>) }
+    }
+
+    override fun deleteRule(rule: Rule): Completable {
+        val ruleCollectionReference = getRuleCollectionReference()
+                ?: return Completable.error(ReferenceAccessError())
+
+        val tagDocumentReference = ruleCollectionReference.document(rule.id)
+
+        return Completable.fromAction { tagDocumentReference.delete() }
+    }
+
     // Helpers
 
     private fun getExpenseCollectionReference(): CollectionReference? {
@@ -185,6 +267,10 @@ class FirebaseDataStore(
 
     private fun getUserDataReference(): DocumentReference? {
         return auth.currentUser?.uid?.let { firestore.collection("user-data").document(it) }
+    }
+
+    private fun getRuleCollectionReference(): CollectionReference? {
+        return getUserDataReference()?.collection("rules")
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -232,6 +318,15 @@ class FirebaseDataStore(
     private fun mapDocumentToTag(document: DocumentSnapshot): Tag? {
         val name = document.getString("name") ?: return null
         return Tag(document.id, name)
+    }
+
+    private fun mapDocumentToRule(document: DocumentSnapshot): Rule? {
+        val name = document.getString("name") ?: return null
+        val firstSymbol = document.getString("firstSymbol") ?: return null
+        val lastSymbol = document.getString("lastSymbol") ?: return null
+        val decimalSeparator = document.getString("decimalSeparator") ?: return null
+        val groupSeparator = document.getString("groupSeparator") ?: return null
+        return Rule(document.id, name, firstSymbol, lastSymbol, decimalSeparator, groupSeparator)
     }
 
     class ReferenceAccessError : Error("Cannot access reference.")

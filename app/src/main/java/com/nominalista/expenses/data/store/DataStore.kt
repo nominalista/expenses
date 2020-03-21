@@ -1,6 +1,7 @@
 package com.nominalista.expenses.data.store
 
 import com.nominalista.expenses.data.model.Expense
+import com.nominalista.expenses.data.model.Rule
 import com.nominalista.expenses.data.model.Tag
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -37,4 +38,20 @@ interface DataStore {
     fun deleteTag(tag: Tag): Completable
 
     fun deleteAllTags(): Completable
+
+    // Rules
+
+    fun observeRules(): Observable<List<Rule>>
+
+    fun getRules(): Single<List<Rule>>
+
+    fun observeRule(id: String): Observable<Rule>
+
+    fun getRule(id: String): Single<Rule>
+
+    fun insertRule(rule: Rule): Single<String>
+
+    fun updateRule(rule: Rule): Completable
+
+    fun deleteRule(rule: Rule): Completable
 }

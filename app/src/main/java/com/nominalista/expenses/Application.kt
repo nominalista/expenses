@@ -35,9 +35,10 @@ class Application : android.app.Application() {
         val database = ApplicationDatabase.build(this)
 
         RoomDataStore(
-            database.expenseDao(),
-            database.tagDao(),
-            database.expenseTagJoinDao()
+                database.expenseDao(),
+                database.tagDao(),
+                database.expenseTagJoinDao(),
+                database.ruleDao()
         )
     }
 

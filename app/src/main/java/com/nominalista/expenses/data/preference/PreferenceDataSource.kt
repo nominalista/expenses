@@ -57,6 +57,19 @@ class PreferenceDataSource {
         preferences.edit().putString(key, theme.name).apply()
     }
 
+
+    fun getIsSmsReaderEnabled(context: Context): Boolean {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val key = getSmsModeKey(context)
+        return preferences.getBoolean(key, false)
+    }
+
+    fun setIsSmsReaderEnabled(context: Context, enabled: Boolean) {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val key = getSmsModeKey(context)
+        preferences.edit().putBoolean(key, enabled).apply()
+    }
+
     private fun getDefaultCurrencyKey(context: Context) =
         context.getString(R.string.key_default_currency)
 
@@ -68,4 +81,8 @@ class PreferenceDataSource {
 
     private fun getThemeKey(context: Context) =
         context.getString(R.string.key_theme)
+
+    private fun getSmsModeKey(context: Context) =
+            context.getString(R.string.key_sms_reader)
+
 }

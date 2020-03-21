@@ -6,21 +6,23 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.Application
-import com.nominalista.expenses.BuildConfig
 import com.nominalista.expenses.R
 import com.nominalista.expenses.authentication.AuthenticationManager
 import com.nominalista.expenses.common.presentation.Theme
 import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.preference.PreferenceDataSource
+import com.nominalista.expenses.data.store.DataStore
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
 import com.nominalista.expenses.util.reactive.Variable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class SettingsFragmentModel(
     application: Application,
     private val preferenceDataSource: PreferenceDataSource,
-    private val authenticationManager: AuthenticationManager
+    private val authenticationManager: AuthenticationManager,
+    private val dataStore: DataStore
 ) : AndroidViewModel(application) {
     val itemModels = Variable(emptyList<SettingItemModel>())
     val selectDefaultCurrency = Event()
@@ -29,6 +31,8 @@ class SettingsFragmentModel(
     val showActivity = DataEvent<Uri>()
     val showThemeSelectionDialog = DataEvent<Theme>()
     val applyTheme = DataEvent<Theme>()
+    val requestSmsPermission = Event()
+    val manageRules = Event()
 
     private val disposables = CompositeDisposable()
 
@@ -38,7 +42,7 @@ class SettingsFragmentModel(
         loadItemModels()
     }
 
-    private fun loadItemModels() {
+    fun loadItemModels() {
         itemModels.value =
             createAccountSection() + createApplicationSection() + createPrivacySection()
     }
@@ -94,6 +98,11 @@ class SettingsFragmentModel(
         itemModels += createApplicationHeader(context)
         itemModels += createDefaultCurrency(context)
         itemModels += createDarkMode(context)
+        itemModels += createSmsReader(context)
+
+        if (preferenceDataSource.getIsSmsReaderEnabled(context)) {
+            itemModels += createRules(context)
+        }
 
         return itemModels
     }
@@ -130,6 +139,41 @@ class SettingsFragmentModel(
 
         return SummaryActionSettingItemModel(title, summary).apply {
             click = { showThemeSelectionDialog.next(darkMode) }
+        }
+    }
+
+    private fun createSmsReader(context: Context): SettingItemModel {
+        val title = context.getString(R.string.sms_reader)
+
+        val enabled = preferenceDataSource.getIsSmsReaderEnabled(context)
+
+        return SwitchSettingItemModel(title, enabled).apply {
+            isChecked = { isChecked ->
+                getApplication<Application>().let {
+                    preferenceDataSource.setIsSmsReaderEnabled(it, isChecked)
+                }
+                loadItemModels()
+                if (isChecked){
+                    requestSmsPermission.next()
+                }
+            }
+        }
+    }
+
+    private fun createRules(context: Context): SettingItemModel {
+
+        val title = context.getString(R.string.sms_reader_rules)
+
+        val rules = dataStore.getRules()
+                .subscribeOn(Schedulers.io())
+                .blockingGet()
+
+        val summary = when {
+            rules.isEmpty() -> context.getString(R.string.sms_reader_rules_placeholder)
+            else -> rules.map { it.name }.reduce { acc, next -> "$acc, $next" }
+        }
+        return SummaryActionSettingItemModel(title, summary).apply {
+            click = { manageRules.next() }
         }
     }
 
@@ -187,9 +231,10 @@ class SettingsFragmentModel(
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return SettingsFragmentModel(
-                application,
-                application.preferenceDataSource,
-                application.authenticationManager
+                    application,
+                    application.preferenceDataSource,
+                    application.authenticationManager,
+                    application.localDataStore
             ) as T
         }
     }

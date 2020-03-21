@@ -19,6 +19,7 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
             SETTINGS_HEADER_TYPE -> SettingsHeaderHolder(
                 itemView
             )
+            SWITCH_SETTING_ITEM_TYPE -> SwitchSettingItemHolder(itemView)
             else -> throw IllegalArgumentException()
         }
     }
@@ -32,6 +33,8 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
                 holder.bind(model)
             holder is SettingsHeaderHolder && model is SettingsHeaderModel ->
                 holder.bind(model)
+            holder is SwitchSettingItemHolder && model is SwitchSettingItemModel ->
+                holder.bind(model)
         }
     }
 
@@ -41,6 +44,7 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
             is ActionSettingItemHolder -> holder.recycle()
             is SummaryActionSettingItemHolder -> holder.recycle()
             is SettingsHeaderHolder -> holder.recycle()
+            is SwitchSettingItemHolder -> holder.recycle()
         }
     }
 
@@ -49,6 +53,7 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
             is ActionSettingItemModel -> ACTION_SETTING_ITEM_TYPE
             is SummaryActionSettingItemModel -> SUMMARY_ACTION_SETTING_ITEM_TYPE
             is SettingsHeaderModel -> SETTINGS_HEADER_TYPE
+            is SwitchSettingItemModel -> SWITCH_SETTING_ITEM_TYPE
             else -> super.getItemViewType(position)
         }
     }
@@ -66,6 +71,8 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
                     oldItem.title == newItem.title && oldItem.summary == newItem.summary
                 oldItem is SettingsHeaderModel && newItem is SettingsHeaderModel ->
                     oldItem.title == newItem.title
+                oldItem is SwitchSettingItemModel && newItem is SwitchSettingItemModel ->
+                    oldItem.title == newItem.title
                 else -> false
             }
         }
@@ -81,6 +88,8 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
                     oldItem.title == newItem.title && oldItem.summary == newItem.summary
                 oldItem is SettingsHeaderModel && newItem is SettingsHeaderModel ->
                     oldItem.title == newItem.title
+                oldItem is SwitchSettingItemModel && newItem is SwitchSettingItemModel ->
+                    oldItem.title == newItem.title
                 else -> false
             }
         }
@@ -90,5 +99,6 @@ class SettingsAdapter : ListAdapter<SettingItemModel, SettingItemHolder>(DiffCal
         private const val ACTION_SETTING_ITEM_TYPE = R.layout.item_action_setting
         private const val SUMMARY_ACTION_SETTING_ITEM_TYPE = R.layout.item_summary_action_setting
         private const val SETTINGS_HEADER_TYPE = R.layout.header_settings
+        private const val SWITCH_SETTING_ITEM_TYPE = R.layout.item_switch_setting
     }
 }
