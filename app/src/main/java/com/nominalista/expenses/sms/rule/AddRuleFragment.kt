@@ -3,16 +3,21 @@ package com.nominalista.expenses.sms.rule
 
 import android.os.Bundle
 import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.nominalista.expenses.R
+import com.nominalista.expenses.data.model.Format
 import com.nominalista.expenses.data.model.Rule
 import com.nominalista.expenses.util.extensions.afterTextChanged
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.showKeyboard
 import com.nominalista.expenses.util.extensions.toggleKeyboard
+
 
 class AddRuleFragment : Fragment() {
     private lateinit var saveButton: MenuItem
@@ -26,14 +31,8 @@ class AddRuleFragment : Fragment() {
     private lateinit var firstSymbolEditText: EditText
     private val firstSymbol get() = firstSymbolEditText.text.toString()
 
-    private lateinit var lastSymbolEditText: EditText
-    private val lastSymbol get() = lastSymbolEditText.text.toString()
-
-    private lateinit var decimalSeparatorEditText: EditText
-    private val decimalSeparator get() = decimalSeparatorEditText.text.toString()
-
-    private lateinit var groupSeparatorEditText: EditText
-    private val groupSeparator get() = groupSeparatorEditText.text.toString()
+    private lateinit var formatDropdownMenu: AutoCompleteTextView
+    private var format: Format? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_add_rule, container, false)
@@ -43,16 +42,28 @@ class AddRuleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupModels()
         setupActionBar()
-        bindEditText(view)
+        bindItems(view)
+        val formats = listOf(Format("1,000.00", groupSeparator = ",", decimalSeparator = "."),
+                Format("1.000,00", groupSeparator = ".", decimalSeparator = ","),
+                Format("1 000.00", groupSeparator = " ", decimalSeparator = "."),
+                Format("1 000,00", groupSeparator = " ", decimalSeparator = ","))
+        populateDropdownMenu(formats)
         val rule = arguments?.let { AddRuleFragmentArgs.fromBundle(it).rule }
-        rule?.id.let { id = it.orEmpty() }
-        ruleEditText.setText(rule?.name)
-        firstSymbolEditText.setText(rule?.firstSymbol)
-        lastSymbolEditText.setText(rule?.lastSymbol)
-        decimalSeparatorEditText.setText(rule?.decimalSeparator)
-        groupSeparatorEditText.setText(rule?.groupSeparator)
+        rule?.let { fillValues(it, formats) }
+
         watchEditText()
         showKeyboard(ruleEditText)
+    }
+
+    private fun fillValues(rule: Rule, formats: List<Format>) {
+        id = rule.id
+        ruleEditText.setText(rule.keywords.reduce { acc, s ->"$acc $s"  })
+        firstSymbolEditText.setText(rule.firstSymbol)
+        try {
+            val pFormat = formats.first { it.decimalSeparator == rule.decimalSeparator && it.groupSeparator == rule.groupSeparator }
+            formatDropdownMenu.setText(pFormat.hint, false)
+            format = pFormat
+        } catch (e: NoSuchElementException) { }
     }
 
     private fun setupModels() {
@@ -68,24 +79,30 @@ class AddRuleFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    private fun bindEditText(view: View) {
+    private fun bindItems(view: View) {
         ruleEditText = view.findViewById(R.id.rule_edit_text)
         firstSymbolEditText = view.findViewById(R.id.first_symbol_edit_text)
-        lastSymbolEditText = view.findViewById(R.id.last_symbol_edit_text)
-        decimalSeparatorEditText = view.findViewById(R.id.decimal_separator_edit_text)
-        groupSeparatorEditText = view.findViewById(R.id.group_separator_edit_text)
+        formatDropdownMenu = view.findViewById(R.id.dropdown_menu)
+    }
+
+    private fun populateDropdownMenu(formats: List<Format>) {
+        val formatsArray = formats.map { it.hint }
+        val adapter: ArrayAdapter<String> = ArrayAdapter(context, R.layout.dropdown_menu_popup_item, formatsArray)
+        formatDropdownMenu.setAdapter(adapter)
+        formatDropdownMenu.keyListener = null
+        formatDropdownMenu.onItemClickListener = (AdapterView.OnItemClickListener() { _: AdapterView<*>, _: View, position: Int, _: Long ->
+            format = formats[position]
+            enableOrDisableEditText()
+        })
     }
 
     private fun watchEditText() {
         ruleEditText.afterTextChanged { enableOrDisableEditText() }
         firstSymbolEditText.afterTextChanged { enableOrDisableEditText() }
-        lastSymbolEditText.afterTextChanged { enableOrDisableEditText() }
-        decimalSeparatorEditText.afterTextChanged { enableOrDisableEditText() }
-        groupSeparatorEditText.afterTextChanged { enableOrDisableEditText() }
     }
 
     private fun enableOrDisableEditText() {
-        saveButton.isEnabled = rule.isNotEmpty() && firstSymbol.isNotEmpty() && lastSymbol.isNotEmpty() && decimalSeparator.isNotEmpty() && groupSeparator.isNotEmpty()
+        saveButton.isEnabled = rule.isNotEmpty() && firstSymbol.isNotEmpty() && format != null
     }
 
     // Options
@@ -116,10 +133,11 @@ class AddRuleFragment : Fragment() {
     }
 
     private fun save() {
+        val keywords = rule.split("\n")
         if (id.isNotEmpty()) {
-            model.updateRule(Rule(id, rule, firstSymbol, lastSymbol, decimalSeparator, groupSeparator))
+            model.updateRule(Rule(id, keywords, firstSymbol, "lastSymbol", format!!.decimalSeparator, format!!.groupSeparator))
         } else {
-            model.createRule(Rule(id, rule, firstSymbol, lastSymbol, decimalSeparator, groupSeparator))
+            model.createRule(Rule(id, keywords, firstSymbol, "lastSymbol", format!!.decimalSeparator, format!!.groupSeparator))
         }
         backSelected()
     }

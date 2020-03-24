@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.item_tag.view.*
 
 class RuleItemHolderImpl(itemView: View) : RuleItemHolder(itemView) {
     fun bind(model: RuleItemModelImpl) {
-        itemView.text_name.text = model.name
+        itemView.text_name.text = model.name.first()
         itemView.button_more.setOnClickListener { showMore(model) }
     }
 

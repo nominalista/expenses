@@ -86,11 +86,11 @@
     <string name="sms_reader_rules">"Zasady dla czytnika wiadomości "</string>
     <string name="rules">Zasady</string>
     <string name="rule">władca</string>
-    <string name="group_separator">Separator grupy</string>
-    <string name="decimal_separator">Separator dziesiętny np ,</string>
-    <string name="symbol_after_amount">"Symbol po kwocie "</string>
-    <string name="symbol_before_amount">Symbol przed kwotą np. ¤</string>
+    <string name="symbol_before_amount">Symbol waluty w SMS-ach np. $</string>
     <string name="add_keyword">"Dodaj regułę "</string>
     <string name="duplicate">Duplikat</string>
     <string name="use">use</string>
+    <string name="format">format</string>
+    <string name="keyword_phrases_one_per_line">Frazy słów kluczowych (po jednym w wierszu)</string>
+    <string name="currency_format">Format waluty</string>
 </resources>

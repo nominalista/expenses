@@ -87,7 +87,7 @@ class RuleFragmentModel(private val dataStore: DataStore, private val db:Firebas
                     val rules: List<RemoteRuleItemModelImpl> = documents.map { RemoteRuleItemModelImpl(Rule(it)) }
                     val unUsed = rules.filter { remote ->
                         !ruleList
-                                .map { it.name == remote.name }
+                                .map { it.keywords == remote.name }
                                 .fold(false) { acc, next -> acc || next }
                     }
                             .map {
@@ -105,7 +105,7 @@ class RuleFragmentModel(private val dataStore: DataStore, private val db:Firebas
 
     private fun updateItemModels(tags: List<Rule>) {
         itemModels.value = tags
-                .sortedBy { it.name }
+                .sortedBy { it.keywords.first() }
                 .let { createAddRuleSection() + createRuleSection(it) }
         getGlobalRules()
     }
@@ -147,7 +147,7 @@ class RuleFragmentModel(private val dataStore: DataStore, private val db:Firebas
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return RuleFragmentModel(application.defaultDataStore,FirebaseFirestore.getInstance()) as T
+            return RuleFragmentModel(application.localDataStore,FirebaseFirestore.getInstance()) as T
         }
     }
 }

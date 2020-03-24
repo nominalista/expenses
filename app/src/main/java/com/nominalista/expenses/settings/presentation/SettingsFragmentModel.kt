@@ -170,7 +170,7 @@ class SettingsFragmentModel(
 
         val summary = when {
             rules.isEmpty() -> context.getString(R.string.sms_reader_rules_placeholder)
-            else -> rules.map { it.name }.reduce { acc, next -> "$acc, $next" }
+            else -> rules.map { it.keywords.first() }.reduce { acc, next -> "$acc, $next" }
         }
         return SummaryActionSettingItemModel(title, summary).apply {
             click = { manageRules.next() }

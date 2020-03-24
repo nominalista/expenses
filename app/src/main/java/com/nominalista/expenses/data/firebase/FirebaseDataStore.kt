@@ -2,7 +2,6 @@ package com.nominalista.expenses.data.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
-import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.model.Currency
 import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.model.Rule
@@ -224,7 +223,7 @@ class FirebaseDataStore(
         val ruleCollectionReference = getRuleCollectionReference()
                 ?: return Single.error(ReferenceAccessError())
 
-        val data = hashMapOf("name" to rule.name)
+        val data = hashMapOf("name" to rule.keywords)
 
         return Single.fromCallable {
             val document = ruleCollectionReference.document()
@@ -238,7 +237,7 @@ class FirebaseDataStore(
 
         val ruleDocumentReference = ruleCollectionReference.document(rule.id)
 
-        val data = hashMapOf("name" to rule.name,
+        val data = hashMapOf("name" to rule.keywords,
                 "firstSymbol" to rule.firstSymbol,
                 "lastSymbol" to rule.lastSymbol,
                 "decimalSeparator" to rule.decimalSeparator,
@@ -326,7 +325,7 @@ class FirebaseDataStore(
         val lastSymbol = document.getString("lastSymbol") ?: return null
         val decimalSeparator = document.getString("decimalSeparator") ?: return null
         val groupSeparator = document.getString("groupSeparator") ?: return null
-        return Rule(document.id, name, firstSymbol, lastSymbol, decimalSeparator, groupSeparator)
+        return Rule(document.id, name.split("\n"), firstSymbol, lastSymbol, decimalSeparator, groupSeparator)
     }
 
     class ReferenceAccessError : Error("Cannot access reference.")

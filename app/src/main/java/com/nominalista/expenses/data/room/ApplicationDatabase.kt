@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.nominalista.expenses.data.room.converter.CurrencyConverter
+import com.nominalista.expenses.data.room.converter.KeywordsConverter
 import com.nominalista.expenses.data.room.converter.LocalDateConverter
 import com.nominalista.expenses.data.room.dao.ExpenseDao
 import com.nominalista.expenses.data.room.dao.ExpenseTagJoinDao
@@ -29,10 +30,11 @@ import com.nominalista.expenses.data.room.entities.TagEntity
         exportSchema = true
 )
 @TypeConverters(
-    value = [
-        CurrencyConverter::class,
-        LocalDateConverter::class
-    ]
+        value = [
+            CurrencyConverter::class,
+            LocalDateConverter::class,
+            KeywordsConverter::class
+        ]
 )
 abstract class ApplicationDatabase : RoomDatabase() {
 

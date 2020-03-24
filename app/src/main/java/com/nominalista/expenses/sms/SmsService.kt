@@ -15,6 +15,7 @@ import org.threeten.bp.LocalDate
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import java.util.regex.Pattern
 
 class SmsService : IntentService("com.nominalista.expenses.sms.SmsService") {
     var message: String? = null
@@ -73,19 +74,49 @@ class SmsService : IntentService("com.nominalista.expenses.sms.SmsService") {
         val rules = dataStore.getRules()
                 .subscribeOn(Schedulers.io())
                 .blockingGet()
-        return rules.filter { message.contains(it.name, ignoreCase = true) }.first()
+        return rules.first { it.keywords.map { keyword -> message.contains(keyword, ignoreCase = true) }.fold(false) { acc, next -> acc || next } }
     }
 
     private fun getAmount(message: String, rule: Rule): Double {
-        val after = message.substringAfter(rule.firstSymbol)
-        val a = after.substringBefore(rule.lastSymbol)
+        val valueString = getAmountString(rule, message)
         val format = DecimalFormatSymbols(Locale.US)
         format.decimalSeparator = rule.decimalSeparator[0]
         format.groupingSeparator = rule.groupSeparator[0]
         val df = DecimalFormat("", format)
         df.groupingSize = 3
         df.isGroupingUsed = true
-        return df.parse(a).toDouble()
+        return df.parse(valueString).toDouble()
+    }
+
+    private fun getAmountString(rule: Rule, message: String): String {
+        val symbol = "\\${rule.firstSymbol}"
+        val group = "(?:\\d*\\${rule.groupSeparator})+?"
+        val decimal = "(?:\\d*\\${rule.decimalSeparator})?"
+        val space = "(?:\\.)?\\ "
+
+
+        val pattern: Pattern = Pattern.compile(".*" +
+                "$symbol(" +
+                group +
+                decimal +
+                "\\d*" +
+                ")$space" +
+                ".*")
+        val reversePattern: Pattern = Pattern.compile(".*" +
+                space +
+                "(" +
+                group +
+                decimal +
+                "\\d*" +
+                ")$symbol" +
+                ".*")
+        val matcher = pattern.matcher(message)
+        val reverseMatcher = reversePattern.matcher(message)
+        return when {
+            matcher.find() -> matcher.group(1)
+            reverseMatcher.find() -> reverseMatcher.group(1)
+            else -> ""
+        }
     }
 
     override fun onDestroy() {

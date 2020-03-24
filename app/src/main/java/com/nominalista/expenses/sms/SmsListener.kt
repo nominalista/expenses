@@ -28,6 +28,11 @@ class SmsListener : BroadcastReceiver() {
         val rules = dataStore.getRules()
                 .subscribeOn(io())
                 .blockingGet()
-        return rules.map { message.contains(it.name, ignoreCase = true) }.fold(false) { acc, next -> acc || next }
+        val keywords: List<String> = rules.map { it.keywords }.reduce { acc, list ->
+            val n = acc.toMutableList()
+            n.addAll(list)
+            n
+        }
+        return keywords.map { message.contains(it, ignoreCase = true) }.fold(false) { acc, next -> acc || next }
     }
 }

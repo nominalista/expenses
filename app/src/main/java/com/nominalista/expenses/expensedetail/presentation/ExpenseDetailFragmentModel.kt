@@ -13,6 +13,7 @@ import com.nominalista.expenses.expensedetail.domain.DeleteExpenseUseCase
 import com.nominalista.expenses.expensedetail.domain.ObserveExpenseUseCase
 import com.nominalista.expenses.util.READABLE_DATE_FORMAT
 import com.nominalista.expenses.util.extensions.plusAssign
+import com.nominalista.expenses.util.extensions.toMoneyString
 import com.nominalista.expenses.util.extensions.toString
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
@@ -59,7 +60,7 @@ class ExpenseDetailFragmentModel(
     }
 
     private fun populateExpenseValues() {
-        amount.value = "${"%.2f".format(expense.amount)} ${expense.currency.symbol}"
+        amount.value = expense.amount.toMoneyString(expense.currency)
         currency.value = "(${expense.currency.title} • ${expense.currency.code})"
         title.value = expense.title
         tags.value = expense.tags

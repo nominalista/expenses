@@ -1,6 +1,7 @@
 package com.nominalista.expenses.home.presentation
 
 import com.nominalista.expenses.data.model.Expense
+import com.nominalista.expenses.util.extensions.toMoneyString
 import com.nominalista.expenses.util.extensions.toString
 
 class ExpenseItemModel(val expense: Expense) : HomeItemModel {
@@ -23,11 +24,7 @@ class ExpenseItemModel(val expense: Expense) : HomeItemModel {
         return day.toString()
     }
 
-    private fun createAmount(): String {
-        val amount = "%.2f".format(expense.amount)
-        val symbol = expense.currency.symbol
-        return "$amount $symbol"
-    }
+    private fun createAmount(): String = expense.amount.toMoneyString(expense.currency)
 
     private fun createTitle() = expense.title
 }

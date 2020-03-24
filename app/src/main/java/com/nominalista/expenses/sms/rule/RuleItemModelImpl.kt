@@ -3,7 +3,7 @@ package com.nominalista.expenses.sms.rule
 import com.nominalista.expenses.data.model.Rule
 
 class RuleItemModelImpl(val rule: Rule) : RuleItemModel {
-    val name = rule.name
+    val name = rule.keywords
 
     var editClick: (() -> Unit)? = null
     var deleteClick: (() -> Unit)? = null
