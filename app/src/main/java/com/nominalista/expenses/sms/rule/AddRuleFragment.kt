@@ -8,15 +8,15 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.model.Format
 import com.nominalista.expenses.data.model.Rule
-import com.nominalista.expenses.util.extensions.afterTextChanged
-import com.nominalista.expenses.util.extensions.application
-import com.nominalista.expenses.util.extensions.showKeyboard
-import com.nominalista.expenses.util.extensions.toggleKeyboard
+import com.nominalista.expenses.util.extensions.*
 
 
 class AddRuleFragment : Fragment() {
@@ -25,8 +25,9 @@ class AddRuleFragment : Fragment() {
 
     private var id = ""
 
-    private lateinit var ruleEditText: EditText
-    private val rule get() = ruleEditText.text.toString()
+    private lateinit var keywordEditText: EditText
+    private lateinit var keywordsChipGroup: ChipGroup
+    private val keywords = mutableListOf<String>()
 
     private lateinit var firstSymbolEditText: EditText
     private val firstSymbol get() = firstSymbolEditText.text.toString()
@@ -43,27 +44,32 @@ class AddRuleFragment : Fragment() {
         setupModels()
         setupActionBar()
         bindItems(view)
+        watchEditText()
         val formats = listOf(Format("1,000.00", groupSeparator = ",", decimalSeparator = "."),
                 Format("1.000,00", groupSeparator = ".", decimalSeparator = ","),
                 Format("1 000.00", groupSeparator = " ", decimalSeparator = "."),
                 Format("1 000,00", groupSeparator = " ", decimalSeparator = ","))
         populateDropdownMenu(formats)
         val rule = arguments?.let { AddRuleFragmentArgs.fromBundle(it).rule }
-        rule?.let { fillValues(it, formats) }
-
-        watchEditText()
-        showKeyboard(ruleEditText)
+        if (rule != null) {
+            fillValues(rule, formats)
+        } else {
+            showKeyboard(keywordEditText)
+        }
     }
 
     private fun fillValues(rule: Rule, formats: List<Format>) {
         id = rule.id
-        ruleEditText.setText(rule.keywords.reduce { acc, s ->"$acc $s"  })
+        rule.keywords.map {
+            addChip(it)
+        }
         firstSymbolEditText.setText(rule.firstSymbol)
         try {
             val pFormat = formats.first { it.decimalSeparator == rule.decimalSeparator && it.groupSeparator == rule.groupSeparator }
             formatDropdownMenu.setText(pFormat.hint, false)
             format = pFormat
-        } catch (e: NoSuchElementException) { }
+        } catch (e: NoSuchElementException) {
+        }
     }
 
     private fun setupModels() {
@@ -80,29 +86,69 @@ class AddRuleFragment : Fragment() {
     }
 
     private fun bindItems(view: View) {
-        ruleEditText = view.findViewById(R.id.rule_edit_text)
+        keywordEditText = view.findViewById(R.id.rule_edit_text)
         firstSymbolEditText = view.findViewById(R.id.first_symbol_edit_text)
         formatDropdownMenu = view.findViewById(R.id.dropdown_menu)
+        keywordsChipGroup = view.findViewById(R.id.keywords_chip_group)
     }
 
     private fun populateDropdownMenu(formats: List<Format>) {
         val formatsArray = formats.map { it.hint }
         val adapter: ArrayAdapter<String> = ArrayAdapter(context, R.layout.dropdown_menu_popup_item, formatsArray)
+        formatDropdownMenu.setOnClickListener { hideKeyboard() }
         formatDropdownMenu.setAdapter(adapter)
         formatDropdownMenu.keyListener = null
-        formatDropdownMenu.onItemClickListener = (AdapterView.OnItemClickListener() { _: AdapterView<*>, _: View, position: Int, _: Long ->
+        formatDropdownMenu.onItemClickListener = (AdapterView.OnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
             format = formats[position]
             enableOrDisableEditText()
         })
     }
 
     private fun watchEditText() {
-        ruleEditText.afterTextChanged { enableOrDisableEditText() }
+        keywordEditText.afterTextChanged { enableOrDisableEditText() }
         firstSymbolEditText.afterTextChanged { enableOrDisableEditText() }
+        keywordEditText.addTextChangedListener {
+            it?.let { text ->
+                if (text.isNotEmpty() && text.last() == '\n') {
+                    val keyword = text.toString().removeSuffix("\n")
+                    addChip(keyword)
+                    keywordEditText.setText("")
+                }
+            }
+
+        }
     }
 
     private fun enableOrDisableEditText() {
-        saveButton.isEnabled = rule.isNotEmpty() && firstSymbol.isNotEmpty() && format != null
+        if (::saveButton.isInitialized) {
+            saveButton.isEnabled = keywords.isNotEmpty() && firstSymbol.isNotEmpty() && format != null
+        }
+    }
+
+    private fun removeChip(chip: Chip) {
+        keywords.remove(chip.text)
+        keywordsChipGroup.removeView(chip)
+        enableOrDisableEditText()
+    }
+
+    private fun addChip(text: String) {
+        keywords.add(text)
+        val chip = Chip(context)
+        chip.isCloseIconVisible = true
+        chip.text = text
+        chip.setOnCloseIconClickListener {
+            removeChip(it as Chip)
+        }
+        chip.setOnClickListener {
+            val chipClicked = it as Chip
+            if (keywordEditText.text.isNotEmpty()) {
+                addChip(keywordEditText.text.toString())
+            }
+            keywordEditText.setText(chipClicked.text)
+            removeChip(chipClicked)
+        }
+        keywordsChipGroup.addView(chip)
+        enableOrDisableEditText()
     }
 
     // Options
@@ -122,7 +168,7 @@ class AddRuleFragment : Fragment() {
     }
 
     private fun backSelected(): Boolean {
-        toggleKeyboard()
+        hideKeyboard()
         requireActivity().onBackPressed()
         return true
     }
@@ -133,7 +179,6 @@ class AddRuleFragment : Fragment() {
     }
 
     private fun save() {
-        val keywords = rule.split("\n")
         if (id.isNotEmpty()) {
             model.updateRule(Rule(id, keywords, firstSymbol, "lastSymbol", format!!.decimalSeparator, format!!.groupSeparator))
         } else {

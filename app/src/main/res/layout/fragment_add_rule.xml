@@ -42,6 +42,12 @@
                 android:hint="@string/keyword_phrases_one_per_line"
                 android:inputType="textCapSentences|textMultiLine" />
 
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/keywords_chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.google.android.material.chip.ChipGroup>
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -85,6 +91,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
 
             <AutoCompleteTextView
+                android:labelFor="@string/currency_format"
                 android:id="@+id/dropdown_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
