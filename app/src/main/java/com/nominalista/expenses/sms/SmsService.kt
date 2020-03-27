@@ -6,16 +6,13 @@ import android.content.Intent
 import android.util.Log
 import com.nominalista.expenses.data.model.Expense
 import com.nominalista.expenses.data.model.Rule
+import com.nominalista.expenses.sms.MessageParser.getAmount
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.LocalDate
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.*
-import java.util.regex.Pattern
 
 class SmsService : IntentService("com.nominalista.expenses.sms.SmsService") {
     var message: String? = null
@@ -77,47 +74,6 @@ class SmsService : IntentService("com.nominalista.expenses.sms.SmsService") {
         return rules.first { it.keywords.map { keyword -> message.contains(keyword, ignoreCase = true) }.fold(false) { acc, next -> acc || next } }
     }
 
-    private fun getAmount(message: String, rule: Rule): Double {
-        val valueString = getAmountString(rule, message)
-        val format = DecimalFormatSymbols(Locale.US)
-        format.decimalSeparator = rule.decimalSeparator[0]
-        format.groupingSeparator = rule.groupSeparator[0]
-        val df = DecimalFormat("", format)
-        df.groupingSize = 3
-        df.isGroupingUsed = true
-        return df.parse(valueString).toDouble()
-    }
-
-    private fun getAmountString(rule: Rule, message: String): String {
-        val symbol = "\\${rule.firstSymbol}"
-        val group = "(?:\\d*\\${rule.groupSeparator})+?"
-        val decimal = "(?:\\d*\\${rule.decimalSeparator})?"
-        val space = "(?:\\.)?\\ "
-
-
-        val pattern: Pattern = Pattern.compile(".*" +
-                "$symbol(" +
-                group +
-                decimal +
-                "\\d*" +
-                ")$space" +
-                ".*")
-        val reversePattern: Pattern = Pattern.compile(".*" +
-                space +
-                "(" +
-                group +
-                decimal +
-                "\\d*" +
-                ")$symbol" +
-                ".*")
-        val matcher = pattern.matcher(message)
-        val reverseMatcher = reversePattern.matcher(message)
-        return when {
-            matcher.find() -> matcher.group(1)
-            reverseMatcher.find() -> reverseMatcher.group(1)
-            else -> ""
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()

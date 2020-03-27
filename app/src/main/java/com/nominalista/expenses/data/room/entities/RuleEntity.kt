@@ -13,12 +13,11 @@ data class RuleEntity(
         @PrimaryKey(autoGenerate = true) val id: Long,
         @ColumnInfo(name = "name") val name: List<String>,
         @ColumnInfo(name = "firstSymbol") val firstSymbol: String,
-        @ColumnInfo(name = "lastSymbol") val lastSymbol: String,
         @ColumnInfo(name = "decimalSeparator") val decimalSeparator: String,
         @ColumnInfo(name = "groupSeparator") val groupSeparator: String
 ) : Parcelable {
 
-    fun mapToRule() = Rule(id = id.toString(), keywords = name, firstSymbol = firstSymbol, lastSymbol = lastSymbol, decimalSeparator = decimalSeparator, groupSeparator = groupSeparator)
+    fun mapToRule() = Rule(id = id.toString(), keywords = name, firstSymbol = firstSymbol, decimalSeparator = decimalSeparator, groupSeparator = groupSeparator)
 
     companion object {
 
@@ -26,7 +25,6 @@ data class RuleEntity(
                 RuleEntity(id = 0,
                         name = rule.keywords,
                         firstSymbol = rule.firstSymbol,
-                        lastSymbol = rule.lastSymbol,
                         decimalSeparator = rule.decimalSeparator,
                         groupSeparator = rule.groupSeparator)
 
@@ -34,10 +32,9 @@ data class RuleEntity(
                 RuleEntity(id = rule.id.toLong(),
                         name = rule.keywords,
                         firstSymbol = rule.firstSymbol,
-                        lastSymbol = rule.lastSymbol,
                         decimalSeparator = rule.decimalSeparator,
                         groupSeparator = rule.groupSeparator)
 
-        fun fromRule(rule: Rule) = RuleEntity(id = rule.id.toLong(), name = rule.keywords, firstSymbol = rule.firstSymbol, lastSymbol = rule.lastSymbol, decimalSeparator = rule.decimalSeparator, groupSeparator = rule.groupSeparator)
+        fun fromRule(rule: Rule) = RuleEntity(id = rule.id.toLong(), name = rule.keywords, firstSymbol = rule.firstSymbol, decimalSeparator = rule.decimalSeparator, groupSeparator = rule.groupSeparator)
     }
 }

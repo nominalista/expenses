@@ -239,7 +239,6 @@ class FirebaseDataStore(
 
         val data = hashMapOf("name" to rule.keywords,
                 "firstSymbol" to rule.firstSymbol,
-                "lastSymbol" to rule.lastSymbol,
                 "decimalSeparator" to rule.decimalSeparator,
                 "groupSeparator" to rule.groupSeparator)
         return Completable.fromAction { ruleDocumentReference.update(data as Map<String, Any>) }
@@ -322,10 +321,9 @@ class FirebaseDataStore(
     private fun mapDocumentToRule(document: DocumentSnapshot): Rule? {
         val name = document.getString("name") ?: return null
         val firstSymbol = document.getString("firstSymbol") ?: return null
-        val lastSymbol = document.getString("lastSymbol") ?: return null
         val decimalSeparator = document.getString("decimalSeparator") ?: return null
         val groupSeparator = document.getString("groupSeparator") ?: return null
-        return Rule(document.id, name.split("\n"), firstSymbol, lastSymbol, decimalSeparator, groupSeparator)
+        return Rule(document.id, name.split("\n"), firstSymbol, decimalSeparator, groupSeparator)
     }
 
     class ReferenceAccessError : Error("Cannot access reference.")

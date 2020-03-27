@@ -61,7 +61,7 @@ abstract class ApplicationDatabase : RoomDatabase() {
 
         val MIGRATION_2_3 = object : Migration(2,3){
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("CREATE TABLE IF NOT EXISTS `rules` (`id` LONG, `name` TEXT, `firstSymbol` TEXT, `lastSymbol` TEXT, `decimalSeparator` TEXT, `groupSeparator` TEXT," +
+                database.execSQL("CREATE TABLE IF NOT EXISTS `rules` (`id` LONG, `name` TEXT, `firstSymbol` TEXT, `decimalSeparator` TEXT, `groupSeparator` TEXT," +
                         "PRIMARY KEY(`id`))")
             }
         }

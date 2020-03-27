@@ -16,8 +16,10 @@ import com.google.android.material.chip.ChipGroup
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.model.Format
 import com.nominalista.expenses.data.model.Rule
-import com.nominalista.expenses.util.extensions.*
-
+import com.nominalista.expenses.util.extensions.afterTextChanged
+import com.nominalista.expenses.util.extensions.application
+import com.nominalista.expenses.util.extensions.hideKeyboard
+import com.nominalista.expenses.util.extensions.showKeyboard
 
 class AddRuleFragment : Fragment() {
     private lateinit var saveButton: MenuItem
@@ -180,9 +182,9 @@ class AddRuleFragment : Fragment() {
 
     private fun save() {
         if (id.isNotEmpty()) {
-            model.updateRule(Rule(id, keywords, firstSymbol, "lastSymbol", format!!.decimalSeparator, format!!.groupSeparator))
+            model.updateRule(Rule(id, keywords, firstSymbol, format!!.decimalSeparator, format!!.groupSeparator))
         } else {
-            model.createRule(Rule(id, keywords, firstSymbol, "lastSymbol", format!!.decimalSeparator, format!!.groupSeparator))
+            model.createRule(Rule(id, keywords, firstSymbol, format!!.decimalSeparator, format!!.groupSeparator))
         }
         backSelected()
     }
