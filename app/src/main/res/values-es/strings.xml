@@ -89,8 +89,9 @@
     <string name="symbol_before_amount">Simbolo de divisa e.g $</string>
     <string name="add_keyword">Agregar regla</string>
     <string name="duplicate">Duplicar</string>
-    <string name="use">usar</string>
+    <string name="use">Usar</string>
     <string name="format">formato</string>
     <string name="keyword_phrases_one_per_line">Frases de palabras clave (una por línea)</string>
     <string name="currency_format">Formato de moneda</string>
+    <string name="message">Mensaje</string>
 </resources>

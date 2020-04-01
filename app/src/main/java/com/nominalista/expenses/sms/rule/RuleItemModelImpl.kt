@@ -9,4 +9,5 @@ class RuleItemModelImpl(val rule: Rule) : RuleItemModel {
     var deleteClick: (() -> Unit)? = null
     var duplicateClick: (() -> Unit)? = null
     var shareClick: (() -> Unit)? = null
+    var useClick: (() -> Unit)? = null
 }

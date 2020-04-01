@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nominalista.expenses.R
 import com.nominalista.expenses.data.model.Rule
+import com.nominalista.expenses.settings.presentation.SettingsFragment
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import io.reactivex.disposables.CompositeDisposable
@@ -70,6 +71,11 @@ class RuleFragment : Fragment() {
         disposables += model.itemModels.toObservable().subscribe(adapter::submitList)
         disposables += model.showNewRule.toObservable().subscribe { showEditRule(null) }
         disposables += model.showEditRule.toObservable().subscribe { showEditRule(it) }
+        disposables += model.showUserRuleDialog.toObservable().subscribe { showUseRuleDialog(it) }
+        disposables += model.finish.toObservable().subscribe {
+            requireActivity().setResult(SettingsFragment.Companion.CLOSE)
+            requireActivity().finish()
+        }
     }
 
     private fun showEditRule(rule: Rule?) {
@@ -79,7 +85,14 @@ class RuleFragment : Fragment() {
         if (navController.currentDestination?.id == R.id.ruleFragment) {
             navController.navigate(action)
         }
+    }
 
+    private fun showUseRuleDialog(rule: Rule) {
+        val dialogFragment = UseRuleDialogFragment.newInstance()
+        activity?.let {
+            dialogFragment.useRule = { message -> model.useRule(rule, message, it.applicationContext) }
+        }
+        dialogFragment.show(requireFragmentManager(), "UseRuleDialog")
     }
 
     // Options

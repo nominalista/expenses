@@ -19,6 +19,7 @@ class RuleItemHolderImpl(itemView: View) : RuleItemHolder(itemView) {
             when (it.itemId) {
                 R.id.delete -> delete(model)
                 R.id.duplicate -> duplicate(model)
+                R.id.use -> use(model)
                 else -> edit(model)
             }
         }
@@ -29,6 +30,7 @@ class RuleItemHolderImpl(itemView: View) : RuleItemHolder(itemView) {
         model.shareClick?.invoke()
         return true
     }
+
     private fun duplicate(model: RuleItemModelImpl): Boolean {
         model.duplicateClick?.invoke()
         return true
@@ -39,8 +41,13 @@ class RuleItemHolderImpl(itemView: View) : RuleItemHolder(itemView) {
         return true
     }
 
-    fun delete(model: RuleItemModelImpl): Boolean {
+    private fun delete(model: RuleItemModelImpl): Boolean {
         model.deleteClick?.invoke()
+        return true
+    }
+
+    private fun use(model: RuleItemModelImpl): Boolean {
+        model.useClick?.invoke()
         return true
     }
 

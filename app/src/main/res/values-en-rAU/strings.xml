@@ -89,8 +89,9 @@
     <string name="symbol_before_amount">Currency symbol in sms e.g $</string>
     <string name="add_keyword">Add rule</string>
     <string name="duplicate">Duplicate</string>
-    <string name="use">nosić</string>
+    <string name="use">Nosić</string>
     <string name="format">format</string>
     <string name="keyword_phrases_one_per_line">Keyword phrases (one per line)</string>
     <string name="currency_format">Currency format</string>
+    <string name="message">Message</string>
 </resources>

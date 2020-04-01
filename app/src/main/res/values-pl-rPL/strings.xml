@@ -89,8 +89,9 @@
     <string name="symbol_before_amount">Symbol waluty w SMS-ach np. $</string>
     <string name="add_keyword">"Dodaj regułę "</string>
     <string name="duplicate">Duplikat</string>
-    <string name="use">use</string>
+    <string name="use">Use</string>
     <string name="format">format</string>
     <string name="keyword_phrases_one_per_line">Frazy słów kluczowych (po jednym w wierszu)</string>
     <string name="currency_format">Format waluty</string>
+    <string name="message">Wiadomość</string>
 </resources>

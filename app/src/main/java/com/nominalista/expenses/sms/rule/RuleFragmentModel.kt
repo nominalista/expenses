@@ -1,5 +1,6 @@
 package com.nominalista.expenses.sms.rule
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,20 +8,26 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.nominalista.expenses.Application
 import com.nominalista.expenses.data.model.Rule
 import com.nominalista.expenses.data.store.DataStore
+import com.nominalista.expenses.sms.MessageParser
 import com.nominalista.expenses.util.extensions.TAG
+import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.util.reactive.DataEvent
 import com.nominalista.expenses.util.reactive.Event
 import com.nominalista.expenses.util.reactive.SchedulerTransformer
 import com.nominalista.expenses.util.reactive.Variable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
-class RuleFragmentModel(private val dataStore: DataStore, private val db:FirebaseFirestore) : ViewModel() {
+class RuleFragmentModel(private val dataStore: DataStore, private val db: FirebaseFirestore) : ViewModel() {
 
     val itemModels = Variable(emptyList<RuleItemModel>())
     val showNewRule = Event()
+    val finish = Event()
 
     val showEditRule = DataEvent<Rule>()
+    val showUserRuleDialog = DataEvent<Rule>()
 
     private val disposables = CompositeDisposable()
     private var ruleList = emptyList<Rule>()
@@ -57,6 +64,7 @@ class RuleFragmentModel(private val dataStore: DataStore, private val db:Firebas
         itemModel.deleteClick = { deleteRule(itemModel) }
         itemModel.duplicateClick = { createRule(itemModel.rule) }
         itemModel.shareClick = { shareRule(itemModel.rule) }
+        itemModel.useClick = { showUserRuleDialog.next(itemModel.rule) }
         return itemModel
     }
 
@@ -78,6 +86,13 @@ class RuleFragmentModel(private val dataStore: DataStore, private val db:Firebas
 
     private fun shareRule(rule: Rule) {
         db.collection("Rules").add(rule)
+    }
+
+    fun useRule(rule: Rule, message: String, applicationContext: Context) {
+        val defaultCurrency = applicationContext.application.preferenceDataSource.getDefaultCurrency(applicationContext.application)
+        val localDataStore = applicationContext.application.localDataStore
+        disposables += MessageParser.insertExpense(localDataStore, AndroidSchedulers.mainThread(), Schedulers.io(), defaultCurrency, rule, message)
+        finish.next()
     }
 
     private fun getGlobalRules() {
@@ -107,7 +122,6 @@ class RuleFragmentModel(private val dataStore: DataStore, private val db:Firebas
         itemModels.value = tags
                 .sortedBy { it.keywords.first() }
                 .let { createAddRuleSection() + createRuleSection(it) }
-        getGlobalRules()
     }
 
     // Lifecycle end
@@ -147,7 +161,7 @@ class RuleFragmentModel(private val dataStore: DataStore, private val db:Firebas
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return RuleFragmentModel(application.localDataStore,FirebaseFirestore.getInstance()) as T
+            return RuleFragmentModel(application.localDataStore, FirebaseFirestore.getInstance()) as T
         }
     }
 }

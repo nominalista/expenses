@@ -91,9 +91,10 @@
     <string name="symbol_before_amount">Currency symbol in sms e.g $</string>
     <string name="add_keyword">Add rule</string>
     <string name="duplicate">Duplicate</string>
-    <string name="use">use</string>
+    <string name="use">Use</string>
     <string name="format">format</string>
     <string name="keyword_phrases_one_per_line">Keyword phrases (one per line)</string>
+    <string name="message">Message</string>
 
     <!-- Shared Preferences -->
     <string name="key_preferences" translatable="false">preferences</string>

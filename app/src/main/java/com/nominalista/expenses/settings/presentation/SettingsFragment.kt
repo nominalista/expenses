@@ -41,8 +41,8 @@ class SettingsFragment : Fragment() {
     // Lifecycle start
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
@@ -170,17 +170,15 @@ class SettingsFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode != Activity.RESULT_OK) return
-
-        when (requestCode) {
-            REQUEST_CODE_SELECT_DEFAULT_CURRENCY -> {
+        when {
+            requestCode == REQUEST_CODE_SELECT_DEFAULT_CURRENCY && resultCode == Activity.RESULT_OK -> {
                 val currency: Currency? =
-                    data?.getParcelableExtra(CurrencySelectionActivity.EXTRA_CURRENCY)
+                        data?.getParcelableExtra(CurrencySelectionActivity.EXTRA_CURRENCY)
                 currency?.let { model.defaultCurrencySelected(it) }
             }
-            REQUEST_RULES -> {
-                model.loadItemModels()
+            requestCode == REQUEST_RULES && resultCode == Activity.RESULT_OK -> model.loadItemModels()
+            requestCode == REQUEST_RULES && resultCode == CLOSE -> {
+                backSelected()
             }
         }
     }
@@ -191,5 +189,6 @@ class SettingsFragment : Fragment() {
         private const val NIGHT_MODE_APPLICATION_DELAY = 500L
         private const val REQUEST_CODE_RECEIVE_SMS = 3
         private const val REQUEST_RULES = 4
+        const val CLOSE = 5
     }
 }

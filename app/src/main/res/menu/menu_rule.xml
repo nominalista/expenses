@@ -9,4 +9,7 @@
     <item
         android:id="@+id/duplicate"
         android:title="@string/duplicate" />
+    <item
+        android:id="@+id/use"
+        android:title="@string/use" />
 </menu>
