@@ -10,8 +10,8 @@ android {
 
     defaultConfig {
         applicationId "com.nominalista.expenses"
-        versionCode 18
-        versionName "0.4.3"
+        versionCode 19
+        versionName "0.4.4"
         minSdkVersion 21
         targetSdkVersion 28
 
