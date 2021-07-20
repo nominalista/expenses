@@ -19,6 +19,7 @@ import com.nominalista.expenses.common.presentation.BaseActivity
 import com.nominalista.expenses.onboarding.OnboardingActivity
 import com.nominalista.expenses.settings.presentation.SettingsActivity
 import com.nominalista.expenses.about.AboutActivity
+import com.nominalista.expenses.expensehistory.presentation.ExpenseHistoryActivity
 import com.nominalista.expenses.util.extensions.application
 import com.nominalista.expenses.util.extensions.plusAssign
 import com.nominalista.expenses.util.extensions.startActivitySafely
@@ -70,6 +71,9 @@ class HomeActivity : BaseActivity() {
         exportExpensesItemLayout.setOnClickListener {
             runAfterDrawerClose { model.exportExpensesRequested() }
         }
+        expenseHistoryItemLayout.setOnClickListener {
+            runAfterDrawerClose { model.navigateToExpensesHistory() }
+        }
         settingsItemLayout.setOnClickListener {
             runAfterDrawerClose { model.navigateToSettingsRequested() }
         }
@@ -113,6 +117,8 @@ class HomeActivity : BaseActivity() {
             .subscribe { requestExportPermissions() }
         compositeDisposable += model.showExpenseExportFailureDialog
             .subscribe { showExpenseExportFailureDialog() }
+        compositeDisposable += model.navigateToExpensesHistory
+                .subscribe { navigateToExpenseHistory() }
         compositeDisposable += model.navigateToSettings
             .subscribe { navigateToSettings() }
         compositeDisposable += model.navigateToSupport
@@ -198,6 +204,10 @@ class HomeActivity : BaseActivity() {
 
     private fun navigateToSettings() {
         SettingsActivity.start(this)
+    }
+
+    private fun navigateToExpenseHistory() {
+        ExpenseHistoryActivity.start(this)
     }
 
     private fun navigateToSupport() {

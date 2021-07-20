@@ -30,6 +30,7 @@ class HomeFragmentModel(
 ) : AndroidViewModel(application) {
 
     val itemModels = Variable(emptyList<HomeItemModel>())
+//    val expenseItemModels = Variable(emptyList<ExpenseItemModel>())
     val isLoading = Variable(false)
     val showExpenseDetail = DataEvent<Expense>()
     val showTagFiltering = Event()
@@ -51,6 +52,8 @@ class HomeFragmentModel(
         observeExpenses()
         observeTags()
         updateItemModels()
+//        observeExpensesItems()
+//        updateExpenseItemModels(LocalDate.now())
     }
 
     private fun setDateRange() {
@@ -97,6 +100,23 @@ class HomeFragmentModel(
                 Log.d(TAG, "Failed to update item models (${error.message}).")
             })
     }
+
+  /*  private fun observeExpensesItems() {
+        disposables += dataStore.observeExpenses()
+                .map { SortExpensesUseCase().invoke(it) }
+                .subscribeOn(io())
+                .observeOn(mainThread())
+                .subscribe { expenses = it; updateExpenseItemModels(LocalDate.now()) }
+    }
+
+    private fun updateExpenseItemModels(date: LocalDate) {
+        disposables += Observable.just(expenses)
+                .map { FilterExpensesUseCase().invoke(it, date) }
+                .map { createExpenseSection(it) }
+                .subscribeOn(computation())
+                .observeOn(mainThread())
+                .subscribe { expenseItemModels.value = it }
+    }*/
 
     private fun createSummarySection(expenses: List<Expense>): List<HomeItemModel> {
         val summarySection = ArrayList<HomeItemModel>()
@@ -164,6 +184,15 @@ class HomeFragmentModel(
         this.tagFilter = tagFilter
         updateItemModels()
     }
+
+  /*  fun showExpensesForTheDay(date: LocalDate){
+        disposables += Observable.just(expenses)
+                .map { FilterExpensesUseCase().invoke(it, date) }
+                .map { createExpenseSection(it) }
+                .subscribeOn(computation())
+                .observeOn(mainThread())
+                .subscribe { expenseItemModels.value = it }
+    }*/
 
     fun deleteAllExpensesRequested() {
         showDeleteAllExpensesConfirmation.next()

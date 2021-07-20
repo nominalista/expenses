@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/fragment_expense_history">
+
+    <fragment
+        android:id="@+id/fragment_expense_history"
+        android:name="com.nominalista.expenses.expensehistory.presentation.ExpenseHistoryFragment"
+        android:label="ExpenseHistoryFragment" />
+
+</navigation>
