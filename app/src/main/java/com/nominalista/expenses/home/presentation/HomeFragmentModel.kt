@@ -1,5 +1,6 @@
 package com.nominalista.expenses.home.presentation
 
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -66,7 +67,12 @@ class HomeFragmentModel(
             .map { SortExpensesUseCase().invoke(it) }
             .subscribeOn(io())
             .observeOn(mainThread())
-            .subscribe { expenses = it; updateItemModels() }
+            .subscribe({ expenses ->
+                this.expenses = expenses
+                updateItemModels()
+            }, { error ->
+                Log.d(TAG, "Failed to observe expenses (${error.message}).")
+            })
     }
 
     private fun observeTags() {
@@ -74,7 +80,12 @@ class HomeFragmentModel(
             .map { SortTagsUseCase().invoke(it) }
             .subscribeOn(io())
             .observeOn(mainThread())
-            .subscribe { tags = it; updateItemModels() }
+            .subscribe({ tags ->
+                this.tags = tags
+                updateItemModels()
+            }, { error ->
+                Log.d(TAG, "Failed to observe tags (${error.message}).")
+            })
     }
 
     private fun updateItemModels() {
@@ -83,7 +94,11 @@ class HomeFragmentModel(
             .map { createSummarySection(it) + createExpenseSection(it) }
             .subscribeOn(computation())
             .observeOn(mainThread())
-            .subscribe { itemModels.value = it }
+            .subscribe({ itemModels ->
+                this.itemModels.value = itemModels
+            }, { error ->
+                Log.d(TAG, "Failed to update item models (${error.message}).")
+            })
     }
 
   /*  private fun observeExpensesItems() {
@@ -200,5 +215,9 @@ class HomeFragmentModel(
                 application.preferenceDataSource
             ) as T
         }
+    }
+
+    companion object {
+        private const val TAG = "HomeFragmentModel"
     }
 }
